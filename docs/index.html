@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TalkEval++ · 重点传达分析台</title>
+    <meta name="description" content="TalkEval++ 演讲重点传达与语义证据分析台" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23122d3b'/%3E%3Ccircle cx='47' cy='47' r='18' fill='none' stroke='%235bd2c0' stroke-width='3'/%3E%3Cpath d='M17 18h30v7H35v25h-7V25H17z' fill='%235bd2c0'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="public-site">
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <div class="brand-mark"><span></span><b>T</b></div>
+          <div class="brand-copy">
+            <div class="brand-name">TALK<span>/</span>EVAL</div>
+            <div class="brand-subtitle">Evidence-backed speech review</div>
+          </div>
+        </div>
+        <nav class="top-nav"><span class="nav-item active">分析台</span><span class="nav-item">证据回放</span><span class="nav-item muted">v0.2</span></nav>
+        <div class="topbar-actions">
+          <span class="connection-pill"><span class="status-dot"></span><span id="connection-status">正在连接分析结果</span></span>
+          <button class="ghost-button" id="refresh-button"><span class="refresh-icon">↻</span>刷新</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="hero-panel">
+          <div class="hero-content">
+            <div class="hero-kicker"><span class="kicker-line"></span><span>CONTENT DELIVERY REVIEW</span><span class="kicker-index">01 / 05</span></div>
+            <h1>让每一个<br /><em>重点都被看见。</em></h1>
+            <p class="hero-copy">把目标含义、实际表达和时间证据放在同一张分析台上。每一个判定，都能回到视频里的具体片段。</p>
+            <div class="hero-foot"><span class="hero-foot-label">REFERENCE-SCRIPT MODE</span><span class="hero-foot-text">当前数据来自公开视频整理稿代理</span></div>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
+            <div class="hero-orbit-label"><strong>5</strong><span>CASE<br />STUDIES</span></div>
+            <div class="orbit-dot dot-a"></div><div class="orbit-dot dot-b"></div><div class="orbit-dot dot-c"></div>
+          </div>
+        </section>
+
+        <section class="notice-strip"><span class="notice-mark">i</span><span>分析结果用于语义定位与证据回看，不代表演讲能力总分；参考讲稿不等同于演讲者原始意图。</span><span class="notice-arrow">↗</span></section>
+
+        <section class="stat-grid" id="global-stats"></section>
+
+        <div class="content-grid">
+          <aside class="case-panel panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">LIBRARY / 05</p>
+                <h2>案例库</h2>
+              </div>
+              <span class="case-count" id="case-count">0</span>
+            </div>
+            <div class="case-intro">选择一场演讲，查看它的表达轨迹与观点证据。</div>
+            <div id="case-list" class="case-list">
+              <div class="loading-card">正在读取案例…</div>
+            </div>
+            <div class="sidebar-foot"><span class="mini-status"></span>分析产物已同步</div>
+          </aside>
+
+          <section class="detail-column" id="detail-column">
+            <div class="empty-state panel">
+              <div class="empty-icon">↗</div>
+              <h2>选择一个案例</h2>
+              <p>左侧选择演讲后，这里会展示目标观点、实际证据和时间轴。</p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>

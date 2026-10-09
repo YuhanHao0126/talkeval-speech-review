@@ -1,0 +1,72 @@
+{
+  "cases": [
+    {
+      "case_id": "speech_001_ai_work",
+      "title": "人工智能将如何影响我们的工作",
+      "speaker_id": "speaker_zhang_dandan",
+      "topic": "人工智能将如何影响我们的工作",
+      "verdict_counts": {
+        "partially_realized": 4
+      },
+      "decision_count": 4,
+      "video_url": null,
+      "script_type": "reference_script_proxy",
+      "can_evaluate_original_intent": false
+    },
+    {
+      "case_id": "speech_002_pressure_white_hair",
+      "title": "压力和白发",
+      "speaker_id": "speaker_zhang_bing",
+      "topic": "压力和白发",
+      "verdict_counts": {
+        "sufficiently_realized": 4
+      },
+      "decision_count": 4,
+      "video_url": null,
+      "script_type": "reference_script_proxy",
+      "can_evaluate_original_intent": false
+    },
+    {
+      "case_id": "speech_003_college_students",
+      "title": "大学生，困在大学里",
+      "speaker_id": "speaker_wang_jiaying",
+      "topic": "大学生，困在大学里",
+      "verdict_counts": {
+        "sufficiently_realized": 4
+      },
+      "decision_count": 4,
+      "video_url": null,
+      "script_type": "reference_script_proxy",
+      "can_evaluate_original_intent": false
+    },
+    {
+      "case_id": "speech_004_whales",
+      "title": "有鲸出没",
+      "speaker_id": "speaker_chen_bingyao",
+      "topic": "有鲸出没",
+      "verdict_counts": {
+        "sufficiently_realized": 2,
+        "partially_realized": 2
+      },
+      "decision_count": 4,
+      "video_url": null,
+      "script_type": "reference_script_proxy",
+      "can_evaluate_original_intent": false
+    },
+    {
+      "case_id": "speech_005_climate",
+      "title": "发烧的地球与我们的未来",
+      "speaker_id": "speaker_zhang_shihui",
+      "topic": "发烧的地球与我们的未来",
+      "verdict_counts": {
+        "partially_realized": 4
+      },
+      "decision_count": 4,
+      "video_url": null,
+      "script_type": "reference_script_proxy",
+      "can_evaluate_original_intent": false
+    }
+  ],
+  "snapshot": true,
+  "video_publication_status": "not_published_pending_usage_review"
+}
