@@ -9,7 +9,7 @@
         "partially_realized": 4
       },
       "decision_count": 4,
-      "video_url": null,
+      "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_001_ai_work.mp4",
       "script_type": "reference_script_proxy",
       "can_evaluate_original_intent": false
     },
@@ -22,7 +22,7 @@
         "sufficiently_realized": 4
       },
       "decision_count": 4,
-      "video_url": null,
+      "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_002_pressure_white_hair.mp4",
       "script_type": "reference_script_proxy",
       "can_evaluate_original_intent": false
     },
@@ -35,7 +35,7 @@
         "sufficiently_realized": 4
       },
       "decision_count": 4,
-      "video_url": null,
+      "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_003_college_students.mp4",
       "script_type": "reference_script_proxy",
       "can_evaluate_original_intent": false
     },
@@ -49,7 +49,7 @@
         "partially_realized": 2
       },
       "decision_count": 4,
-      "video_url": null,
+      "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_004_whales.mp4",
       "script_type": "reference_script_proxy",
       "can_evaluate_original_intent": false
     },
@@ -62,11 +62,11 @@
         "partially_realized": 4
       },
       "decision_count": 4,
-      "video_url": null,
+      "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_005_climate.mp4",
       "script_type": "reference_script_proxy",
       "can_evaluate_original_intent": false
     }
   ],
   "snapshot": true,
-  "video_publication_status": "not_published_pending_usage_review"
+  "video_publication_status": "published"
 }

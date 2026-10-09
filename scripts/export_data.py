@@ -11,6 +11,17 @@ DEMO_ROOT = Path(__file__).resolve().parents[2]
 INPUT_ROOT = DEMO_ROOT / "real_data" / "incoming"
 OUTPUT_ROOT = DEMO_ROOT / "artifacts" / "real-batch"
 DIST_ROOT = Path(__file__).resolve().parents[1] / "dist"
+VIDEO_RELEASE_URL = (
+    "https://github.com/YuhanHao0126/talkeval-speech-review"
+    "/releases/download/talkeval-videos-v1"
+)
+VIDEO_ASSETS = {
+    "speech_001_ai_work": "speech_001_ai_work.mp4",
+    "speech_002_pressure_white_hair": "speech_002_pressure_white_hair.mp4",
+    "speech_003_college_students": "speech_003_college_students.mp4",
+    "speech_004_whales": "speech_004_whales.mp4",
+    "speech_005_climate": "speech_005_climate.mp4",
+}
 
 ARTIFACTS = {
     "intent_map": "intent_map.json",
@@ -61,6 +72,8 @@ def main() -> None:
         }
         intent = detail["intent_map"]
         alignment = detail["alignment"]
+        video_asset = VIDEO_ASSETS.get(case_id)
+        video_url = f"{VIDEO_RELEASE_URL}/{video_asset}" if video_asset else None
         cases.append(
             {
                 "case_id": case_id,
@@ -69,7 +82,7 @@ def main() -> None:
                 "topic": metadata.get("topic", ""),
                 "verdict_counts": verdict_counts(alignment),
                 "decision_count": len(alignment.get("decisions", [])),
-                "video_url": None,
+                "video_url": video_url,
                 "script_type": metadata.get("script_type"),
                 "can_evaluate_original_intent": metadata.get(
                     "can_evaluate_original_intent", False
@@ -80,8 +93,8 @@ def main() -> None:
             {
                 "case_id": case_id,
                 "metadata": metadata,
-                "video_url": None,
-                "video_publication_status": "not_published_pending_usage_review",
+                "video_url": video_url,
+                "video_publication_status": "published" if video_url else "not_available",
                 "report_url": f"./reports/{case_id}.md",
             }
         )
@@ -93,7 +106,7 @@ def main() -> None:
         {
             "cases": cases,
             "snapshot": True,
-            "video_publication_status": "not_published_pending_usage_review",
+            "video_publication_status": "published",
         },
     )
     print(f"Exported {len(cases)} cases to {DIST_ROOT}")

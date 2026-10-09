@@ -21322,7 +21322,7 @@
     "video_bytes": 198438159,
     "prepared_date": "2026-10-06"
   },
-  "video_url": null,
-  "video_publication_status": "not_published_pending_usage_review",
+  "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_004_whales.mp4",
+  "video_publication_status": "published",
   "report_url": "./reports/speech_004_whales.md"
 }

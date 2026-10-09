@@ -115,7 +115,7 @@ function renderDetail(data) {
     `<span class="badge badge-neutral">语义：${esc(data.run_metadata?.semantic_backend || "未知")}</span>`,
   ].join("");
   const hasVideo = Boolean(data.video_url);
-  const video = hasVideo ? `<video id="case-video" class="video-frame" controls preload="metadata" src="${esc(data.video_url)}"></video>` : `<div class="video-placeholder"><div><strong>视频暂未公开发布</strong><span>原始素材仍处于使用权限审核状态，时间戳与文本证据可正常查看。</span></div></div>`;
+  const video = hasVideo ? `<video id="case-video" class="video-frame" controls preload="metadata"><source src="${esc(data.video_url)}" type="video/mp4"><a href="${esc(data.video_url)}" target="_blank" rel="noopener noreferrer">在新标签页打开视频</a></video>` : `<div class="video-placeholder"><div><strong>视频暂未公开发布</strong><span>原始素材仍处于使用权限审核状态，时间戳与文本证据可正常查看。</span></div></div>`;
   const cards = decisions.map((decision, index) => {
     const beat = (data.intent_map?.beats || []).find((item) => item.beat_id === decision.beat_id) || {};
     const active = state.selectedBeat?.beat_id === decision.beat_id;
