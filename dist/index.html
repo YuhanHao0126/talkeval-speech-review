@@ -18,14 +18,14 @@
             <div class="brand-subtitle">Evidence-backed speech review</div>
           </div>
         </div>
-        <nav class="top-nav"><span class="nav-item active">分析台</span><span class="nav-item">证据回放</span><span class="nav-item muted">v0.2</span></nav>
+        <nav class="top-nav" aria-label="工作区"><button class="nav-item active" id="review-tab" type="button">案例回放</button><button class="nav-item" id="live-tab" type="button">现场演讲</button><span class="nav-item muted">v0.3</span></nav>
         <div class="topbar-actions">
           <span class="connection-pill"><span class="status-dot"></span><span id="connection-status">正在连接分析结果</span></span>
           <button class="ghost-button" id="refresh-button"><span class="refresh-icon">↻</span>刷新</button>
         </div>
       </header>
 
-      <main class="workspace">
+      <main class="workspace" id="review-view">
         <section class="hero-panel">
           <div class="hero-content">
             <div class="hero-kicker"><span class="kicker-line"></span><span>CONTENT DELIVERY REVIEW</span><span class="kicker-index">01 / 05</span></div>
@@ -69,7 +69,61 @@
           </section>
         </div>
       </main>
+      <main class="workspace live-workspace" id="live-view" hidden>
+        <section class="live-hero panel">
+          <div><p class="eyebrow">LIVE SPEECH COACH · FAST + SLOW</p><h1>讲到重点时，<em>现场看见表达是否跟上。</em></h1><p>左侧采集现场画面和语音；右侧跟踪观点、声音、表情动作与投影文字，并给出下一步提醒。所有采集与个人记录留在当前浏览器。</p></div>
+          <div class="live-channel-key"><span><i class="fast-dot"></i>快通道 · 本场即时对照</span><span><i class="slow-dot"></i>慢通道 · 个人历史记忆</span></div>
+        </section>
+
+        <section class="coach-setup panel">
+          <div class="setup-fields">
+            <label>参考案例<select id="coach-case"><option value="custom">自定义演讲提纲</option></select></label>
+            <label>演讲主题<input id="coach-topic" maxlength="100" placeholder="填写本次演讲主题" /></label>
+            <label>记忆 ID<input id="coach-speaker" maxlength="48" /></label>
+            <label>转写语言<select id="coach-language"><option value="zh-CN">中文</option><option value="en-US">English</option></select></label>
+          </div>
+          <label class="outline-label">核心观点（每行一条，可修改）<textarea id="coach-outline" rows="4" placeholder="例如：\n人工智能会改变工作内容，但不必然消灭工作\n重要的是培养判断力和协作能力"></textarea></label>
+          <label class="privacy-consent"><input id="coach-consent" type="checkbox" /><span>我同意开启本次摄像头/麦克风。画面与手势在浏览器内分析、不上传或保存；会话文字和特征保存在本浏览器。浏览器自带语音识别可能联网处理音频。</span></label>
+          <div class="setup-foot"><span>演讲结束自动保存报告；此浏览器可查看历史复盘。记录不会跨设备同步。</span><span id="coach-model-status">视觉模型将在开始后按需加载</span></div>
+        </section>
+
+        <div class="coach-grid">
+          <section class="coach-left">
+            <section class="coach-camera panel">
+              <div class="coach-panel-head"><div><p class="eyebrow">STAGE VIEW</p><h2>现场画面</h2></div><div class="live-clock"><span class="live-led" id="coach-led"></span><span id="coach-status">准备就绪</span><strong id="coach-timer">00:00</strong></div></div>
+              <div class="coach-video-wrap"><video id="coach-video" autoplay muted playsinline></video><canvas id="coach-overlay"></canvas><div id="coach-camera-placeholder" class="coach-video-placeholder"><b>开始后显示现场画面</b><small>请让脸部、肩膀和手部尽量留在画面内</small></div><div class="coach-camera-tag">摄像头画面仅在此浏览器中处理</div></div>
+              <div class="coach-controls"><button class="primary-button" id="coach-start" disabled>开始演讲</button><button class="stop-button" id="coach-stop" disabled>结束并保存复盘</button><button class="secondary-button" id="share-screen">共享 PPT 窗口</button><span id="coach-speech-support" class="support-note">勾选采集说明后可开始</span></div>
+              <div class="coach-signal-grid">
+                <div class="signal-card"><span>近 30 秒语速</span><strong id="coach-pace">—</strong><small>字/分钟</small></div>
+                <div class="signal-card"><span>声音响度</span><strong id="coach-volume">—</strong><small id="coach-volume-note">相对本场基线</small></div>
+                <div class="signal-card"><span>音高变化</span><strong id="coach-pitch">—</strong><small>轻量估计</small></div>
+                <div class="signal-card"><span>识别语句间隔</span><strong id="coach-pause">—</strong><small>距上次识别到语音的时间</small></div>
+              </div>
+              <div class="coach-transcript panel-inset"><div class="coach-panel-head"><strong>实时转写</strong><span id="coach-transcript-count">0 句</span></div><p id="coach-transcript">开始后，识别到的语句会出现在这里。</p><div class="manual-entry"><input id="coach-manual-text" placeholder="识别不可用时输入刚说的内容" /><button id="coach-add-text" type="button">记录这句话</button></div></div>
+            </section>
+
+            <section class="screen-panel panel">
+              <div class="coach-panel-head"><div><p class="eyebrow">SLIDE / SCREEN EVIDENCE</p><h2>投影与观点配合</h2></div><span id="screen-status" class="mini-badge">未共享</span></div>
+              <div class="screen-layout"><video id="screen-video" autoplay muted playsinline></video><div class="screen-copy"><b id="screen-slide-label">尚未读取投影文字</b><p id="screen-current-text">开始共享 PPT 窗口后，每隔一段时间抽帧识别文字。</p><small id="screen-match-note">图表、图片或同义表达可能无法通过 OCR 判断，请结合现场复核。</small></div></div>
+              <div id="screen-history" class="screen-history"></div>
+            </section>
+
+            <section class="saved-sessions panel"><div class="coach-panel-head"><div><p class="eyebrow">LOCAL REVIEW</p><h2>历史演讲复盘</h2></div><span id="saved-session-count" class="mini-badge">0 场</span></div><div id="saved-session-list" class="saved-session-list"><p class="quiet-copy">完成一次演讲后，报告与时间线会保存在当前浏览器。</p></div></section>
+          </section>
+
+          <aside class="coach-right">
+            <section class="urgent-cue panel"><div class="assistant-label"><span class="fast-pulse"></span>快通道 · 当前最重要提醒</div><h2 id="coach-cue-title">准备就绪</h2><p id="coach-cue-copy">先选择参考案例或填写自己的核心观点。</p><div class="cue-progress-line"><span id="coach-progress-text">0 / 0 个重点已检测到</span><span id="coach-active-index">待开始</span></div><div class="progress-track"><i id="coach-progress-fill"></i></div></section>
+            <section class="coach-beats panel"><div class="coach-panel-head"><div><p class="eyebrow">CORE POINTS</p><h2>本场重点进度</h2></div><span id="coach-beat-count" class="mini-badge">0 个</span></div><div id="coach-beats-list" class="coach-beat-list"><p class="quiet-copy">填写核心观点后显示。</p></div></section>
+            <section class="visual-panel panel"><div class="coach-panel-head"><div><p class="eyebrow">FACE + GESTURE</p><h2>表情与动作观察</h2></div><span id="visual-status" class="mini-badge">等待摄像头</span></div><p id="visual-now" class="visual-now">这里只描述观察到的面部动作与手腕位移，不自动给表情或手势打“得当/不得当”分。</p><div id="visual-point-note" class="evidence-note">讲到核心观点时，会汇总相邻时段的视觉线索供复核。</div></section>
+            <section class="memory-panel panel"><div class="coach-panel-head"><div><p class="eyebrow">SLOW CHANNEL · PERSONAL MEMORY</p><h2>历史个性化提醒</h2></div><span class="slow-icon">↻</span></div><div id="coach-memory" class="memory-content"><p>稳定记忆 ID 会关联本浏览器里的历史演讲。</p></div><div class="memory-foot"><span id="coach-memory-count">0 次历史练习</span><span>本地记忆</span></div></section>
+            <section class="audience-panel panel"><div class="coach-panel-head"><div><p class="eyebrow">AUDIENCE RESPONSE</p><h2>掌声/观众反应</h2></div></div><label>记录方式<select id="coach-reaction-mode"><option value="observed">现场观察</option><option value="demo">模拟信号</option></select></label><p>每个重点卡片可手动标记掌声。模拟信号会与现场观察分开，历史建议会注明来源。</p></section>
+          </aside>
+        </div>
+
+        <section id="coach-report" class="coach-report panel" hidden><div class="coach-panel-head"><div><p class="eyebrow">SESSION SUMMARY</p><h2>本场演讲报告</h2></div><div class="report-actions"><button id="coach-copy-report" class="secondary-button">复制报告</button><button id="coach-download-report" class="secondary-button">下载文字</button><button id="coach-download-json" class="secondary-button">导出复盘 JSON</button></div></div><textarea id="coach-report-text" rows="12" readonly></textarea><div id="coach-replay-detail" class="coach-replay-detail"></div></section>
+      </main>
     </div>
     <script src="./app.js"></script>
+    <script src="./live.js"></script>
   </body>
 </html>
