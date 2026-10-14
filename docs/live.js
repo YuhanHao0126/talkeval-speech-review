@@ -810,7 +810,7 @@
     state.session.cloudVideoReady = Boolean(recordingResult?.cloudReady);
     if (state.recordingCloudError) state.session.cloudUploadError = state.recordingCloudError;
     const summary = makeReport(state.session); state.session.report = summary.text;
-    const saved = { ...state.session, metrics: { pace: summary.pace, pitchRange: summary.pitchRange, volumeRange: summary.volumeRange } };
+    const saved = { ...state.session, audio: [], metrics: { pace: summary.pace, pitchRange: summary.pitchRange, volumeRange: summary.volumeRange } };
     const allSessions = [saved, ...readSessions()];
     const sessions = allSessions.slice(0, MAX_SESSIONS);
     allSessions.slice(MAX_SESSIONS).forEach((item) => { if (item.videoId) deleteRecording(item.videoId).catch(() => {}); });
@@ -824,17 +824,16 @@
       const result = await saveCloudSession(saved);
       cloudSaved = true;
       saved.cloudStored = true;
-      saved.cloudUploadError = "";
       saved.cloudVideoReady = Boolean(result.session?.cloudVideoReady);
+      saved.cloudUploadError = saved.cloudVideoReady ? "" : (state.recordingCloudError || saved.cloudUploadError || "");
       state.remoteSessions = [result.session || saved, ...state.remoteSessions.filter((item) => item.id !== saved.id)].slice(0, 100);
-      const refreshed = [saved, ...readSessions().filter((item) => item.id !== saved.id)].slice(0, MAX_SESSIONS);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(refreshed));
     } catch (error) {
       saved.cloudStored = false;
       saved.cloudUploadError = state.recordingCloudError || error.message || "云端同步失败";
-      const refreshed = readSessions().map((item) => item.id === saved.id ? saved : item);
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(refreshed)); } catch { /* Keep the in-memory report visible. */ }
     }
+    const refreshed = [saved, ...readSessions().filter((item) => item.id !== saved.id)].slice(0, MAX_SESSIONS);
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(refreshed)); }
+    catch (error) { setText("#coach-status", `复盘状态已更新；本机存储不足：${error.message}`); }
     state.session = null; state.audioSamples = []; state.voiceBaseline = []; state.visualSummary = []; state.previousWrists = null;
     state.points = state.points.map((point, index) => ({ ...point, index }));
     setText("#coach-status", cloudSaved ? (saved.cloudVideoReady ? "已保存并公开同步" : "报告已公开；录像待上传") : (videoSaved ? "录像已保存在本设备" : `复盘已保存；录像未保存：${videoError}`)); $("#coach-led").classList.remove("active");
