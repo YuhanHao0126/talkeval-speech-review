@@ -1,0 +1,544 @@
+{
+  "speech_001_ai_work": {
+    "title": "人工智能将如何影响我们的工作",
+    "poster": "./visuals/speech_001_ai_work/b01.jpg",
+    "beats": [
+      {
+        "beat_id": "b01",
+        "time": 726.23,
+        "start": 724.22,
+        "frame_url": "./visuals/speech_001_ai_work/b01.jpg",
+        "note_title": "从职责到任务",
+        "note_summary": "用 AI 将招聘广告中的职责描述，与 O*Net 的具体工作任务匹配。",
+        "keywords": "职责 → 任务",
+        "ppt_time": 722.22,
+        "ppt_url": "./visuals/speech_001_ai_work/b01-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      },
+      {
+        "beat_id": "b02",
+        "time": 797.3,
+        "start": 796.18,
+        "frame_url": "./visuals/speech_001_ai_work/b02.jpg",
+        "note_title": "计算职业暴露度",
+        "note_summary": "汇总 125 万个工作岗位，按任务出现频率加权，计算职业的 AI 暴露度。",
+        "keywords": "125 万 · 加权汇总",
+        "ppt_time": 800.42,
+        "ppt_url": "./visuals/speech_001_ai_work/b02-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      },
+      {
+        "beat_id": "b03",
+        "time": 1119.21,
+        "start": 1116.48,
+        "frame_url": "./visuals/speech_001_ai_work/b03.jpg",
+        "note_title": "专业判断更重要",
+        "note_summary": "AI 为理财与诊断提供辅助，是否采纳建议仍需专业人士判断。",
+        "keywords": "AI 辅助 · 人来判断",
+        "ppt_time": 1123.94,
+        "ppt_url": "./visuals/speech_001_ai_work/b03-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      },
+      {
+        "beat_id": "b04",
+        "time": 1139.02,
+        "start": 1136.42,
+        "frame_url": "./visuals/speech_001_ai_work/b04.jpg",
+        "note_title": "做 AI 的管理者",
+        "note_summary": "把 AI 作为助手来管理和使用，自主性成为高效工作的关键能力。",
+        "keywords": "自主性 · 管理助手",
+        "ppt_time": 1136.72,
+        "ppt_url": "./visuals/speech_001_ai_work/b04-ppt.jpg",
+        "ppt_label": "有部分文字线索关联"
+      }
+    ],
+    "notes_url": "./visuals/speech_001_ai_work/notes.svg",
+    "map_url": "./visuals/speech_001_ai_work/mindmap.svg"
+  },
+  "speech_002_pressure_white_hair": {
+    "title": "压力和白发",
+    "poster": "./visuals/speech_002_pressure_white_hair/b01.jpg",
+    "beats": [
+      {
+        "beat_id": "b01",
+        "time": 128.95,
+        "start": 125.5,
+        "frame_url": "./visuals/speech_002_pressure_white_hair/b01.jpg",
+        "note_title": "皮肤也感受着生活",
+        "note_summary": "睡眠、饮食、心情与环境，都可能影响皮肤健康。",
+        "keywords": "环境 + 生活习惯",
+        "ppt_time": 130.04,
+        "ppt_url": "./visuals/speech_002_pressure_white_hair/b01-ppt.jpg",
+        "ppt_label": "有部分文字线索关联"
+      },
+      {
+        "beat_id": "b02",
+        "time": 680.16,
+        "start": 677.38,
+        "frame_url": "./visuals/speech_002_pressure_white_hair/b02.jpg",
+        "note_title": "用实验检验假说",
+        "note_summary": "阻断小鼠压力激素分泌，再施加压力，观察是否出现白发。",
+        "keywords": "干预 → 施压 → 观察",
+        "ppt_time": 682.55,
+        "ppt_url": "./visuals/speech_002_pressure_white_hair/b02-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      },
+      {
+        "beat_id": "b03",
+        "time": 708.34,
+        "start": 706.18,
+        "frame_url": "./visuals/speech_002_pressure_white_hair/b03.jpg",
+        "note_title": "结果，推翻了预想",
+        "note_summary": "研究结果没有支持此前关于精神压力与白发的两种假说。",
+        "keywords": "假说 ≠ 实验结果",
+        "ppt_time": 704.18,
+        "ppt_url": "./visuals/speech_002_pressure_white_hair/b03-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      },
+      {
+        "beat_id": "b04",
+        "time": 1194.92,
+        "start": 1191.0,
+        "frame_url": "./visuals/speech_002_pressure_white_hair/b04.jpg",
+        "note_title": "追问背后的机制",
+        "note_summary": "研究希望理解白发形成机制，最终帮助人们保持乌黑头发。",
+        "keywords": "理解机制 → 改善生活",
+        "ppt_time": 1189.0,
+        "ppt_url": "./visuals/speech_002_pressure_white_hair/b04-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      }
+    ],
+    "notes_url": "./visuals/speech_002_pressure_white_hair/notes.svg",
+    "map_url": "./visuals/speech_002_pressure_white_hair/mindmap.svg"
+  },
+  "speech_003_college_students": {
+    "title": "大学生，困在大学里",
+    "poster": "./visuals/speech_003_college_students/b01.jpg",
+    "beats": [
+      {
+        "beat_id": "b01",
+        "time": 388.92,
+        "start": 382.98,
+        "frame_url": "./visuals/speech_003_college_students/b01.jpg",
+        "note_title": "把成功也记下来",
+        "note_summary": "除了回顾失败，也常常想起自己曾经做得不错的事情。",
+        "keywords": "不只复盘失败"
+      },
+      {
+        "beat_id": "b02",
+        "time": 404.48,
+        "start": 400.32,
+        "frame_url": "./visuals/speech_003_college_students/b02.jpg",
+        "note_title": "这真是我的选择吗",
+        "note_summary": "保研、考公与进大厂，有时来自他人对“好未来”的定义。",
+        "keywords": "他人期待 / 自己想要",
+        "ppt_time": 398.32,
+        "ppt_url": "./visuals/speech_003_college_students/b02-ppt.jpg",
+        "ppt_label": "有部分文字线索关联"
+      },
+      {
+        "beat_id": "b03",
+        "time": 899.85,
+        "start": 893.13,
+        "frame_url": "./visuals/speech_003_college_students/b03.jpg",
+        "note_title": "给情绪一个名字",
+        "note_summary": "悲伤、担忧、不满、委屈，需要被准确分辨与表达。",
+        "keywords": "分辨 → 命名 → 表达",
+        "ppt_time": 894.037,
+        "ppt_url": "./visuals/speech_003_college_students/b03-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      },
+      {
+        "beat_id": "b04",
+        "time": 1097.17,
+        "start": 1093.08,
+        "frame_url": "./visuals/speech_003_college_students/b04.jpg",
+        "note_title": "想做好，所以会难过",
+        "note_summary": "情绪问题不等于不上进；年轻人对自己的要求并未降低。",
+        "keywords": "进取心仍然存在",
+        "ppt_time": 1097.17,
+        "ppt_url": "./visuals/speech_003_college_students/b04-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      }
+    ],
+    "notes_url": "./visuals/speech_003_college_students/notes.svg",
+    "map_url": "./visuals/speech_003_college_students/mindmap.svg"
+  },
+  "speech_004_whales": {
+    "title": "有鲸出没",
+    "poster": "./visuals/speech_004_whales/b01.jpg",
+    "beats": [
+      {
+        "beat_id": "b01",
+        "time": 323.35,
+        "start": 320.68,
+        "frame_url": "./visuals/speech_004_whales/b01.jpg",
+        "note_title": "已经消失的身影",
+        "note_summary": "白鱀豚已功能性灭绝，演讲者进入研究领域时已难以见到。",
+        "keywords": "保护，不能等",
+        "ppt_time": 325.685,
+        "ppt_url": "./visuals/speech_004_whales/b01-ppt.jpg",
+        "ppt_label": "有部分文字线索关联"
+      },
+      {
+        "beat_id": "b02",
+        "time": 1091.85,
+        "start": 1087.92,
+        "frame_url": "./visuals/speech_004_whales/b02.jpg",
+        "note_title": "用照片识别种群",
+        "note_summary": "泰国湾与涠洲岛虽时间吻合，照相识别却未发现同一头鲸。",
+        "keywords": "时间吻合 ≠ 同一群体",
+        "ppt_time": 1093.036,
+        "ppt_url": "./visuals/speech_004_whales/b02-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      },
+      {
+        "beat_id": "b03",
+        "time": 1420.77,
+        "start": 1416.4,
+        "frame_url": "./visuals/speech_004_whales/b03.jpg",
+        "note_title": "从身体寻找线索",
+        "note_summary": "搁浅鲸的脂肪层只有 1 厘米，正常应有 4–5 厘米。",
+        "keywords": "1 cm / 4–5 cm",
+        "ppt_time": 1427.14,
+        "ppt_url": "./visuals/speech_004_whales/b03-ppt.jpg",
+        "ppt_label": "有部分文字线索关联"
+      },
+      {
+        "beat_id": "b04",
+        "time": 1552.24,
+        "start": 1549.94,
+        "frame_url": "./visuals/speech_004_whales/b04.jpg",
+        "note_title": "把保护做在前面",
+        "note_summary": "建立搁浅救助网络，也把保护行动推进到搁浅发生之前。",
+        "keywords": "提前保护 → 及时救助",
+        "ppt_time": 1547.94,
+        "ppt_url": "./visuals/speech_004_whales/b04-ppt.jpg",
+        "ppt_label": "有部分文字线索关联"
+      }
+    ],
+    "notes_url": "./visuals/speech_004_whales/notes.svg",
+    "map_url": "./visuals/speech_004_whales/mindmap.svg"
+  },
+  "speech_005_climate": {
+    "title": "发烧的地球与我们的未来",
+    "poster": "./visuals/speech_005_climate/b01.jpg",
+    "beats": [
+      {
+        "beat_id": "b01",
+        "time": 636.0,
+        "start": 633.36,
+        "frame_url": "./visuals/speech_005_climate/b01.jpg",
+        "note_title": "舒适天气并不均匀",
+        "note_summary": "少数地区的气候舒适日数可达 140 天以上，甚至超过 200 天。",
+        "keywords": "少数地区的“幸运”",
+        "ppt_time": 631.36,
+        "ppt_url": "./visuals/speech_005_climate/b01-ppt.jpg",
+        "ppt_label": "有部分文字线索关联"
+      },
+      {
+        "beat_id": "b02",
+        "time": 644.17,
+        "start": 640.32,
+        "frame_url": "./visuals/speech_005_climate/b02.jpg",
+        "note_title": "多数城市的现实",
+        "note_summary": "2022 年，我国绝大多数城市的舒适天数约为 70–140 天。",
+        "keywords": "70–140 天",
+        "ppt_time": 643.0,
+        "ppt_url": "./visuals/speech_005_climate/b02-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      },
+      {
+        "beat_id": "b03",
+        "time": 1113.43,
+        "start": 1109.68,
+        "frame_url": "./visuals/speech_005_climate/b03.jpg",
+        "note_title": "睡眠被慢慢打扰",
+        "note_summary": "部分纬度地区每年损失接近 10 小时睡眠，干扰具有持续性。",
+        "keywords": "慢性、持续的影响",
+        "ppt_time": 1107.68,
+        "ppt_url": "./visuals/speech_005_climate/b03-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      },
+      {
+        "beat_id": "b04",
+        "time": 1592.74,
+        "start": 1591.14,
+        "frame_url": "./visuals/speech_005_climate/b04.jpg",
+        "note_title": "从需求侧找潜力",
+        "note_summary": "演讲引用 IPCC 结论：减排潜力的 40%–70% 可来自需求侧。",
+        "keywords": "40%–70% · 需求侧",
+        "ppt_time": 1593.94,
+        "ppt_url": "./visuals/speech_005_climate/b04-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      }
+    ],
+    "notes_url": "./visuals/speech_005_climate/notes.svg",
+    "map_url": "./visuals/speech_005_climate/mindmap.svg"
+  },
+  "speech_auto_1fbefa7db3": {
+    "title": "你的大脑被零食骗了多少次",
+    "poster": "./visuals/speech_auto_1fbefa7db3/b01.jpg",
+    "beats": [
+      {
+        "beat_id": "b01",
+        "time": 323.36,
+        "start": 320.69,
+        "frame_url": "./visuals/speech_auto_1fbefa7db3/b01.jpg",
+        "note_title": "身体在索要能量",
+        "note_summary": "生长阶段的大脑需要更多能量，食物选择并非只是意志问题。",
+        "keywords": "生长 · 能量需求",
+        "ppt_time": 323.36,
+        "ppt_url": "./visuals/speech_auto_1fbefa7db3/b01-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      },
+      {
+        "beat_id": "b02",
+        "time": 510.91,
+        "start": 508.16,
+        "frame_url": "./visuals/speech_auto_1fbefa7db3/b02.jpg",
+        "note_title": "甜度会越要越高",
+        "note_summary": "糖和脂肪的反复刺激，可能让大脑需要更强刺激才满足。",
+        "keywords": "反复刺激 → 更高需求"
+      },
+      {
+        "beat_id": "b03",
+        "time": 561.92,
+        "start": 558.68,
+        "frame_url": "./visuals/speech_auto_1fbefa7db3/b03.jpg",
+        "note_title": "包装也会触发食欲",
+        "note_summary": "鲜艳颜色、食物图片与卡通形象，让人未拆包装就期待食物。",
+        "keywords": "视觉线索 → 食物期待",
+        "ppt_time": 560.872,
+        "ppt_url": "./visuals/speech_auto_1fbefa7db3/b03-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      },
+      {
+        "beat_id": "b04",
+        "time": 932.54,
+        "start": 928.8,
+        "frame_url": "./visuals/speech_auto_1fbefa7db3/b04.jpg",
+        "note_title": "读懂酸奶营养表",
+        "note_summary": "演讲举例：添加糖加上乳糖，会反映在碳水化合物含量中。",
+        "keywords": "添加糖 + 乳糖",
+        "ppt_time": 935.984,
+        "ppt_url": "./visuals/speech_auto_1fbefa7db3/b04-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      }
+    ],
+    "notes_url": "./visuals/speech_auto_1fbefa7db3/notes.svg",
+    "map_url": "./visuals/speech_auto_1fbefa7db3/mindmap.svg"
+  },
+  "speech_auto_594f9836f9": {
+    "title": "生命，不是智能",
+    "poster": "./visuals/speech_auto_594f9836f9/b01.jpg",
+    "beats": [
+      {
+        "beat_id": "b01",
+        "time": 447.64,
+        "start": 441.4,
+        "frame_url": "./visuals/speech_auto_594f9836f9/b01.jpg",
+        "note_title": "必须不停上进吗",
+        "note_summary": "优绩社会把持续上进视为常态，也让个人承担失败的压力。",
+        "keywords": "上进标准 · 私人压力",
+        "ppt_time": 444.893,
+        "ppt_url": "./visuals/speech_auto_594f9836f9/b01-ppt.jpg",
+        "ppt_label": "有部分文字线索关联"
+      },
+      {
+        "beat_id": "b02",
+        "time": 731.38,
+        "start": 728.08,
+        "frame_url": "./visuals/speech_auto_594f9836f9/b02.jpg",
+        "note_title": "痛苦也来自结构",
+        "note_summary": "当外部的结构性处境难以改变，人们会转而加固内心。",
+        "keywords": "外部处境 → 内心应对",
+        "ppt_time": 736.68,
+        "ppt_url": "./visuals/speech_auto_594f9836f9/b02-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      },
+      {
+        "beat_id": "b03",
+        "time": 1001.81,
+        "start": 998.17,
+        "frame_url": "./visuals/speech_auto_594f9836f9/b03.jpg",
+        "note_title": "人格也被要求优化",
+        "note_summary": "人们在不同场景里逼迫自己积极开放，证明自己足够好。",
+        "keywords": "被要求的“正能量”",
+        "ppt_time": 998.426,
+        "ppt_url": "./visuals/speech_auto_594f9836f9/b03-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      },
+      {
+        "beat_id": "b04",
+        "time": 1072.31,
+        "start": 1068.23,
+        "frame_url": "./visuals/speech_auto_594f9836f9/b04.jpg",
+        "note_title": "让情绪引领发现",
+        "note_summary": "情绪不只是需要解决的问题，也可以帮助我们认识自己。",
+        "keywords": "情绪 → 发现自己",
+        "ppt_time": 1074.337,
+        "ppt_url": "./visuals/speech_auto_594f9836f9/b04-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      }
+    ],
+    "notes_url": "./visuals/speech_auto_594f9836f9/notes.svg",
+    "map_url": "./visuals/speech_auto_594f9836f9/mindmap.svg"
+  },
+  "speech_auto_65540d2c8f": {
+    "title": "万万没想到🤯的癌症研究",
+    "poster": "./visuals/speech_auto_65540d2c8f/b01.jpg",
+    "beats": [
+      {
+        "beat_id": "b01",
+        "time": 347.64,
+        "start": 344.37,
+        "frame_url": "./visuals/speech_auto_65540d2c8f/b01.jpg",
+        "note_title": "一次颠覆性的发现",
+        "note_summary": "演讲回顾：研究首次证明恶性癌症也能尝试用化学药物治疗。",
+        "keywords": "手术、放疗之外",
+        "ppt_time": 346.586,
+        "ppt_url": "./visuals/speech_auto_65540d2c8f/b01-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      },
+      {
+        "beat_id": "b02",
+        "time": 878.16,
+        "start": 875.33,
+        "frame_url": "./visuals/speech_auto_65540d2c8f/b02.jpg",
+        "note_title": "没有坐等标准治疗",
+        "note_summary": "斯坦曼了解胰腺癌的凶险，选择探索新的治疗路径。",
+        "keywords": "面对凶险，主动探索"
+      },
+      {
+        "beat_id": "b03",
+        "time": 976.5,
+        "start": 974.12,
+        "frame_url": "./visuals/speech_auto_65540d2c8f/b03.jpg",
+        "note_title": "至少八种创新尝试",
+        "note_summary": "除自己的新疗法外，他还尝试了七位科学家提出的七种疗法。",
+        "keywords": "1 + 7 ≥ 8",
+        "ppt_time": 972.12,
+        "ppt_url": "./visuals/speech_auto_65540d2c8f/b03-ppt.jpg",
+        "ppt_label": "有部分文字线索关联"
+      },
+      {
+        "beat_id": "b04",
+        "time": 1307.26,
+        "start": 1304.64,
+        "frame_url": "./visuals/speech_auto_65540d2c8f/b04.jpg",
+        "note_title": "追问有效成分",
+        "note_summary": "演讲以砒霜相关研究为例，讨论复方中的有效成分。",
+        "keywords": "回到研究证据",
+        "ppt_time": 1302.64,
+        "ppt_url": "./visuals/speech_auto_65540d2c8f/b04-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      }
+    ],
+    "notes_url": "./visuals/speech_auto_65540d2c8f/notes.svg",
+    "map_url": "./visuals/speech_auto_65540d2c8f/mindmap.svg"
+  },
+  "speech_auto_7e27718c13": {
+    "title": "另一条道路，很多人的路",
+    "poster": "./visuals/speech_auto_7e27718c13/b01.jpg",
+    "beats": [
+      {
+        "beat_id": "b01",
+        "time": 477.47,
+        "start": 473.85,
+        "frame_url": "./visuals/speech_auto_7e27718c13/b01.jpg",
+        "note_title": "给试错留一点空间",
+        "note_summary": "中职教学没有同样紧张的高考节奏，也能给学生成长空间。",
+        "keywords": "宽松氛围 → 试错空间",
+        "ppt_time": 480.842,
+        "ppt_url": "./visuals/speech_auto_7e27718c13/b01-ppt.jpg",
+        "ppt_label": "文字线索关联较明显"
+      },
+      {
+        "beat_id": "b02",
+        "time": 663.44,
+        "start": 659.71,
+        "frame_url": "./visuals/speech_auto_7e27718c13/b02.jpg",
+        "note_title": "另一条升学路径",
+        "note_summary": "3+2 中高职衔接：三年中职之后衔接两年高职学习。",
+        "keywords": "3 年 + 2 年",
+        "ppt_time": 669.17,
+        "ppt_url": "./visuals/speech_auto_7e27718c13/b02-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      },
+      {
+        "beat_id": "b03",
+        "time": 889.81,
+        "start": 886.05,
+        "frame_url": "./visuals/speech_auto_7e27718c13/b03.jpg",
+        "note_title": "看见成绩背后的经历",
+        "note_summary": "家庭、霸凌与学习障碍等经历，可能是学业薄弱背后的原因。",
+        "keywords": "经历是原因，成绩是结果",
+        "ppt_time": 890.962,
+        "ppt_url": "./visuals/speech_auto_7e27718c13/b03-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      },
+      {
+        "beat_id": "b04",
+        "time": 1501.03,
+        "start": 1498.49,
+        "frame_url": "./visuals/speech_auto_7e27718c13/b04.jpg",
+        "note_title": "找到愿意投入的事",
+        "note_summary": "理想的职业教育，应帮助每个年轻人找到热爱并愿意投入的事。",
+        "keywords": "热爱 → 投入 → 享受"
+      }
+    ],
+    "notes_url": "./visuals/speech_auto_7e27718c13/notes.svg",
+    "map_url": "./visuals/speech_auto_7e27718c13/mindmap.svg"
+  },
+  "speech_auto_c2c143e546": {
+    "title": "傅园慧",
+    "poster": "./visuals/speech_auto_c2c143e546/b01.jpg",
+    "beats": [
+      {
+        "beat_id": "b01",
+        "time": 17.6,
+        "start": 16.19,
+        "frame_url": "./visuals/speech_auto_c2c143e546/b01.jpg",
+        "note_title": "从分享开始",
+        "note_summary": "开场表达来到现场与大家分享的意愿。原转写句子尚不完整。",
+        "keywords": "开场片段 · 待复核",
+        "ppt_time": 14.19,
+        "ppt_url": "./visuals/speech_auto_c2c143e546/b01-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      },
+      {
+        "beat_id": "b02",
+        "time": 1133.72,
+        "start": 1132.69,
+        "frame_url": "./visuals/speech_auto_c2c143e546/b02.jpg",
+        "note_title": "回望取得的成就",
+        "note_summary": "原转写提及取得更高成就，需结合视频确认完整含义。",
+        "keywords": "经历回顾 · 待复核"
+      },
+      {
+        "beat_id": "b03",
+        "time": 1361.49,
+        "start": 1361.08,
+        "frame_url": "./visuals/speech_auto_c2c143e546/b03.jpg",
+        "note_title": "关于 100 米的片段",
+        "note_summary": "转写“只有100米一样用”含义不完整，回看片段核对原话。",
+        "keywords": "转写待核对",
+        "ppt_time": 1359.08,
+        "ppt_url": "./visuals/speech_auto_c2c143e546/b03-ppt.jpg",
+        "ppt_label": "暂未发现明显文字关联"
+      },
+      {
+        "beat_id": "b04",
+        "time": 1368.4,
+        "start": 1367.7,
+        "frame_url": "./visuals/speech_auto_c2c143e546/b04.jpg",
+        "note_title": "关于自身表现的片段",
+        "note_summary": "转写提及“不是那么强”，需结合前后文理解表达意图。",
+        "keywords": "上下文待核对"
+      }
+    ],
+    "notes_url": "./visuals/speech_auto_c2c143e546/notes.svg",
+    "map_url": "./visuals/speech_auto_c2c143e546/mindmap.svg"
+  }
+}
