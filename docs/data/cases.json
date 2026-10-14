@@ -10,7 +10,13 @@
       },
       "decision_count": 4,
       "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_001_ai_work.mp4",
+      "source_page_url": null,
+      "source_page_label": null,
+      "video_publication_status": "published",
       "script_type": "reference_script_proxy",
+      "script_source": "posthoc_transcript_from_public_video",
+      "source_review_label": "参考文稿代理",
+      "review_status": "confirmed",
       "can_evaluate_original_intent": false
     },
     {
@@ -23,7 +29,13 @@
       },
       "decision_count": 4,
       "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_002_pressure_white_hair.mp4",
+      "source_page_url": null,
+      "source_page_label": null,
+      "video_publication_status": "published",
       "script_type": "reference_script_proxy",
+      "script_source": "posthoc_transcript_from_public_video",
+      "source_review_label": "参考文稿代理",
+      "review_status": "confirmed",
       "can_evaluate_original_intent": false
     },
     {
@@ -36,7 +48,13 @@
       },
       "decision_count": 4,
       "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_003_college_students.mp4",
+      "source_page_url": null,
+      "source_page_label": null,
+      "video_publication_status": "published",
       "script_type": "reference_script_proxy",
+      "script_source": "posthoc_transcript_from_public_video",
+      "source_review_label": "参考文稿代理",
+      "review_status": "confirmed",
       "can_evaluate_original_intent": false
     },
     {
@@ -50,7 +68,13 @@
       },
       "decision_count": 4,
       "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_004_whales.mp4",
+      "source_page_url": null,
+      "source_page_label": null,
+      "video_publication_status": "published",
       "script_type": "reference_script_proxy",
+      "script_source": "posthoc_transcript_from_public_video",
+      "source_review_label": "参考文稿代理",
+      "review_status": "confirmed",
       "can_evaluate_original_intent": false
     },
     {
@@ -63,10 +87,115 @@
       },
       "decision_count": 4,
       "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_005_climate.mp4",
+      "source_page_url": null,
+      "source_page_label": null,
+      "video_publication_status": "published",
       "script_type": "reference_script_proxy",
+      "script_source": "posthoc_transcript_from_public_video",
+      "source_review_label": "参考文稿代理",
+      "review_status": "confirmed",
+      "can_evaluate_original_intent": false
+    },
+    {
+      "case_id": "speech_auto_1fbefa7db3",
+      "title": "你的大脑被零食骗了多少次",
+      "speaker_id": "speaker_speech_auto_1fbefa7db3",
+      "topic": "你的大脑被零食骗了多少次",
+      "verdict_counts": {
+        "sufficiently_realized": 3,
+        "partially_realized": 1
+      },
+      "decision_count": 4,
+      "video_url": null,
+      "source_page_url": "https://yixi.tv/h5/speech/1419/",
+      "source_page_label": "打开一席原视频页 ↗",
+      "video_publication_status": "source_page",
+      "script_type": "reference_script_proxy",
+      "script_source": "provided_script_or_outline",
+      "source_review_label": "文稿已匹配",
+      "review_status": "provisional",
+      "can_evaluate_original_intent": false
+    },
+    {
+      "case_id": "speech_auto_594f9836f9",
+      "title": "生命，不是智能",
+      "speaker_id": "speaker_speech_auto_594f9836f9",
+      "topic": "生命，不是智能",
+      "verdict_counts": {
+        "sufficiently_realized": 3,
+        "partially_realized": 1
+      },
+      "decision_count": 4,
+      "video_url": null,
+      "source_page_url": "https://yixi.tv/h5/speech/1447/",
+      "source_page_label": "打开一席原视频页 ↗",
+      "video_publication_status": "source_page",
+      "script_type": "reference_script_proxy",
+      "script_source": "provided_script_or_outline",
+      "source_review_label": "文稿已匹配",
+      "review_status": "provisional",
+      "can_evaluate_original_intent": false
+    },
+    {
+      "case_id": "speech_auto_65540d2c8f",
+      "title": "万万没想到🤯的癌症研究",
+      "speaker_id": "speaker_speech_auto_65540d2c8f",
+      "topic": "万万没想到🤯的癌症研究",
+      "verdict_counts": {
+        "sufficiently_realized": 3,
+        "partially_realized": 1
+      },
+      "decision_count": 4,
+      "video_url": null,
+      "source_page_url": "https://yixi.tv/h5/speech/1333/",
+      "source_page_label": "打开一席原视频页 ↗",
+      "video_publication_status": "source_page",
+      "script_type": "reference_script_proxy",
+      "script_source": "provided_script_or_outline",
+      "source_review_label": "文稿已匹配",
+      "review_status": "provisional",
+      "can_evaluate_original_intent": false
+    },
+    {
+      "case_id": "speech_auto_7e27718c13",
+      "title": "另一条道路，很多人的路",
+      "speaker_id": "speaker_speech_auto_7e27718c13",
+      "topic": "另一条道路，很多人的路",
+      "verdict_counts": {
+        "sufficiently_realized": 3,
+        "partially_realized": 1
+      },
+      "decision_count": 4,
+      "video_url": null,
+      "source_page_url": "https://m.huxiu.com/article/4896342.html",
+      "source_page_label": "打开演讲来源页 ↗",
+      "video_publication_status": "source_page",
+      "script_type": "reference_script_proxy",
+      "script_source": "provided_script_or_outline",
+      "source_review_label": "文稿已匹配",
+      "review_status": "provisional",
+      "can_evaluate_original_intent": false
+    },
+    {
+      "case_id": "speech_auto_c2c143e546",
+      "title": "傅园慧",
+      "speaker_id": "speaker_speech_auto_c2c143e546",
+      "topic": "傅园慧",
+      "verdict_counts": {
+        "sufficiently_realized": 4
+      },
+      "decision_count": 4,
+      "video_url": null,
+      "source_page_url": "https://www.toutiao.com/article/7687871927624466963/",
+      "source_page_label": "打开演讲来源页 ↗",
+      "video_publication_status": "source_page",
+      "script_type": "transcript_proxy",
+      "script_source": "faster_whisper_transcription",
+      "source_review_label": "无讲稿 · 转写提取",
+      "review_status": "provisional",
       "can_evaluate_original_intent": false
     }
   ],
   "snapshot": true,
-  "video_publication_status": "published"
+  "video_publication_status": "mixed"
 }

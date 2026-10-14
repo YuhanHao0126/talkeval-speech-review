@@ -144,3 +144,5 @@
   .case-analysis-column .decision-list { padding-right: 1px; }
   .case-analysis-column .metrics { grid-template-columns: 1fr; }
 }
+.video-source-link { display: inline-flex; margin-top: 14px; padding: 9px 13px; border: 1px solid rgba(91,210,192,.38); border-radius: 9px; color: #9ce8dc; font-weight: 700; text-decoration: none; }
+.video-source-link:hover { border-color: #5bd2c0; background: rgba(91,210,192,.08); }

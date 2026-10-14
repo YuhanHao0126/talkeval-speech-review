@@ -257,7 +257,7 @@ function faceFeatureLabel(name) {
 function visualPermissionMessage(data) {
   const permission = data.metadata?.usage_permission;
   const hasPermissionEvidence = Boolean(data.metadata?.permission_verified || String(data.metadata?.permission_evidence || "").trim());
-  if (!data.video_url) return "没有可回放视频";
+  if (!data.video_url) return data.source_page_url ? "原视频在来源页观看；本页保留分析证据与时间线" : "没有可回放视频";
   if (!hasPermissionEvidence) return "素材许可待审核，机器视觉分析未运行";
   if (!data.visual_observations?.observations?.length) {
     if (!(["analysis", "training"].includes(permission))) return "素材许可待审核，机器视觉分析未运行";
@@ -553,7 +553,10 @@ function renderDetail(data) {
     `<span class="badge badge-neutral">${permissionLabel}</span>`,
     provisional ? `<span class="badge badge-neutral">${esc(sourceReviewDetail(metadata))}</span>` : "",
   ].join("");
-  const video = data.video_url ? `<video id="case-video" class="video-frame" controls preload="metadata" src="${esc(data.video_url)}"></video>` : `<div class="video-placeholder">未找到视频文件，仅显示分析证据</div>`;
+  const video = data.video_url
+    ? `<video id="case-video" class="video-frame" controls preload="metadata" src="${esc(data.video_url)}"></video>`
+    : `<div class="video-placeholder"><div><strong>案例分析已完整收录</strong><span>原视频在公开来源页播放；本页仍可查看语义判定、语音与视觉观察、证据时间线和复盘报告。</span>${data.source_page_url ? `<a class="video-source-link" href="${esc(data.source_page_url)}" target="_blank" rel="noopener noreferrer">${esc(data.source_page_label || "打开原视频来源页 ↗")}</a>` : ""}</div></div>`;
+  const videoInstruction = data.video_url ? "拖动播放，右侧重点同步定位" : "原片通过来源页打开；本页可按时间点复盘分析证据";
   const cards = decisions.map((decision, index) => {
     const beat = (data.intent_map?.beats || []).find((item) => item.beat_id === decision.beat_id) || {};
     const active = state.selectedBeat?.beat_id === decision.beat_id;
@@ -574,7 +577,7 @@ function renderDetail(data) {
   document.querySelector("#detail-column").innerHTML = `
     <section class="detail-header panel" id="detail-header"><div class="detail-title-row"><div><p class="eyebrow">SELECTED SPEECH</p><h2>${esc(title)}</h2><p class="detail-subtitle">${esc(subtitle)}</p></div>${detailSummary}</div><div class="detail-toolbar"><div class="detail-badges">${badges}</div><div class="detail-actions"><span id="annotation-status">已有人工标注 ${reviewed}/${decisions.length}</span><button class="outline-button" id="export-annotations" type="button">导出标注 .jsonl</button><a class="report-link" href="${esc(data.report_url || "#")}" target="_blank" rel="noreferrer">打开分析报告 ↗</a></div></div></section>
     <div class="case-review-grid">
-      <section class="case-video-column"><section class="video-panel panel"><div class="video-heading"><div><p class="eyebrow">REFERENCE VIDEO</p><h3>演讲视频</h3></div><p>拖动播放，右侧重点同步定位</p></div>${video}<div class="playback-progress"><div><span id="case-current-time">00:00</span><span id="case-duration">${time(data.expression_map?.duration)}</span></div><i><em id="case-progress-fill"></em></i></div></section>
+      <section class="case-video-column"><section class="video-panel panel"><div class="video-heading"><div><p class="eyebrow">REFERENCE VIDEO</p><h3>演讲视频</h3></div><p>${esc(videoInstruction)}</p></div>${video}<div class="playback-progress"><div><span id="case-current-time">00:00</span><span id="case-duration">${time(data.expression_map?.duration)}</span></div><i><em id="case-progress-fill"></em></i></div></section>
         <section class="signal-summary panel"><div class="signal-summary-heading"><p class="eyebrow">同步分析</p><strong>当前画面与表达信号</strong></div><div class="playback-signal-grid"><div><b>当前播放段语音</b><span id="case-voice-now">等待定位</span></div><div><b>表情可观察特征</b><span id="case-visual-face">等待定位</span></div><div><b>动作与手势</b><span id="case-visual-gesture">等待定位</span></div></div><div class="evidence-dimensions"><div><b>内容</b><span>重点进度、语义匹配、必要命题覆盖</span></div><div><b>语音</b><span>语速、停顿、响度与音高起伏</span></div><div class="${data.visual_observations?.observations?.length ? "" : "unavailable"}"><b>视觉模型</b><span>${esc(visualPermissionMessage(data))}</span></div></div><p>声音强调与语义覆盖分开呈现；表情和姿态只描述可见动作。最终表达是否有效仍需结合原视频和观点人工复核。</p></section>
         ${fullVideoOverview(data)}
       </section>

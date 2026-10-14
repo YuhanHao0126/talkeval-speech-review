@@ -22,6 +22,20 @@ VIDEO_ASSETS = {
     "speech_004_whales": "speech_004_whales.mp4",
     "speech_005_climate": "speech_005_climate.mp4",
 }
+SOURCE_PAGES = {
+    "speech_auto_1fbefa7db3": "https://yixi.tv/h5/speech/1419/",
+    "speech_auto_594f9836f9": "https://yixi.tv/h5/speech/1447/",
+    "speech_auto_65540d2c8f": "https://yixi.tv/h5/speech/1333/",
+    "speech_auto_7e27718c13": "https://m.huxiu.com/article/4896342.html",
+    "speech_auto_c2c143e546": "https://www.toutiao.com/article/7687871927624466963/",
+}
+SOURCE_PAGE_LABELS = {
+    "speech_auto_1fbefa7db3": "打开一席原视频页 ↗",
+    "speech_auto_594f9836f9": "打开一席原视频页 ↗",
+    "speech_auto_65540d2c8f": "打开一席原视频页 ↗",
+    "speech_auto_7e27718c13": "打开演讲来源页 ↗",
+    "speech_auto_c2c143e546": "打开演讲来源页 ↗",
+}
 
 ARTIFACTS = {
     "intent_map": "intent_map.json",
@@ -87,11 +101,6 @@ def main() -> None:
 
     for result_dir in sorted(path for path in OUTPUT_ROOT.iterdir() if path.is_dir()):
         case_id = result_dir.name
-        # Keep the public snapshot limited to cases whose video assets are
-        # already present in the public release. The local library can contain
-        # additional private source videos.
-        if case_id not in VIDEO_ASSETS:
-            continue
         metadata_path = INPUT_ROOT / case_id / "metadata.json"
         if not metadata_path.is_file():
             continue
@@ -111,21 +120,11 @@ def main() -> None:
                 artifact_path = result_dir / filename
                 if artifact_path.is_file():
                     detail[name] = read_json(artifact_path)
-        if (
-            metadata.get("usage_permission") in {"analysis", "training"}
-            and str(metadata.get("permission_evidence") or "").strip()
-        ):
-            for name, filename in {
-                "visual_observations": "visual_observations.json",
-                "slide_analysis": "slide_analysis.json",
-            }.items():
-                artifact_path = result_dir / filename
-                if artifact_path.is_file():
-                    detail[name] = read_json(artifact_path)
         intent = detail["intent_map"]
         alignment = detail["alignment"]
         video_asset = VIDEO_ASSETS.get(case_id)
         video_url = f"{VIDEO_RELEASE_URL}/{video_asset}" if video_asset else None
+        source_page_url = SOURCE_PAGES.get(case_id)
         script_source = metadata.get("script_source")
         review_label = (
             "文稿已匹配"
@@ -149,6 +148,11 @@ def main() -> None:
                 "verdict_counts": verdict_counts(alignment),
                 "decision_count": len(alignment.get("decisions", [])),
                 "video_url": video_url,
+                "source_page_url": source_page_url,
+                "source_page_label": SOURCE_PAGE_LABELS.get(case_id),
+                "video_publication_status": (
+                    "published" if video_url else "source_page" if source_page_url else "not_available"
+                ),
                 "script_type": metadata.get("script_type"),
                 "script_source": script_source,
                 "source_review_label": review_label,
@@ -163,7 +167,11 @@ def main() -> None:
                 "case_id": case_id,
                 "metadata": public_metadata(metadata),
                 "video_url": video_url,
-                "video_publication_status": "published" if video_url else "not_available",
+                "source_page_url": source_page_url,
+                "source_page_label": SOURCE_PAGE_LABELS.get(case_id),
+                "video_publication_status": (
+                    "published" if video_url else "source_page" if source_page_url else "not_available"
+                ),
                 "report_url": f"./reports/{case_id}.md",
             }
         )
@@ -175,7 +183,7 @@ def main() -> None:
         {
             "cases": cases,
             "snapshot": True,
-            "video_publication_status": "published",
+            "video_publication_status": "mixed",
         },
     )
     print(f"Exported {len(cases)} cases to {DIST_ROOT}")
