@@ -77,7 +77,7 @@
 
       <main class="workspace live-workspace" id="live-view" hidden>
               <section class="live-hero panel">
-                <div><p class="eyebrow">LIVE SPEECH COACH · FAST + SLOW</p><h1>讲到重点时，<em>现场看见表达是否跟上。</em></h1><p>左侧采集现场画面和语音；右侧跟踪观点、声音、表情动作与投影文字，并给出下一步提醒。所有采集与个人记录留在当前浏览器。</p></div>
+                <div><p class="eyebrow">LIVE SPEECH COACH · FAST + SLOW</p><h1>讲到重点时，<em>现场看见表达是否跟上。</em></h1><p>左侧采集现场画面和语音；右侧跟踪观点、声音、表情动作与投影文字，并给出下一步提醒。演讲结束后，录像和复盘会同步到公开云端。</p></div>
                 <div class="live-channel-key"><span><i class="fast-dot"></i>快通道 · 本场即时对照</span><span><i class="slow-dot"></i>慢通道 · 个人历史记忆</span></div>
               </section>
       
@@ -89,15 +89,15 @@
                   <label>转写语言<select id="coach-language"><option value="zh-CN">中文</option><option value="en-US">English</option></select></label>
                 </div>
                 <label class="outline-label">核心观点（每行一条，可修改）<textarea id="coach-outline" rows="4" placeholder="例如：\n人工智能会改变工作内容，但不必然消灭工作\n重要的是培养判断力和协作能力"></textarea></label>
-                <label class="privacy-consent"><input id="coach-consent" type="checkbox" /><span>我同意开启本次摄像头/麦克风。画面与手势在浏览器内分析、不上传或保存；会话文字和特征保存在本浏览器。浏览器自带语音识别可能联网处理音频。</span></label>
-                <div class="setup-foot"><span>演讲结束自动保存报告；此浏览器可查看历史复盘。记录不会跨设备同步。</span><span id="coach-model-status">视觉模型将在开始后按需加载</span></div>
+                <label class="privacy-consent"><input id="coach-consent" type="checkbox" /><span>我同意开启摄像头/麦克风，并在结束时上传、公开本次录像（含人脸和声音）、转写与分析报告，所有访客均可查看。录像会先在本机录制；浏览器语音识别可能联网处理音频。请勿录制未同意公开的他人或敏感内容。</span></label>
+                <div class="setup-foot"><span>录像和报告同步到公开云端后，所有设备的历史复盘都会显示；网络不可用时会提示本机保存状态。</span><span id="coach-model-status">视觉模型将在开始后按需加载</span></div>
               </section>
       
               <div class="coach-grid">
                 <section class="coach-left">
                   <section class="coach-camera panel">
                     <div class="coach-panel-head"><div><p class="eyebrow">STAGE VIEW</p><h2>现场画面</h2></div><div class="live-clock"><span class="live-led" id="coach-led"></span><span id="coach-status">准备就绪</span><strong id="coach-timer">00:00</strong></div></div>
-                    <div class="coach-video-wrap"><video id="coach-video" autoplay muted playsinline></video><canvas id="coach-overlay"></canvas><div id="coach-camera-placeholder" class="coach-video-placeholder"><b>开始后显示现场画面</b><small>请让脸部、肩膀和手部尽量留在画面内</small></div><div class="coach-camera-tag">摄像头画面仅在此浏览器中处理</div></div>
+                    <div class="coach-video-wrap"><video id="coach-video" autoplay muted playsinline></video><canvas id="coach-overlay"></canvas><div id="coach-camera-placeholder" class="coach-video-placeholder"><b>开始后显示现场画面</b><small>请让脸部、肩膀和手部尽量留在画面内</small></div><div class="coach-camera-tag">同意后录像会公开同步</div></div>
                     <div class="coach-controls"><button class="primary-button" id="coach-start" disabled>开始演讲</button><button class="stop-button" id="coach-stop" disabled>结束并保存复盘</button><button class="secondary-button" id="share-screen">共享 PPT 窗口</button><span id="coach-speech-support" class="support-note">勾选采集说明后可开始</span></div>
                     <div class="coach-signal-grid">
                       <div class="signal-card"><span>近 30 秒语速</span><strong id="coach-pace">—</strong><small>字/分钟</small></div>
@@ -114,7 +114,7 @@
                     <div id="screen-history" class="screen-history"></div>
                   </section>
       
-                  <section class="saved-sessions panel"><div class="coach-panel-head"><div><p class="eyebrow">LOCAL REVIEW</p><h2>历史演讲复盘</h2></div><span id="saved-session-count" class="mini-badge">0 场</span></div><div id="saved-session-list" class="saved-session-list"><p class="quiet-copy">完成一次演讲后，报告与时间线会保存在当前浏览器。</p></div></section>
+                  <section class="saved-sessions panel"><div class="coach-panel-head"><div><p class="eyebrow">PUBLIC REVIEW</p><h2>历史演讲复盘</h2></div><div class="saved-session-status"><span id="cloud-session-status" class="mini-badge">正在连接云端…</span><span id="saved-session-count" class="mini-badge">0 场</span></div></div><div id="saved-session-list" class="saved-session-list"><p class="quiet-copy">正在读取公开云端历史记录…</p></div></section>
                 </section>
       
                 <aside class="coach-right">

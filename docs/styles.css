@@ -212,6 +212,12 @@ h3 { font-size: 15px; line-height: 1.35; margin-bottom: 0; }
 .saved-session b { color: #264950; font-size: 10px; }
 .saved-session small { margin-top: 4px; color: #96a3a2; font-size: 8px; }
 .saved-session > span:last-child { flex: 0 0 auto; align-self: center; font-size: 9px; }
+.saved-session-status { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.recording-replay { margin-top: 14px; padding: 14px; border: 1px solid #e7eeeb; border-radius: 12px; background: #fff; }
+.recording-replay .coach-panel-head { margin-bottom: 10px; }
+.recording-replay .coach-panel-head h3 { margin: 2px 0 0; color: #294d50; font-size: 13px; }
+.recording-replay video { display: block; width: 100%; max-height: min(64vh, 680px); background: #101819; border-radius: 9px; object-fit: contain; }
+.recording-replay .quiet-copy { margin: 8px 0 0; font-size: 10px; }
 .quiet-copy { margin: 0; color: #9aa6a5; font-size: 10px; line-height: 1.6; }
 .urgent-cue { position: sticky; top: 99px; overflow: hidden; color: white; border-color: #153d4b; background: linear-gradient(140deg, #163c4a, #1c5960); }
 .urgent-cue::after { content: ""; width: 190px; height: 190px; position: absolute; right: -95px; top: -104px; border: 1px solid rgba(125,226,203,.19); border-radius: 50%; box-shadow: 0 0 0 20px rgba(125,226,203,.035), 0 0 0 42px rgba(125,226,203,.025); pointer-events: none; }

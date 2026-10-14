@@ -3,10 +3,15 @@
 
   const $ = (selector) => document.querySelector(selector);
   const STORAGE_KEY = "talkeval-live-sessions-v1";
+  const MEDIA_DB = "talkeval-live-recordings-v1";
+  const CLOUD_API = "https://talkeval-speech-review.expelliarmus-yh05.chatgpt.site";
   const MAX_SESSIONS = 30;
   const state = {
     cases: [], selectedCase: null, points: [], session: null, timer: null,
     cameraStream: null, screenStream: null, audioContext: null, analyser: null,
+    mediaRecorder: null, recordingChunks: [], recordingChunkCount: 0,
+    recordingLocalWrites: Promise.resolve(), recordingCloudWrites: Promise.resolve(),
+    recordingLocalError: "", recordingCloudError: "", remoteSessions: [], replayUrl: null,
     speech: null, speechOn: false, lastSpeechAt: 0, lastUtteranceAt: 0,
     audioSamples: [], voiceBaseline: [], currentVolume: null, currentPitch: null,
     faceTask: null, poseTask: null, visionLoading: false, visualRaf: null,
@@ -20,6 +25,163 @@
     try { const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); return Array.isArray(value) ? value : []; }
     catch { return []; }
   };
+  function allSavedSessions() {
+    const sessions = new Map();
+    [...readSessions(), ...state.remoteSessions].forEach((session) => sessions.set(session.id, { ...sessions.get(session.id), ...session }));
+    return [...sessions.values()];
+  }
+  function openMediaDb() {
+    return new Promise((resolve, reject) => {
+      if (!("indexedDB" in window)) { reject(new Error("此浏览器不支持本机录像存储")); return; }
+      const request = indexedDB.open(MEDIA_DB, 1);
+      request.onupgradeneeded = () => {
+        if (!request.result.objectStoreNames.contains("recordings")) request.result.createObjectStore("recordings");
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error || new Error("无法打开本机录像存储"));
+    });
+  }
+  async function storeRecordingChunk(id, index, blob) {
+    const db = await openMediaDb();
+    try {
+      await new Promise((resolve, reject) => {
+        const transaction = db.transaction("recordings", "readwrite");
+        transaction.objectStore("recordings").put(blob, `${id}:${String(index).padStart(8, "0")}`);
+        transaction.oncomplete = resolve;
+        transaction.onerror = () => reject(transaction.error || new Error("保存录像失败"));
+        transaction.onabort = () => reject(transaction.error || new Error("保存录像已中断"));
+      });
+    } finally { db.close(); }
+  }
+  async function loadRecordingParts(id, expectedChunks = 0) {
+    const db = await openMediaDb();
+    try {
+      const result = await new Promise((resolve, reject) => {
+        const store = db.transaction("recordings", "readonly").objectStore("recordings");
+        const prefix = `${id}:`;
+        const request = store.getAll(IDBKeyRange.bound(prefix, `${prefix}\uffff`));
+        request.onsuccess = () => resolve(request.result || []);
+        request.onerror = () => reject(request.error || new Error("读取录像失败"));
+      });
+      if (!result.length) {
+        const legacy = await new Promise((resolve, reject) => {
+          const request = db.transaction("recordings", "readonly").objectStore("recordings").get(id);
+          request.onsuccess = () => resolve(request.result || null);
+          request.onerror = () => reject(request.error || new Error("读取录像失败"));
+        });
+        return legacy ? [legacy] : [];
+      }
+      return result.slice(0, expectedChunks || result.length);
+    } finally { db.close(); }
+  }
+  async function loadRecording(id, expectedChunks = 0) {
+    const chunks = await loadRecordingParts(id, expectedChunks);
+    return chunks.length ? new Blob(chunks, { type: chunks.find((chunk) => chunk.type)?.type || "video/webm" }) : null;
+  }
+  async function deleteRecording(id) {
+    const db = await openMediaDb();
+    try {
+      await new Promise((resolve, reject) => {
+        const transaction = db.transaction("recordings", "readwrite");
+        const store = transaction.objectStore("recordings");
+        store.delete(id);
+        const request = store.openKeyCursor(IDBKeyRange.bound(`${id}:`, `${id}:\uffff`));
+        request.onsuccess = () => { if (request.result) { store.delete(request.result.primaryKey); request.result.continue(); } };
+        transaction.oncomplete = resolve;
+        transaction.onerror = () => reject(transaction.error || new Error("清理旧录像失败"));
+      });
+    } finally { db.close(); }
+  }
+  function startVideoRecording(stream, sessionId) {
+    if (!("MediaRecorder" in window)) throw new Error("此浏览器不支持现场录像");
+    const candidates = ["video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"];
+    const mimeType = candidates.find((type) => MediaRecorder.isTypeSupported(type));
+    const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+    state.recordingChunks = []; state.recordingChunkCount = 0;
+    state.recordingLocalWrites = Promise.resolve(); state.recordingCloudWrites = Promise.resolve();
+    state.recordingLocalError = ""; state.recordingCloudError = "";
+    recorder.addEventListener("dataavailable", (event) => {
+      if (!event.data?.size) return;
+      const index = state.recordingChunkCount++;
+      const chunk = event.data;
+      state.recordingLocalWrites = state.recordingLocalWrites.then(() => storeRecordingChunk(sessionId, index, chunk)).catch((error) => { state.recordingLocalError = error.message || "本机录像保存失败"; });
+      state.recordingCloudWrites = state.recordingCloudWrites.then(() => state.recordingCloudError ? null : uploadCloudChunk(sessionId, index, chunk)).catch((error) => { state.recordingCloudError = error.message || "云端录像上传失败"; });
+    });
+    recorder.start(5000);
+    state.mediaRecorder = recorder;
+    state.session.videoId = sessionId;
+    state.session.videoMimeType = recorder.mimeType || mimeType || "video/webm";
+  }
+  async function finishVideoRecording() {
+    const recorder = state.mediaRecorder;
+    if (!recorder) return null;
+    if (recorder.state !== "inactive") {
+      await new Promise((resolve) => {
+        recorder.addEventListener("stop", resolve, { once: true });
+        recorder.stop();
+      });
+    }
+    await Promise.all([state.recordingLocalWrites, state.recordingCloudWrites]);
+    state.mediaRecorder = null;
+    state.recordingChunks = [];
+    if (!state.recordingChunkCount) throw new Error("录像文件为空");
+    const localReady = !state.recordingLocalError;
+    const cloudReady = !state.recordingCloudError;
+    if (!localReady && !cloudReady) throw new Error(state.recordingLocalError || "录像无法保存");
+    return { chunks: state.recordingChunkCount, localReady, cloudReady };
+  }
+  async function cloudFetch(path, options = {}) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    try {
+      const response = await fetch(`${CLOUD_API}${path}`, { ...options, signal: controller.signal, mode: "cors", credentials: "omit" });
+      if (!response.ok) {
+        let message = `云端服务返回 ${response.status}`;
+        try { message = (await response.json()).error || message; } catch { /* Non-JSON error response. */ }
+        throw new Error(message);
+      }
+      return response;
+    } catch (error) {
+      if (error.name === "AbortError") throw new Error("连接云端超时");
+      throw error;
+    } finally { clearTimeout(timeout); }
+  }
+  async function uploadCloudChunk(sessionId, index, blob) {
+    const response = await cloudFetch(`/api/sessions/${encodeURIComponent(sessionId)}/chunks/${index}`, { method: "PUT", headers: { "Content-Type": blob.type || "video/webm" }, body: blob });
+    return response.json();
+  }
+  async function saveCloudSession(session) {
+    const publicRecord = { ...session, audio: [], videoChunks: session.videoChunks || 0 };
+    const response = await cloudFetch(`/api/sessions/${encodeURIComponent(session.id)}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(publicRecord) });
+    return response.json();
+  }
+  async function syncSavedSession(session) {
+    if (!session?.videoId) throw new Error("本条记录没有可上传的本机录像。");
+    const parts = await loadRecordingParts(session.videoId, session.videoChunks);
+    if (!parts.length) throw new Error("当前设备找不到本机录像。");
+    for (let index = 0; index < parts.length; index += 1) await uploadCloudChunk(session.id, index, parts[index]);
+    const updated = { ...session, videoChunks: parts.length, cloudVideoReady: true, cloudStored: true, cloudUploadError: "" };
+    const result = await saveCloudSession(updated);
+    updated.cloudVideoReady = Boolean(result.session?.cloudVideoReady);
+    if (!updated.cloudVideoReady) throw new Error("云端还没有收到全部录像分段。");
+    const local = [updated, ...readSessions().filter((item) => item.id !== updated.id)].slice(0, MAX_SESSIONS);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(local));
+    state.remoteSessions = [updated, ...state.remoteSessions.filter((item) => item.id !== updated.id)];
+    renderReplay(updated); renderSessions(); renderMemory();
+    return updated;
+  }
+  async function refreshCloudSessions() {
+    try {
+      const response = await cloudFetch("/api/sessions");
+      const result = await response.json();
+      state.remoteSessions = Array.isArray(result.sessions) ? result.sessions : [];
+      setText("#cloud-session-status", `公开云端 · ${state.remoteSessions.length} 场`);
+    } catch (error) {
+      setText("#cloud-session-status", "云端暂不可用");
+      console.warn("云端历史暂不可用：", error.message);
+    }
+    renderSessions(); renderMemory();
+  }
   const setText = (id, text) => { const node = $(id); if (node) node.textContent = text; };
 
   function switchView(which) {
@@ -186,14 +348,14 @@
     const slowHints = [];
     if (history.misses >= 2) slowHints.push(`历史练习中这个重点有 ${history.misses} 次未出现足够词汇线索，可提前安排一句明确总结`);
     if (history.observed > 0) slowHints.push(`历史有 ${history.observed} 次现场反应手动记录；讲完结论后可留出停顿观察听众`);
-    if (slowHints.length) setText("#coach-cue-copy", `${slowHints.join("；")}。当前提示基于本地历史记录与词汇匹配，不代表因果或语义判定。`);
+    if (slowHints.length) setText("#coach-cue-copy", `${slowHints.join("；")}。当前提示基于公开历史记录与词汇匹配，不代表因果或语义判定。`);
   }
 
   function getSpeakerId() { return $("#coach-speaker").value.trim().toLowerCase().replace(/\s+/g, "-") || "anonymous"; }
   function pointKey(point) { return normalize(point.text).slice(0, 90); }
   function historyForPoint(point) {
     const key = pointKey(point); const id = getSpeakerId();
-    const matches = readSessions().filter((session) => session.speakerId === id).flatMap((session) => (session.points || []).filter((item) => pointKey(item) === key));
+    const matches = allSavedSessions().filter((session) => session.speakerId === id).flatMap((session) => (session.points || []).filter((item) => pointKey(item) === key));
     const misses = matches.filter((item) => item.score < 0.15).length;
     const applause = matches.flatMap((item) => item.applause || []);
     return { count: matches.length, misses, observed: applause.filter((x) => x.source === "observed").length, demo: applause.filter((x) => x.source === "demo").length };
@@ -201,7 +363,7 @@
 
   function renderMemory() {
     const id = getSpeakerId();
-    const sessions = readSessions().filter((session) => session.speakerId === id);
+    const sessions = allSavedSessions().filter((session) => session.speakerId === id);
     setText("#coach-memory-count", `${sessions.length} 次历史练习`);
     if (!sessions.length) {
       $("#coach-memory").innerHTML = `<p>尚无此记忆 ID 的历史记录。结束本场后将保存观点线索、声音趋势和人工标记的反应。</p>`;
@@ -526,7 +688,8 @@
     state.audioSamples = []; state.voiceBaseline = []; state.visualSummary = []; state.previousWrists = null;
     state.lastUtteranceAt = 0; state.currentVolume = null; state.currentPitch = null;
     const topic = $("#coach-topic").value.trim() || "未命名演讲";
-    state.session = { id: `live-${Date.now()}`, topic, caseId: state.selectedCase, speakerId: getSpeakerId(), startedAt: Date.now(), endedAt: null, segments: [], timeline: [], slides: [], points: [], metrics: {}, report: "" };
+    const sessionId = `live-${Date.now()}`;
+    state.session = { id: sessionId, topic, caseId: state.selectedCase, speakerId: getSpeakerId(), startedAt: Date.now(), endedAt: null, segments: [], timeline: [], slides: [], points: [], metrics: {}, report: "" };
     $("#coach-report").hidden = true;
     $("#screen-history").innerHTML = "";
     $("#screen-video").srcObject = null;
@@ -534,6 +697,7 @@
     try {
       state.cameraStream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 960 }, height: { ideal: 540 } }, audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: false } });
       $("#coach-video").srcObject = state.cameraStream;
+      startVideoRecording(state.cameraStream, sessionId);
       $("#coach-camera-placeholder").hidden = true;
       startAudioAnalysis(state.cameraStream);
       setText("#coach-status", "演讲进行中"); $("#coach-led").classList.add("active");
@@ -542,6 +706,8 @@
       state.timer = setInterval(() => { setText("#coach-timer", stamp(elapsed())); updateMetrics(); }, 500);
       renderPoints(); renderMemory();
     } catch (error) {
+      state.cameraStream?.getTracks().forEach((track) => track.stop()); state.cameraStream = null;
+      $("#coach-video").srcObject = null;
       state.session = null; setText("#coach-status", `无法开始：${error.message}`);
       $("#coach-start").disabled = false;
     }
@@ -579,41 +745,68 @@
       "",
       `建议：${missing ? `下次把未发现足够线索的第 ${scores.findIndex((point) => point.score < .15) + 1} 个观点改写成一句易复述的结论，并在演讲提纲中安排明确强调。` : "主要观点均出现较多词汇线索；可以复听关键观点段，确认意思、例子与总结一致。"}${slides.length ? " PPT 节奏与观点对应仍需结合录像逐段确认。" : " 若要检查 PPT 配合，可在演讲期间共享幻灯片窗口。"}`,
       "",
-      "数据范围：视频画面和视觉关键点未上传；语音识别由浏览器提供，可能使用其在线服务。当前站点把文字、数值特征和复盘保存在本浏览器的 localStorage，不会跨设备同步。",
+      "数据范围：本次已授权公开上传录像（含人脸和声音）、转写内容及分析报告；所有访客均可查看。当前云端同步状态会显示在复盘列表中。浏览器语音识别可能使用在线服务。",
     ];
     return { text: lines.join("\n"), scores, pace, pitchRange, volumeRange, observed, demo };
   }
 
   async function stopSession() {
     if (!state.session) return;
-    setText("#coach-status", "正在整理本场复盘…"); state.speechOn = false;
+    setText("#coach-status", "正在保存录像和复盘…"); state.speechOn = false;
     try { state.speech?.stop(); } catch { /* Already stopped. */ }
     state.speech = null;
     if (state.timer) clearInterval(state.timer); state.timer = null;
     if (state.visualRaf) cancelAnimationFrame(state.visualRaf); state.visualRaf = null;
     stopScreen();
+    let videoSaved = false;
+    let videoError = "";
+    let recordingResult = null;
+    try { recordingResult = await finishVideoRecording(); videoSaved = recordingResult.localReady; if (!videoSaved) videoError = state.recordingLocalError; }
+    catch (error) { videoError = error.message || "录像保存失败"; state.session.videoId = null; }
     state.cameraStream?.getTracks().forEach((track) => track.stop()); state.cameraStream = null;
     $("#coach-video").srcObject = null; $("#coach-camera-placeholder").hidden = false;
     if (state.audioContext) { await state.audioContext.close().catch(() => {}); state.audioContext = null; }
     state.session.endedAt = Date.now(); state.session.points = state.points.map((point) => ({ id: point.id, text: point.text, score: scorePoint(point, transcriptText()), evidence: point.evidence, applause: point.applause }));
     state.session.audio = state.audioSamples; state.session.visual = state.visualSummary;
+    state.session.videoSaved = videoSaved;
+    state.session.videoChunks = recordingResult?.chunks || 0;
+    state.session.cloudVideoReady = Boolean(recordingResult?.cloudReady);
+    if (state.recordingCloudError) state.session.cloudUploadError = state.recordingCloudError;
     const summary = makeReport(state.session); state.session.report = summary.text;
     const saved = { ...state.session, metrics: { pace: summary.pace, pitchRange: summary.pitchRange, volumeRange: summary.volumeRange } };
-    const sessions = [saved, ...readSessions()].slice(0, MAX_SESSIONS);
+    const allSessions = [saved, ...readSessions()];
+    const sessions = allSessions.slice(0, MAX_SESSIONS);
+    allSessions.slice(MAX_SESSIONS).forEach((item) => { if (item.videoId) deleteRecording(item.videoId).catch(() => {}); });
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions)); }
     catch (error) {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions.slice(0, 5).map((item) => ({ ...item, audio: [], visual: (item.visual || []).slice(-80), timeline: (item.timeline || []).slice(-250) })))); }
       catch { setText("#coach-status", `报告生成成功，但浏览器存储空间不足：${error.message}`); }
     }
+    let cloudSaved = false;
+    try {
+      await saveCloudSession(saved);
+      cloudSaved = true;
+      saved.cloudStored = true;
+      saved.cloudUploadError = "";
+      state.remoteSessions = [saved, ...state.remoteSessions.filter((item) => item.id !== saved.id)].slice(0, 100);
+      const refreshed = [saved, ...readSessions().filter((item) => item.id !== saved.id)].slice(0, MAX_SESSIONS);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(refreshed));
+    } catch (error) {
+      saved.cloudStored = false;
+      saved.cloudUploadError = state.recordingCloudError || error.message || "云端同步失败";
+      const refreshed = readSessions().map((item) => item.id === saved.id ? saved : item);
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(refreshed)); } catch { /* Keep the in-memory report visible. */ }
+    }
     state.session = null; state.audioSamples = []; state.voiceBaseline = []; state.visualSummary = []; state.previousWrists = null;
     state.points = state.points.map((point, index) => ({ ...point, index }));
-    setText("#coach-status", "已结束并保存"); $("#coach-led").classList.remove("active");
+    setText("#coach-status", cloudSaved ? (saved.cloudVideoReady ? "已保存并公开同步" : "报告已公开；录像待上传") : (videoSaved ? "录像已保存在本设备" : `复盘已保存；录像未保存：${videoError}`)); $("#coach-led").classList.remove("active");
     $("#coach-start").disabled = !$("#coach-consent").checked; $("#coach-stop").disabled = true;
     $("#coach-report").hidden = false; $("#coach-report-text").value = summary.text;
     renderReplay(saved); renderSessions(); renderMemory();
     setText("#coach-cue-title", "本场复盘已保存");
-    setText("#coach-cue-copy", "报告和时间线已保存在当前浏览器。点击下面的历史记录可再次复盘。");
+    setText("#coach-cue-copy", cloudSaved ? (saved.cloudVideoReady ? "本场录像、报告和分析时间线已上传到公开云端，其他电脑也会看到这条记录。" : `报告已上传到公开云端；录像上传未完成${saved.cloudUploadError ? `：${saved.cloudUploadError}` : ""}。`) : `本场记录暂存在本设备，未能同步到公开云端${saved.cloudUploadError ? `：${saved.cloudUploadError}` : ""}。请稍后重试或下载录像。`);
     $("#coach-report").scrollIntoView({ behavior: "smooth", block: "start" });
+    refreshCloudSessions();
   }
 
   function renderReplay(session) {
@@ -621,13 +814,34 @@
     const timeline = session.timeline || [];
     const content = points.map((point, index) => `<article class="replay-point"><b>${index + 1}. ${esc(point.text)}</b><span>${point.score >= .34 ? "候选覆盖" : point.score >= .15 ? "部分线索" : "需复核"} · ${Math.round(point.score * 100)}%</span><p>${(point.evidence || []).slice(-3).map((entry) => `${stamp(entry.at)}「${esc(entry.text)}」`).join("；") || "无转写证据"}</p></article>`).join("");
     const events = timeline.slice(-60).map((item) => `<div class="replay-event"><time>${stamp(item.at)}</time><span>${item.type === "speech" ? `语音：${esc(item.text)}` : item.type === "slide" ? `PPT OCR：${esc(item.text || "无文字")}` : item.type === "reaction" ? `${item.source === "demo" ? "模拟" : "现场观察"}反应：${esc(item.pointText || "观点")}` : `视觉：${esc(item.visual?.face || "")}；${esc(item.visual?.gesture || "")}`}</span></div>`).join("");
-    $("#coach-replay-detail").innerHTML = `<div class="replay-grid"><div><h3>观点证据</h3>${content || "无观点"}</div><div><h3>时间线</h3><div class="replay-events">${events || "无事件"}</div></div></div>`;
+    $("#coach-replay-detail").innerHTML = `<section class="recording-replay"><div class="coach-panel-head"><div><p class="eyebrow">SESSION VIDEO</p><h3>演讲录像</h3></div><div class="report-actions"><button id="coach-sync-session" class="secondary-button" ${session.videoId && !session.cloudVideoReady ? "" : "hidden"}>重试公开同步</button><button id="coach-download-video" class="secondary-button">下载录像</button></div></div><video id="coach-replay-video" controls playsinline preload="metadata" hidden></video><p id="coach-replay-video-note" class="quiet-copy" hidden></p></section><div class="replay-grid"><div><h3>观点证据</h3>${content || "无观点"}</div><div><h3>时间线</h3><div class="replay-events">${events || "无事件"}</div></div></div>`;
+    const video = $("#coach-replay-video");
+    const note = $("#coach-replay-video-note");
+    const downloadButton = $("#coach-download-video");
+    if (state.replayUrl) URL.revokeObjectURL(state.replayUrl);
+    state.replayUrl = null; video.removeAttribute("src"); video.load();
+    video.hidden = !session.videoId; note.hidden = !session.videoId;
+    downloadButton.disabled = !session.videoId;
+    if (!session.videoId) { note.textContent = "此历史记录没有录像。"; return; }
+    if (session.cloudVideoReady) {
+      video.hidden = false; note.hidden = false;
+      video.src = `${CLOUD_API}/api/sessions/${encodeURIComponent(session.id)}/video`;
+      note.textContent = "录像已存入公开云端，其他设备可直接播放。";
+      return;
+    }
+    note.textContent = "正在读取本机录像…";
+    loadRecording(session.videoId, session.videoChunks).then((blob) => {
+      if (!blob) { note.textContent = "此设备上找不到录像文件；录像不会随文字报告自动同步。"; return; }
+      state.replayUrl = URL.createObjectURL(blob); video.src = state.replayUrl;
+      note.textContent = `录像已保存在本机浏览器 · ${Math.round(blob.size / 1024 / 1024)} MB${session.cloudUploadError ? ` · 云端同步失败：${session.cloudUploadError}` : ""}`;
+    }).catch((error) => { note.textContent = `读取录像失败：${error.message}`; });
   }
   function renderSessions() {
-    const sessions = readSessions(); setText("#saved-session-count", `${sessions.length} 场`);
+    const sessions = allSavedSessions().sort((a, b) => (b.startedAt || 0) - (a.startedAt || 0)).slice(0, 100);
+    setText("#saved-session-count", `${sessions.length} 场`);
     const host = $("#saved-session-list");
-    if (!sessions.length) { host.innerHTML = `<p class="quiet-copy">完成一次演讲后，报告与时间线会保存在当前浏览器。</p>`; return; }
-    host.innerHTML = sessions.map((session) => `<button class="saved-session" type="button" data-session="${esc(session.id)}"><span><b>${esc(session.topic)}</b><small>${new Date(session.startedAt).toLocaleString("zh-CN")} · ${esc(session.speakerId)}</small></span><span>查看复盘 ↗</span></button>`).join("");
+    if (!sessions.length) { host.innerHTML = `<p class="quiet-copy">连接公开云端后，这里会显示所有设备保存的演讲复盘。</p>`; return; }
+    host.innerHTML = sessions.map((session) => `<button class="saved-session" type="button" data-session="${esc(session.id)}"><span><b>${esc(session.topic)}</b><small>${new Date(session.startedAt).toLocaleString("zh-CN")} · ${esc(session.speakerId)}${session.cloudVideoReady ? " · 公开录像" : session.videoId ? " · 本机录像" : ""}${session.cloudStored === false ? " · 仅本机" : ""}</small></span><span>查看复盘 ↗</span></button>`).join("");
     host.querySelectorAll("[data-session]").forEach((button) => button.addEventListener("click", () => {
       const session = sessions.find((item) => item.id === button.dataset.session); if (!session) return;
       $("#coach-report").hidden = false; $("#coach-report-text").value = session.report || "此旧记录没有报告正文。"; renderReplay(session);
@@ -640,9 +854,22 @@
     const link = document.createElement("a"); link.href = url; link.download = filename; link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
+  async function downloadSessionVideo(session) {
+    if (!session?.videoId) return;
+    const blob = session.cloudVideoReady
+      ? await (await cloudFetch(`/api/sessions/${encodeURIComponent(session.id)}/video`)).blob()
+      : await loadRecording(session.videoId, session.videoChunks);
+    if (!blob) { setText("#coach-replay-video-note", "此设备上找不到录像文件。"); return; }
+    const extension = blob.type.includes("mp4") ? "mp4" : "webm";
+    const safeTopic = String(session.topic || "speech").replace(/[\\/:*?"<>|\s]+/g, "-").slice(0, 48);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a"); link.href = url; link.download = `talkeval-${safeTopic}.${extension}`; link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
   function currentReportSession() {
     const report = $("#coach-report-text").value;
-    return readSessions().find((item) => item.report === report) || readSessions()[0];
+    const sessions = allSavedSessions();
+    return sessions.find((item) => item.report === report) || sessions[0];
   }
 
   $("#review-tab").addEventListener("click", () => switchView("review"));
@@ -661,12 +888,23 @@
   $("#coach-manual-text").addEventListener("keydown", (event) => { if (event.key === "Enter") $("#coach-add-text").click(); });
   $("#coach-copy-report").addEventListener("click", () => navigator.clipboard?.writeText($("#coach-report-text").value).then(() => setText("#coach-cue-copy", "报告已复制。")).catch(() => {}));
   $("#coach-download-report").addEventListener("click", () => download("talkeval-live-report.txt", $("#coach-report-text").value, "text/plain;charset=utf-8"));
+  $("#coach-replay-detail").addEventListener("click", (event) => {
+    if (event.target.closest("#coach-download-video")) downloadSessionVideo(currentReportSession()).catch((error) => setText("#coach-replay-video-note", `下载失败：${error.message}`));
+    if (event.target.closest("#coach-sync-session")) {
+      const button = event.target.closest("#coach-sync-session");
+      const session = currentReportSession();
+      button.disabled = true; button.textContent = "正在上传…";
+      syncSavedSession(session).then(() => setText("#coach-cue-copy", "录像和报告已同步到公开云端，其他设备现在可以查看。"))
+        .catch((error) => { button.disabled = false; button.textContent = "重试公开同步"; setText("#coach-replay-video-note", `同步失败：${error.message}`); });
+    }
+  });
   $("#coach-download-json").addEventListener("click", () => {
     const session = currentReportSession();
     if (session) download("talkeval-live-session.json", JSON.stringify(session, null, 2), "application/json;charset=utf-8");
   });
 
   loadCases().then(renderSessions);
+  refreshCloudSessions();
   updateStartAvailability();
   renderMemory();
 })();
