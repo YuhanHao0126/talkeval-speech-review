@@ -188,10 +188,35 @@
       const result = await response.json();
       state.remoteSessions = Array.isArray(result.sessions) ? result.sessions : [];
       setText("#cloud-session-status", `公开云端 · ${state.remoteSessions.length} 场`);
+      migrateLocalSessions();
     } catch (error) {
       setText("#cloud-session-status", "云端暂不可用");
       console.warn("云端历史暂不可用：", error.message);
     }
+    renderSessions(); renderMemory();
+  }
+  async function migrateLocalSessions() {
+    const known = new Set(state.remoteSessions.map((session) => session.id));
+    for (const local of readSessions()) {
+      if (!local.id || known.has(local.id)) continue;
+      try {
+        if (local.videoId && local.videoSaved && local.videoChunks > 0) {
+          await syncSavedSession(local);
+        } else {
+          const reportOnly = { ...local, audio: [], videoId: null, videoChunks: 0, videoSaved: false, cloudVideoReady: false };
+          const result = await saveCloudSession(reportOnly);
+          const stored = result.session || reportOnly;
+          state.remoteSessions = [stored, ...state.remoteSessions].slice(0, 100);
+          const updated = { ...local, cloudStored: true, cloudVideoReady: false, cloudUploadError: "" };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify([updated, ...readSessions().filter((item) => item.id !== updated.id)].slice(0, MAX_SESSIONS)));
+        }
+        known.add(local.id);
+      } catch (error) {
+        console.warn("本机历史同步暂未完成：", error.message);
+        break;
+      }
+    }
+    setText("#cloud-session-status", `公开云端 · ${state.remoteSessions.length} 场`);
     renderSessions(); renderMemory();
   }
   const setText = (id, text) => { const node = $(id); if (node) node.textContent = text; };
