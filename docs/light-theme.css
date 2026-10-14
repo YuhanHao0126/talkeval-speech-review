@@ -368,3 +368,154 @@ body.public-site { color: var(--ink); background: var(--canvas); font-family: In
 @media (prefers-reduced-motion: reduce) {
   .public-site *, .public-site *::before, .public-site *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Live coach hierarchy: one primary cue, clear evidence groups, readable type. */
+#live-view { gap: 22px; }
+#live-view .panel { border-radius: 18px; box-shadow: 0 8px 25px rgba(28,54,46,.045); }
+#live-view .live-hero {
+  position: relative; gap: 28px; padding: 28px 32px 27px 36px; overflow: hidden;
+  border: 1px solid #dfece5; background: linear-gradient(110deg,#fff 0%,#fff 69%,#f0f8f3 100%);
+}
+#live-view .live-hero::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 5px; background: linear-gradient(#39a985,#91c5a4); }
+#live-view .live-hero > div:first-child { position: relative; z-index: 1; max-width: 800px; }
+#live-view .live-hero .eyebrow { margin-bottom: 9px; color: #57836f; font-size: 11px; }
+#live-view .live-hero h1 { margin: 0 0 11px; color: #1c302b; font-size: clamp(30px,3.2vw,42px); line-height: 1.18; letter-spacing: -.04em; }
+#live-view .live-hero h1 em { color: #16775f; font-style: normal; }
+#live-view .live-hero p:last-child { max-width: 740px; color: #586d63; font-size: 14px; line-height: 1.75; }
+#live-view .live-channel-key { gap: 12px; min-width: 210px; padding: 14px 16px; color: #50675b; border: 1px solid #e3ede6; border-radius: 14px; background: rgba(255,255,255,.8); font-size: 12px; }
+#live-view .live-channel-key span { gap: 10px; }
+
+/* Configuration is visually a setup step rather than another analysis card. */
+#live-view .coach-setup {
+  padding: 21px 24px 19px; border-color: #dfe6ef;
+  background: linear-gradient(130deg,#f8faff,#f5f8fc);
+  box-shadow: 0 5px 18px rgba(43,67,104,.035);
+}
+#live-view .coach-setup::before { content: "开始前设置"; display: block; margin: 0 0 15px; color: #485e70; font-size: 15px; font-weight: 800; letter-spacing: .01em; }
+#live-view .setup-fields { gap: 14px; }
+#live-view .coach-setup label, #live-view .audience-panel label { gap: 8px; color: #4f625a; font-size: 12px; }
+#live-view .coach-setup input, #live-view .coach-setup select, #live-view .audience-panel select, #live-view .manual-entry input { min-height: 44px; padding-inline: 12px; font-size: 14px; }
+#live-view .coach-setup textarea { min-height: 94px; padding: 11px 13px; font-size: 14px; line-height: 1.65; }
+#live-view .outline-label { margin-top: 15px; }
+#live-view .privacy-consent { margin-top: 14px; font-size: 12px; line-height: 1.65; }
+#live-view .privacy-consent input { width: 17px; height: 17px; flex: 0 0 auto; }
+#live-view .setup-foot { margin-top: 12px; color: #687b70; font-size: 11px; line-height: 1.55; }
+
+/* Evidence workspace: keep the stage large, and group the live guidance clearly. */
+#live-view .coach-grid { grid-template-columns: minmax(0,1.32fr) minmax(360px,.82fr); gap: 22px; }
+#live-view .coach-left, #live-view .coach-right { gap: 17px; }
+#live-view .coach-camera, #live-view .screen-panel, #live-view .saved-sessions,
+#live-view .urgent-cue, #live-view .coach-beats, #live-view .visual-panel,
+#live-view .memory-panel, #live-view .audience-panel, #live-view .coach-report { padding: 22px; }
+#live-view .coach-camera { border-color: #dbe7e1; background: #fff; }
+#live-view .coach-panel-head h2 { color: #213831; font-size: 18px; line-height: 1.35; }
+#live-view .coach-panel-head .eyebrow, #live-view .eyebrow { font-size: 10px; letter-spacing: .13em; }
+#live-view .live-clock { gap: 9px; color: #60726a; font-size: 12px; }
+#live-view .live-clock strong { min-width: 62px; font-size: 16px; }
+#live-view .coach-video-wrap { min-height: 300px; margin-top: 16px; border-radius: 14px; box-shadow: 0 10px 28px rgba(19,41,34,.15); }
+#live-view .coach-video-placeholder b { font-size: 16px; }
+#live-view .coach-video-placeholder small { font-size: 12px; }
+#live-view .coach-camera-tag { padding: 7px 10px; font-size: 11px; }
+#live-view .primary-button, #live-view .stop-button, #live-view .secondary-button { min-height: 42px; padding-inline: 15px; font-size: 12px; }
+#live-view .coach-controls { gap: 10px; margin-top: 15px; }
+#live-view .support-note { font-size: 11px; }
+#live-view .coach-signal-grid { gap: 10px; margin-top: 15px; }
+#live-view .signal-card { padding: 13px; border-color: #e5ece8; border-radius: 12px; background: #f7faf8; }
+#live-view .signal-card span, #live-view .signal-card small { color: #65776f; font-size: 11px; line-height: 1.45; }
+#live-view .signal-card strong { margin: 8px 0 4px; color: #205744; font-size: 22px; }
+#live-view .coach-transcript { margin-top: 15px; padding: 15px; border-color: #e0e9e4; border-radius: 13px; background: #f5f9f6; }
+#live-view .coach-transcript .coach-panel-head strong { color: #38584a; font-size: 13px; }
+#live-view .coach-transcript p { max-height: 125px; color: #344d42; font-size: 14px; line-height: 1.7; }
+#live-view .manual-entry { gap: 9px; }
+#live-view .manual-entry button { padding-inline: 12px; font-size: 11px; }
+
+#live-view .screen-panel { border-color: #d9e6ef; background: #f7fbfe; }
+#live-view .screen-panel .coach-panel-head h2 { color: #294b61; }
+#live-view .screen-copy b { color: #315c72; font-size: 13px; }
+#live-view .screen-copy p { color: #4f6877; font-size: 12px; line-height: 1.65; }
+#live-view .screen-copy small { color: #738895; font-size: 11px; line-height: 1.55; }
+#live-view .screen-history-item { padding: 9px 11px; color: #526976; font-size: 11px; }
+#live-view .screen-history-item b { color: #2d6e82; }
+#live-view .saved-sessions { border-color: #e8e6d9; background: #fffdf8; }
+#live-view .saved-sessions .coach-panel-head h2 { color: #514a32; }
+#live-view .saved-session-list { gap: 8px; margin-top: 13px; }
+#live-view .saved-session { padding: 12px 13px; border-color: #eeeadd; border-radius: 11px; }
+#live-view .saved-session b { color: #3f4c40; font-size: 12px; }
+#live-view .saved-session small { color: #777b6e; font-size: 10px; }
+#live-view .saved-session > span:last-child { font-size: 11px; }
+
+/* The one high priority surface: dark, large, and distinct from supporting evidence. */
+#live-view .urgent-cue {
+  position: sticky; top: 94px; padding: 24px 25px 22px; color: #f7fffb;
+  border: 1px solid #0f5047; border-left: 5px solid #e8ad50; border-radius: 19px;
+  background: radial-gradient(circle at 100% 0%,rgba(106,203,166,.2),transparent 37%),linear-gradient(138deg,#164c46,#17685b);
+  box-shadow: 0 15px 34px rgba(17,82,68,.18);
+}
+#live-view .urgent-cue::after { border-color: rgba(220,255,232,.2); box-shadow: 0 0 0 20px rgba(220,255,232,.05),0 0 0 42px rgba(220,255,232,.035); }
+#live-view .assistant-label { position: relative; z-index: 1; color: #b9e8d3; font-size: 12px; letter-spacing: .035em; }
+#live-view .fast-pulse { background: #ffd06f; box-shadow: 0 0 0 5px rgba(255,208,111,.17); }
+#live-view .urgent-cue h2 { margin: 17px 0 9px; font-size: clamp(24px,2.2vw,30px); line-height: 1.25; }
+#live-view .urgent-cue p { min-height: 48px; color: #e0f2e9; font-size: 15px; line-height: 1.7; }
+#live-view .cue-progress-line { margin: 20px 0 9px; color: #c1e0d4; font-size: 12px; }
+#live-view .progress-track { height: 7px; background: rgba(255,255,255,.18); }
+#live-view .progress-track i { background: linear-gradient(90deg,#f2c46b,#9be3b4); }
+
+#live-view .coach-beats { border-color: #d7e9df; background: linear-gradient(145deg,#f4faf6,#fbfdfb); }
+#live-view .coach-beats .coach-panel-head h2 { color: #214f3e; }
+#live-view .coach-beat-list { gap: 10px; margin-top: 14px; }
+#live-view .coach-beat { padding: 14px; border-color: #e1eae4; border-radius: 12px; background: rgba(255,255,255,.9); }
+#live-view .coach-beat.covered { border-color: #aed8bd; background: #edf8f0; }
+#live-view .coach-beat.partial { border-color: #ead5a8; background: #fff7e7; }
+#live-view .beat-number { color: #698175; font-size: 11px; }
+#live-view .beat-status { color: #63766c; font-size: 11px; }
+#live-view .coach-beat > strong { color: #304a3d; font-size: 14px; line-height: 1.6; }
+#live-view .coach-beat > p { color: #64766c; font-size: 12px; line-height: 1.6; }
+#live-view .reaction-note { color: #526eb0; font-size: 11px; }
+#live-view .beat-actions button { padding: 7px 9px; color: #486c5c; font-size: 11px; }
+
+#live-view .visual-panel { border-color: #dce4f0; background: #f5f8fd; }
+#live-view .visual-panel .coach-panel-head h2 { color: #354d70; }
+#live-view .visual-now { margin: 13px 0 11px; color: #455b77; font-size: 13px; line-height: 1.75; }
+#live-view .visual-panel .evidence-note { padding: 11px 12px; color: #526787; background: #eaf0fa; font-size: 12px; line-height: 1.65; }
+#live-view .memory-panel { border-color: #e5ddf1; background: #faf8fe; }
+#live-view .memory-panel .coach-panel-head h2 { color: #51446d; }
+#live-view .memory-content { margin-top: 12px; color: #5c536e; font-size: 13px; line-height: 1.75; }
+#live-view .memory-content .memory-alert { padding: 10px 12px; font-size: 13px; }
+#live-view .memory-foot { margin-top: 13px; padding-top: 11px; color: #756c86; border-color: #e8e1f0; font-size: 11px; }
+#live-view .slow-icon { width: 30px; height: 30px; display: grid; place-items: center; color: #67538e; border-radius: 10px; background: #eee8f8; font-size: 16px; }
+#live-view .audience-panel { border-color: #eee2c9; background: #fffaf1; }
+#live-view .audience-panel .coach-panel-head h2 { color: #67522d; }
+#live-view .audience-panel > p { margin-top: 10px; color: #766647; font-size: 12px; line-height: 1.65; }
+#live-view .audience-panel select { border-color: #eadfca; }
+#live-view .mini-badge { min-height: 27px; padding: 4px 10px; color: #486457; background: #e9f2eb; font-size: 11px; }
+#live-view .quiet-copy { color: #6e7d74; font-size: 12px; line-height: 1.65; }
+#live-view .coach-report { border-color: #b9d7c5; background: linear-gradient(145deg,#f5fbf6,#fff); box-shadow: 0 12px 30px rgba(41,100,67,.08); }
+#live-view .coach-report .coach-panel-head h2 { font-size: 21px; }
+#live-view .report-actions { gap: 8px; }
+#live-view .report-actions .secondary-button { min-height: 38px; padding-inline: 12px; font-size: 11px; }
+#live-view #coach-report-text { min-height: 280px; padding: 17px; color: #334b3e; background: #fff; font: 14px/1.8 ui-sans-serif,system-ui,sans-serif; }
+
+@media (max-width: 1080px) {
+  #live-view .coach-grid { grid-template-columns: minmax(0,1.1fr) minmax(320px,.9fr); gap: 17px; }
+  #live-view .urgent-cue { position: static; }
+}
+@media (max-width: 760px) {
+  #live-view { gap: 15px; }
+  #live-view .live-hero { padding: 22px 20px 21px 24px; }
+  #live-view .live-hero h1 { font-size: clamp(28px,7vw,36px); }
+  #live-view .live-hero p:last-child { font-size: 13px; }
+  #live-view .live-channel-key { display: grid; grid-template-columns: 1fr; min-width: 0; margin-top: 16px; padding: 12px 13px; font-size: 12px; }
+  #live-view .coach-setup { padding: 18px; }
+  #live-view .coach-grid { grid-template-columns: 1fr; }
+  #live-view .coach-right { grid-row: 1; }
+  #live-view .coach-left { grid-row: 2; }
+  #live-view .coach-camera, #live-view .screen-panel, #live-view .saved-sessions,
+  #live-view .urgent-cue, #live-view .coach-beats, #live-view .visual-panel,
+  #live-view .memory-panel, #live-view .audience-panel, #live-view .coach-report { padding: 17px; }
+  #live-view .coach-video-wrap { min-height: 210px; }
+  #live-view .coach-signal-grid { gap: 8px; }
+  #live-view .signal-card { padding: 11px; }
+  #live-view .signal-card strong { font-size: 19px; }
+  #live-view .coach-panel-head h2 { font-size: 17px; }
+  #live-view .setup-foot { gap: 7px; }
+}
