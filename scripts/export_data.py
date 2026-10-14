@@ -53,25 +53,6 @@ def verdict_counts(alignment: dict[str, object]) -> dict[str, int]:
     return counts
 
 
-def public_metadata(metadata: dict[str, object]) -> dict[str, object]:
-    """Keep useful provenance without publishing local paths or permission notes."""
-    safe = {
-        key: value
-        for key, value in metadata.items()
-        if key not in {
-            "source_video_path",
-            "source_script_path",
-            "source_caption_path",
-            "source_video_mtime_ns",
-            "permission_evidence",
-        }
-    }
-    script_path = metadata.get("source_script_path")
-    if isinstance(script_path, str) and script_path:
-        safe["source_script_name"] = Path(script_path).name
-    return safe
-
-
 def main() -> None:
     cases: list[dict[str, object]] = []
     case_output = DIST_ROOT / "data" / "cases"
@@ -93,20 +74,6 @@ def main() -> None:
         alignment = detail["alignment"]
         video_asset = VIDEO_ASSETS.get(case_id)
         video_url = f"{VIDEO_RELEASE_URL}/{video_asset}" if video_asset else None
-        script_source = metadata.get("script_source")
-        review_label = (
-            "文稿已匹配"
-            if script_source == "provided_script_or_outline"
-            else "视频字幕已匹配"
-            if script_source in {"sidecar_captions", "embedded_video_subtitles"}
-            else "无讲稿 · 转写提取"
-            if script_source == "faster_whisper_transcription"
-            else "无讲稿 · 转写提取"
-            if metadata.get("script_type") == "transcript_proxy"
-            else "参考文稿代理"
-            if metadata.get("script_type") == "reference_script_proxy"
-            else "来源待确认"
-        )
         cases.append(
             {
                 "case_id": case_id,
@@ -117,9 +84,6 @@ def main() -> None:
                 "decision_count": len(alignment.get("decisions", [])),
                 "video_url": video_url,
                 "script_type": metadata.get("script_type"),
-                "script_source": script_source,
-                "source_review_label": review_label,
-                "review_status": intent.get("review_status", "confirmed"),
                 "can_evaluate_original_intent": metadata.get(
                     "can_evaluate_original_intent", False
                 ),
@@ -128,7 +92,7 @@ def main() -> None:
         detail.update(
             {
                 "case_id": case_id,
-                "metadata": public_metadata(metadata),
+                "metadata": metadata,
                 "video_url": video_url,
                 "video_publication_status": "published" if video_url else "not_available",
                 "report_url": f"./reports/{case_id}.md",
