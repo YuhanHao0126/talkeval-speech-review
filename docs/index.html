@@ -77,7 +77,7 @@
 
       <main class="workspace live-workspace" id="live-view" hidden>
               <section class="live-hero panel">
-                <div><p class="eyebrow">LIVE SPEECH COACH · FAST + SLOW</p><h1>讲到重点时，<em>现场看见表达是否跟上。</em></h1><p>左侧采集现场画面和语音；右侧跟踪观点、声音、表情动作与投影文字，并给出下一步提醒。演讲结束后，录像和复盘会同步到公开云端。</p></div>
+                <div><p class="eyebrow">LIVE SPEECH COACH · FAST + SLOW</p><h1>讲到重点时，<em>现场看见表达是否跟上。</em></h1><p>左侧采集现场画面和语音；右侧跟踪观点、声音、表情动作与投影文字，并给出下一步提醒。录像在演讲中分段上传；结束后报告同步到公开云端。</p></div>
                 <div class="live-channel-key"><span><i class="fast-dot"></i>快通道 · 本场即时对照</span><span><i class="slow-dot"></i>慢通道 · 个人历史记忆</span></div>
               </section>
       
@@ -89,8 +89,8 @@
                   <label>转写语言<select id="coach-language"><option value="zh-CN">中文</option><option value="en-US">English</option></select></label>
                 </div>
                 <label class="outline-label">核心观点（每行一条，可修改）<textarea id="coach-outline" rows="4" placeholder="例如：\n人工智能会改变工作内容，但不必然消灭工作\n重要的是培养判断力和协作能力"></textarea></label>
-                <label class="privacy-consent"><input id="coach-consent" type="checkbox" /><span>我同意开启摄像头/麦克风，并在结束时上传、公开本次录像（含人脸和声音）、转写与分析报告，所有访客均可查看。录像会先在本机录制；浏览器语音识别可能联网处理音频。请勿录制未同意公开的他人或敏感内容。</span></label>
-                <div class="setup-foot"><span>录像和报告同步到公开云端后，所有设备的历史复盘都会显示；网络不可用时会提示本机保存状态。</span><span id="coach-model-status">视觉模型将在开始后按需加载</span></div>
+                <label class="privacy-consent"><input id="coach-consent" type="checkbox" /><span>我同意开启摄像头/麦克风，并将本次录像（含人脸和声音）分段上传至公开云端；录像在会话结束后对外可看，转写与分析报告会在结束后上传。所有访客均可查看。录像同时保存在本机；浏览器语音识别可能联网处理音频。请勿录制未同意公开的他人或敏感内容。</span></label>
+                <div class="setup-foot"><span>录像分段会在演讲中上传；结束后报告同步到公开云端，其他设备的历史复盘随即更新。</span><span id="coach-model-status">视觉模型将在开始后按需加载</span></div>
               </section>
       
               <div class="coach-grid">
