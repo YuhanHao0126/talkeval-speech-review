@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TalkEval++ · 重点传达分析台</title>
-    <meta name="description" content="TalkEval++ 演讲重点传达与语义证据分析台" />
+    <title>TalkEval++ · 演讲表达复盘</title>
+    <meta name="description" content="TalkEval++ 演讲案例回放与表达证据复盘" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23122d3b'/%3E%3Ccircle cx='47' cy='47' r='18' fill='none' stroke='%235bd2c0' stroke-width='3'/%3E%3Cpath d='M17 18h30v7H35v25h-7V25H17z' fill='%235bd2c0'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="./styles.css" />
     <link rel="stylesheet" href="./replay.css" />
@@ -17,7 +17,7 @@
                 <div class="brand-mark"><span></span><b>T</b></div>
                 <div class="brand-copy">
                   <div class="brand-name">TALK<span>/</span>EVAL</div>
-                  <div class="brand-subtitle">Evidence-backed speech review</div>
+                  <div class="brand-subtitle">演讲表达 · 证据复盘</div>
                 </div>
               </div>
               <nav class="top-nav" aria-label="工作区">
@@ -35,10 +35,10 @@
       <main class="workspace" id="review-view">
               <section class="hero-panel case-hero">
                 <div class="hero-content">
-                    <div class="hero-kicker"><span class="kicker-line"></span><span>REFERENCE CASE REVIEW</span><span class="kicker-index" id="library-summary">10 场本地参考演讲</span></div>
-                  <h1>以视频为证，<em>逐个核对重点。</em></h1>
-                  <p class="hero-copy">播放演讲时同步查看核心观点、转写证据与语音节奏。人工复核结果可导出，作为后续模型训练的标注基础。</p>
-                  <div class="hero-foot"><span class="hero-foot-label">CASE REVIEW</span><span class="hero-foot-text">回放结论来自离线分析，仍需人工核对语义与表达效果</span></div>
+                    <div class="hero-kicker"><span class="kicker-line"></span><span>SPEECH REVIEW / 01–10</span><span class="kicker-index" id="library-summary">10 场案例</span></div>
+                  <h1>看见表达细节，<em>讲清每个重点。</em></h1>
+                  <p class="hero-copy">沿着演讲时间轴，回看观点、声音与画面证据。重点片段可逐条核对，人工标注也能沉淀为模型训练样本。</p>
+                  <div class="hero-foot"><span class="hero-foot-label">全片回放</span><span class="hero-foot-text">语义证据 · 声音节奏 · 画面协同</span></div>
                 </div>
                 <div class="hero-visual" aria-hidden="true">
                   <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
@@ -47,18 +47,18 @@
                 </div>
               </section>
       
-              <section class="notice-strip"><span class="notice-mark">i</span><span>分析结果用于语义定位与证据回看，不代表演讲能力总分；参考讲稿不等同于演讲者原始意图。</span><span class="notice-arrow">↗</span></section>
+              <section class="notice-strip"><span class="notice-mark">i</span><span>自动分析负责定位线索；重点是否传达清楚，最终以原视频和人工复核为准。</span><span class="notice-arrow">↗</span></section>
       
               <div class="content-grid">
                 <aside class="case-panel panel">
                   <div class="panel-heading">
                     <div>
-                      <p class="eyebrow">LIBRARY / 10</p>
+                      <p class="eyebrow">CASE LIBRARY / 10</p>
                       <h2>案例库</h2>
                     </div>
                     <span class="case-count" id="case-count">0</span>
                   </div>
-                  <div class="case-intro">选择本地参考演讲，回看核心观点对应的时间片段。</div>
+                  <div class="case-intro">从完整演讲切入，按观点或时间片段快速复盘。</div>
                   <div id="case-list" class="case-list">
                     <div class="loading-card">正在读取案例…</div>
                   </div>

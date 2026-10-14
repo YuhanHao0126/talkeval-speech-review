@@ -60,7 +60,7 @@ async function getJson(url) {
 
 function renderCaseList() {
   document.querySelector("#case-count").textContent = state.cases.length;
-  document.querySelector("#library-summary").textContent = `${state.cases.length} 场本地参考演讲`;
+  document.querySelector("#library-summary").textContent = `${state.cases.length} 场演讲案例`;
   const list = document.querySelector("#case-list");
   if (!state.cases.length) {
     list.innerHTML = `<div class="loading-card">还没有案例。把视频放入 doc/video、把同名讲稿或字幕放入 doc/tex，系统会自动导入。</div>`;
