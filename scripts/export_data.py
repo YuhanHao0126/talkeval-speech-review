@@ -53,6 +53,31 @@ def verdict_counts(alignment: dict[str, object]) -> dict[str, int]:
     return counts
 
 
+def public_metadata(metadata: dict[str, object]) -> dict[str, object]:
+    """Keep useful provenance without publishing local paths or permission notes."""
+    safe = {
+        key: value
+        for key, value in metadata.items()
+        if key not in {
+            "source_video_path",
+            "source_script_path",
+            "source_caption_path",
+            "source_video_mtime_ns",
+            "permission_evidence",
+        }
+    }
+    script_path = metadata.get("source_script_path")
+    if isinstance(script_path, str) and script_path:
+        safe["source_script_name"] = Path(script_path).name
+    elif metadata.get("script_file"):
+        safe["source_script_name"] = Path(str(metadata["script_file"])).name
+    safe["permission_verified"] = bool(
+        metadata.get("usage_permission") in {"analysis", "training"}
+        and str(metadata.get("permission_evidence") or "").strip()
+    )
+    return safe
+
+
 def main() -> None:
     cases: list[dict[str, object]] = []
     case_output = DIST_ROOT / "data" / "cases"
@@ -62,6 +87,11 @@ def main() -> None:
 
     for result_dir in sorted(path for path in OUTPUT_ROOT.iterdir() if path.is_dir()):
         case_id = result_dir.name
+        # Keep the public snapshot limited to cases whose video assets are
+        # already present in the public release. The local library can contain
+        # additional private source videos.
+        if case_id not in VIDEO_ASSETS:
+            continue
         metadata_path = INPUT_ROOT / case_id / "metadata.json"
         if not metadata_path.is_file():
             continue
@@ -70,10 +100,46 @@ def main() -> None:
             name: read_json(result_dir / filename)
             for name, filename in ARTIFACTS.items()
         }
+        if (
+            metadata.get("usage_permission") in {"analysis", "training"}
+            and str(metadata.get("permission_evidence") or "").strip()
+        ):
+            for name, filename in {
+                "visual_observations": "visual_observations.json",
+                "slide_analysis": "slide_analysis.json",
+            }.items():
+                artifact_path = result_dir / filename
+                if artifact_path.is_file():
+                    detail[name] = read_json(artifact_path)
+        if (
+            metadata.get("usage_permission") in {"analysis", "training"}
+            and str(metadata.get("permission_evidence") or "").strip()
+        ):
+            for name, filename in {
+                "visual_observations": "visual_observations.json",
+                "slide_analysis": "slide_analysis.json",
+            }.items():
+                artifact_path = result_dir / filename
+                if artifact_path.is_file():
+                    detail[name] = read_json(artifact_path)
         intent = detail["intent_map"]
         alignment = detail["alignment"]
         video_asset = VIDEO_ASSETS.get(case_id)
         video_url = f"{VIDEO_RELEASE_URL}/{video_asset}" if video_asset else None
+        script_source = metadata.get("script_source")
+        review_label = (
+            "文稿已匹配"
+            if script_source == "provided_script_or_outline"
+            else "视频字幕已匹配"
+            if script_source in {"sidecar_captions", "embedded_video_subtitles"}
+            else "无讲稿 · 转写提取"
+            if script_source == "faster_whisper_transcription"
+            else "无讲稿 · 转写提取"
+            if metadata.get("script_type") == "transcript_proxy"
+            else "参考文稿代理"
+            if metadata.get("script_type") == "reference_script_proxy"
+            else "来源待确认"
+        )
         cases.append(
             {
                 "case_id": case_id,
@@ -84,6 +150,9 @@ def main() -> None:
                 "decision_count": len(alignment.get("decisions", [])),
                 "video_url": video_url,
                 "script_type": metadata.get("script_type"),
+                "script_source": script_source,
+                "source_review_label": review_label,
+                "review_status": intent.get("review_status", "confirmed"),
                 "can_evaluate_original_intent": metadata.get(
                     "can_evaluate_original_intent", False
                 ),
@@ -92,7 +161,7 @@ def main() -> None:
         detail.update(
             {
                 "case_id": case_id,
-                "metadata": metadata,
+                "metadata": public_metadata(metadata),
                 "video_url": video_url,
                 "video_publication_status": "published" if video_url else "not_available",
                 "report_url": f"./reports/{case_id}.md",
