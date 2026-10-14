@@ -26,9 +26,21 @@
     catch { return []; }
   };
   function allSavedSessions() {
-    const sessions = new Map();
-    [...readSessions(), ...state.remoteSessions].forEach((session) => sessions.set(session.id, { ...sessions.get(session.id), ...session }));
-    return [...sessions.values()];
+    const local = new Map(readSessions().map((session) => [session.id, session]));
+    const remote = new Map(state.remoteSessions.map((session) => [session.id, session]));
+    const ids = new Set([...local.keys(), ...remote.keys()]);
+    return [...ids].map((id) => {
+      const device = local.get(id); const cloud = remote.get(id);
+      if (!device || !cloud) return device || cloud;
+      return {
+        ...device, ...cloud,
+        videoId: cloud.cloudVideoReady ? cloud.videoId : (device.videoId || cloud.videoId),
+        videoChunks: cloud.cloudVideoReady ? cloud.videoChunks : (device.videoChunks || cloud.videoChunks),
+        cloudVideoReady: Boolean(cloud.cloudVideoReady), cloudStored: true,
+        videoSaved: device.videoSaved ?? cloud.videoSaved,
+        cloudUploadError: cloud.cloudVideoReady ? "" : (device.cloudUploadError || cloud.cloudUploadError || ""),
+      };
+    });
   }
   function openMediaDb() {
     return new Promise((resolve, reject) => {
@@ -784,11 +796,12 @@
     }
     let cloudSaved = false;
     try {
-      await saveCloudSession(saved);
+      const result = await saveCloudSession(saved);
       cloudSaved = true;
       saved.cloudStored = true;
       saved.cloudUploadError = "";
-      state.remoteSessions = [saved, ...state.remoteSessions.filter((item) => item.id !== saved.id)].slice(0, 100);
+      saved.cloudVideoReady = Boolean(result.session?.cloudVideoReady);
+      state.remoteSessions = [result.session || saved, ...state.remoteSessions.filter((item) => item.id !== saved.id)].slice(0, 100);
       const refreshed = [saved, ...readSessions().filter((item) => item.id !== saved.id)].slice(0, MAX_SESSIONS);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(refreshed));
     } catch (error) {
