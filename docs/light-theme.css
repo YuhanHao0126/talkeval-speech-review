@@ -1,0 +1,191 @@
+/* Bright, spacious evidence workspace: take cues from Spline's calm canvas and precise accents. */
+:root {
+  --ink: #17212b;
+  --ink-soft: #43515c;
+  --muted: #74808a;
+  --line: #e4e9ed;
+  --canvas: #f7f8f8;
+  --panel: #ffffff;
+  --paper: #ffffff;
+  --navy: #17232e;
+  --navy-2: #273b49;
+  --cyan: #54c6b3;
+  --cyan-soft: #e8f8f4;
+  --blue: #5a75df;
+  --blue-soft: #eef1ff;
+  --shadow: 0 24px 60px rgba(24, 39, 51, .065);
+  --shadow-small: 0 8px 24px rgba(24, 39, 51, .045);
+}
+
+body.public-site,
+.public-site .app-shell { background: #f7f8f8; color: var(--ink); }
+.public-site .app-shell { background-image: radial-gradient(circle at 84% 1%, rgba(82, 207, 184, .085), transparent 24%); }
+.public-site .topbar {
+  min-height: 76px; padding: 0 clamp(22px, 4.8vw, 72px); gap: 28px;
+  background: rgba(255,255,255,.9); border-bottom-color: #e8ecef;
+  box-shadow: 0 5px 24px rgba(31,48,58,.025); backdrop-filter: blur(18px);
+}
+.public-site .brand-mark { border-radius: 13px; box-shadow: 0 5px 14px rgba(27,50,60,.12); }
+.public-site .brand-name { color: #17212b; letter-spacing: .16em; }
+.public-site .brand-subtitle { color: #849099; letter-spacing: .08em; }
+.public-site .top-nav { gap: 3px; padding: 4px; border: 1px solid #edf0f2; border-radius: 999px; background: #f6f7f8; }
+.public-site .nav-item { padding: 9px 14px; border-radius: 999px; color: #64717b; transition: .18s ease; }
+.public-site .nav-item.active { color: #18242d; background: #fff; box-shadow: 0 2px 8px rgba(20,34,44,.09); }
+.public-site .nav-item:hover { color: #16232c; }
+.public-site .nav-item.muted { color: #a1aab0; }
+.public-site .connection-pill { color: #64747a; border: 1px solid #e7eeeb; border-radius: 999px; background: #fff; }
+.public-site .source-link { color: #536c73; }
+.public-site .ghost-button { border-color: #e3e9ec; color: #5b6973; background: #fff; }
+.public-site .ghost-button:hover { border-color: #b9e2d7; background: #f6fcfa; }
+.public-site .workspace { width: min(1540px,100%); padding: 29px clamp(20px,4vw,62px) 76px; }
+.public-site .hero-panel.case-hero {
+  min-height: 236px; align-items: center; padding: 34px clamp(26px,5vw,66px);
+  color: var(--ink); border: 1px solid #edf0f2; border-radius: 24px;
+  background: linear-gradient(112deg, #fff 0%, #fff 57%, #f1fcf8 100%); box-shadow: var(--shadow);
+}
+.public-site .hero-panel.case-hero::before {
+  width: 440px; height: 440px; right: -66px; top: -186px; opacity: .75;
+  border-color: rgba(74,183,164,.15); box-shadow: 0 0 0 32px rgba(79,193,171,.035), 0 0 0 70px rgba(79,193,171,.025);
+}
+.public-site .hero-panel.case-hero::after { width: 320px; height: 170px; left: auto; right: 78px; bottom: -125px; background: rgba(106,222,186,.12); }
+.public-site .hero-content, .public-site .hero-visual { z-index: 1; }
+.public-site .hero-kicker { color: #688079; }
+.public-site .hero-kicker .kicker-line { background: #4bbda8; }
+.public-site .kicker-index { padding: 5px 9px; border: 1px solid #e7efeb; border-radius: 999px; color: #6b7d78; background: rgba(255,255,255,.85); }
+.public-site .hero-panel.case-hero h1 { color: #17212b; font-size: clamp(37px,4.2vw,54px); line-height: 1.08; letter-spacing: -.055em; }
+.public-site .hero-panel.case-hero h1 em { color: #258e7d; font-style: normal; }
+.public-site .hero-copy { color: #63717a; line-height: 1.75; }
+.public-site .hero-foot { color: #75837f; }
+.public-site .hero-foot-label { color: #3c9787; }
+.public-site .hero-foot-text { border-left-color: #d6e6e1; }
+.public-site .hero-visual { width: 196px; height: 196px; margin-right: 2%; }
+.public-site .orbit { border-color: rgba(71,170,153,.20); }
+.public-site .orbit-two { border-color: rgba(94,130,207,.17); }
+.public-site .orbit-three { border-color: rgba(71,170,153,.28); background: rgba(255,255,255,.7); }
+.public-site .hero-orbit-label { color: #72817d; }
+.public-site .hero-orbit-label strong { color: #172c32; font-size: 35px; }
+.public-site .orbit-dot { box-shadow: 0 0 0 6px rgba(255,255,255,.8), 0 4px 14px rgba(43,79,82,.12); }
+.public-site .notice-strip { margin: 14px 0 23px; border-color: #e8ecee; border-radius: 13px; color: #67747c; background: rgba(255,255,255,.88); }
+.public-site .notice-mark { color: #288f7e; background: #e8f7f2; }
+.public-site .content-grid { grid-template-columns: 270px minmax(0,1fr); gap: 19px; }
+.public-site .panel { border-color: #e8ecef; border-radius: 17px; background: rgba(255,255,255,.97); box-shadow: var(--shadow-small); }
+.public-site .case-panel { top: 92px; padding: 22px 12px 14px; }
+.public-site .case-intro { color: #7b8790; }
+.public-site .case-list { gap: 7px; }
+.public-site .case-button {
+  width: 100%; padding: 12px 10px; border: 1px solid transparent; border-radius: 13px;
+  background: #fff; box-shadow: inset 0 0 0 1px #f0f2f3; transition: .18s ease;
+}
+.public-site .case-button:hover { transform: translateY(-1px); border-color: #d4e9e2; box-shadow: 0 6px 16px rgba(30,66,66,.06); }
+.public-site .case-button.active { border-color: #a9e0d3; background: #f1fbf7; box-shadow: inset 0 0 0 1px rgba(84,198,179,.16); }
+.public-site .case-index { color: #568277; background: #eef7f4; }
+.public-site .case-title { color: #26343c; font-size: 12px; line-height: 1.5; }
+.public-site .case-speaker { color: #8a969d; }
+.public-site .case-count { color: #276e62; background: #eaf7f2; }
+.public-site .sidebar-foot { border-top-color: #edf0f1; color: #84918e; }
+.public-site .detail-column { gap: 13px; }
+.public-site .detail-header { padding: 22px 24px 19px; }
+.public-site .detail-header h2 { color: #18262e; letter-spacing: -.03em; }
+.public-site .detail-summary div { border-left-color: #e7ecee; }
+.public-site .detail-summary strong { color: #1c3137; }
+.public-site .detail-subtitle { color: #75828a; }
+.public-site .detail-toolbar { padding-top: 12px; border-top: 1px solid #f0f2f3; }
+.public-site .outline-button { color: #3e7770; border-color: #dce9e5; background: #fff; }
+.public-site .outline-button:hover { background: #f3faf7; }
+.public-site .video-panel { padding: 16px; border-color: #e7ecef; background: #fff; }
+.public-site .video-heading { margin: 0 2px 11px; }
+.public-site .video-heading .eyebrow { color: #74858b; }
+.public-site .video-heading h3 { color: #1b2931; }
+.public-site .video-heading p { color: #8a969c; }
+.public-site .video-frame { max-height: 620px; border-radius: 11px; background: #111; box-shadow: 0 7px 20px rgba(14,26,33,.13); }
+.public-site .video-placeholder { color: #60727a; border-color: #e8eeec; background: linear-gradient(135deg,#f7fbfa,#f2f7f8); }
+.public-site .video-placeholder strong { color: #27383f; }
+.public-site .playback-progress { color: #7a898d; }
+.public-site .signal-summary { padding: 16px; }
+.public-site .signal-summary-heading strong { color: #26373e; }
+.public-site .playback-signal-grid > div { border-color: #edf0f1; background: #fbfcfc; }
+.public-site .evidence-dimensions > div { border-color: #e8eded; background: #f7faf9; }
+.public-site .playback-focus { padding: 19px 21px; border-color: #d7ece5; background: linear-gradient(135deg,#fff,#f5fbf8); }
+.public-site .playback-focus h3 { color: #17282d; }
+.public-site .focus-footer { border-top-color: #e4eeea; }
+.public-site .coaching-hint { border-color: #e2eee9; background: #f7fbf9; }
+.public-site .decisions-panel, .public-site .timeline-panel { border-color: #e7ecef; background: #fff; }
+.public-site .decision-card { border-color: #e9edef; border-radius: 14px; background: #fff; }
+.public-site .decision-card:hover { border-color: #bfe3d9; }
+.public-site .decision-card.active { border-color: #9ddacc; background: #fcfffe; }
+.public-site .decision-title h3 { color: #26353d; }
+.public-site .evidence-box { border-left-color: #5ac3ae; background: #f2faf7; }
+.public-site .evidence-text { color: #34464c; }
+.public-site .metric-fill { background: linear-gradient(90deg,#59c6b0,#7389e8); }
+.public-site .timeline-track { border-color: #e3e9eb; background: repeating-linear-gradient(90deg,#f7f9f9 0,#f7f9f9 calc(20% - 1px),#edf1f1 20%); }
+.public-site .timeline-unit { background: #82b9ad; }
+.public-site .timeline-unit.matched { background: #39a994; }
+.public-site .raw-panel pre { color: #dce9e6; background: #1b303a; }
+
+/* Keep the live coach airy too, while preserving a high contrast for the next cue. */
+.public-site .live-hero, .public-site .coach-setup, .public-site .coach-camera, .public-site .screen-panel,
+.public-site .saved-sessions, .public-site .coach-beats, .public-site .visual-panel, .public-site .memory-panel,
+.public-site .audience-panel, .public-site .coach-report { border-color: #e8ecee; background: #fff; }
+.public-site .live-hero h1 { color: #17232b; }
+.public-site .live-hero h1 em { color: #258e7d; }
+.public-site .urgent-cue { color: #26383d; border: 1px solid #cfece2; background: linear-gradient(135deg,#f4fcf8,#edf9f4); }
+.public-site .urgent-cue::after { border-color: rgba(55,155,133,.17); box-shadow: 0 0 0 20px rgba(55,155,133,.035), 0 0 0 42px rgba(55,155,133,.025); }
+.public-site .assistant-label { color: #398e7e; }
+.public-site .urgent-cue h2 { color: #18332e; }
+.public-site .urgent-cue p { color: #5d716e; }
+.public-site .cue-progress-line { color: #66817b; }
+.public-site .progress-track { background: #dfeee8; }
+.public-site .progress-track i { background: linear-gradient(90deg,#50c4aa,#8296e7); }
+.public-site .coach-video-wrap { box-shadow: 0 8px 25px rgba(16,31,38,.12); }
+.public-site .coach-beat, .public-site .signal-card, .public-site .coach-transcript,
+.public-site .screen-history-item, .public-site #coach-report-text { border-color: #e8edef; }
+.public-site .coach-beat { background: #fff; }
+.public-site .coach-beat.covered { background: #f3fbf7; }
+.public-site .coach-beat.partial { background: #fffaf1; }
+.public-site .mini-badge { color: #51766e; background: #eff7f4; }
+.public-site .primary-button { background: #1f766a; }
+.public-site .primary-button:hover:not(:disabled) { background: #195f56; }
+.public-site .privacy-consent input { accent-color: #369d89; }
+@media (max-width: 1080px) {
+  .public-site .topbar { padding-inline: 22px; }
+  .public-site .content-grid { grid-template-columns: 1fr; }
+  .public-site .case-panel { position: static; }
+  .public-site .case-list { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 720px) {
+  .public-site .topbar { padding: 9px 15px; }
+  .public-site .top-nav { order: 3; width: 100%; justify-content: center; margin-top: 8px; }
+  .public-site .topbar-actions { margin-left: auto; }
+  .public-site .topbar-actions .source-link { display: none; }
+  .public-site .workspace { padding: 17px 14px 45px; }
+  .public-site .hero-panel.case-hero { padding: 27px 22px; border-radius: 19px; }
+  .public-site .hero-visual { display: none; }
+  .public-site .hero-panel.case-hero h1 { font-size: 36px; }
+  .public-site .case-list { grid-template-columns: 1fr; }
+  .public-site .detail-header { padding: 18px; }
+  .public-site .video-panel { padding: 12px; }
+  .public-site .video-frame { max-height: none; }
+}
+
+/* Strengthen contrast for selected cases and the dense evidence labels. */
+.public-site .hero-foot-text { color: #738188; }
+.public-site .case-button.active .case-title { color: #22323a; }
+.public-site .case-button.active .case-speaker { color: #73837f; }
+.public-site .case-button.active .case-index { color: #2b776b; background: #ddf2eb; }
+.public-site .case-title { font-size: 12.5px; }
+.public-site .case-speaker { font-size: 10px; }
+.public-site .playback-signal-grid b { font-size: 10px; }
+.public-site .playback-signal-grid span { color: #586970; font-size: 10px; }
+.public-site .evidence-dimensions b { font-size: 9.5px; }
+.public-site .evidence-dimensions span { color: #697980; font-size: 9px; }
+.public-site .case-analysis-column .review-hint { color: #6d7980; font-size: 10px; }
+.public-site .case-analysis-column .decision-title h3 { color: #24333b; font-size: 12px; }
+.public-site .case-analysis-column .decision-reason { color: #5d6a71; font-size: 10px; }
+.public-site .case-analysis-column .metric-line { color: #75828a; font-size: 9px; }
+.public-site .case-analysis-column .metric-value { color: #27363d; font-size: 9px; }
+.public-site .case-analysis-column .evidence-text { color: #31444a; font-size: 11px; }
+.public-site .decision-time { font-size: 10px; }
+.public-site .coordination-grid b, .public-site .ppt-content-heading,
+.public-site .ppt-content-heading strong { font-size: 8.5px; }
+.public-site .coordination-grid span, .public-site .ppt-content-evidence p { color: #465c60; font-size: 9px; }
+.public-site .coordination-evidence > small, .public-site .ppt-content-evidence small { color: #74837f; font-size: 8px; }

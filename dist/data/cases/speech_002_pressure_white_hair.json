@@ -39221,9 +39221,11 @@
     "video_bytes": 142637005,
     "prepared_date": "2026-10-06",
     "source_script_name": "script.txt",
-    "permission_verified": true
+    "permission_verified": true,
+    "public_video_playback_enabled": false
   },
   "video_url": "https://github.com/YuhanHao0126/talkeval-speech-review/releases/download/talkeval-videos-v1/speech_002_pressure_white_hair.mp4",
+  "video_format": "mp4",
   "source_page_url": null,
   "source_page_label": null,
   "video_publication_status": "published",

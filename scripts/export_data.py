@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
+import subprocess
 from pathlib import Path
 
 
@@ -11,6 +13,7 @@ DEMO_ROOT = Path(__file__).resolve().parents[2]
 INPUT_ROOT = DEMO_ROOT / "real_data" / "incoming"
 OUTPUT_ROOT = DEMO_ROOT / "artifacts" / "real-batch"
 DIST_ROOT = Path(__file__).resolve().parents[1] / "dist"
+DOCS_ROOT = Path(__file__).resolve().parents[1] / "docs"
 VIDEO_RELEASE_URL = (
     "https://github.com/YuhanHao0126/talkeval-speech-review"
     "/releases/download/talkeval-videos-v1"
@@ -45,6 +48,8 @@ ARTIFACTS = {
     "run_metadata": "run_metadata.json",
 }
 
+VIDEO_ENCODING_PROFILE = "h264-720p-16fps-crf37-aac48-hls60-v6"
+
 
 def read_json(path: Path) -> dict[str, object]:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -78,6 +83,8 @@ def public_metadata(metadata: dict[str, object]) -> dict[str, object]:
             "source_caption_path",
             "source_video_mtime_ns",
             "permission_evidence",
+            "public_video_permission_evidence",
+            "public_video_allowed",
         }
     }
     script_path = metadata.get("source_script_path")
@@ -89,7 +96,84 @@ def public_metadata(metadata: dict[str, object]) -> dict[str, object]:
         metadata.get("usage_permission") in {"analysis", "training"}
         and str(metadata.get("permission_evidence") or "").strip()
     )
+    safe["public_video_playback_enabled"] = bool(
+        metadata.get("public_video_allowed")
+        and str(metadata.get("public_video_permission_evidence") or "").strip()
+    )
     return safe
+
+
+def prepare_public_video(case_id: str, source: Path) -> str:
+    """Create clear, seekable HLS playback segments without changing the source."""
+    output_dir = DIST_ROOT / "media" / case_id
+    playlist = output_dir / "index.m3u8"
+    profile_file = OUTPUT_ROOT / f".{case_id}.public-video-profile"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    profile_matches = (
+        profile_file.is_file()
+        and profile_file.read_text(encoding="utf-8").strip() == VIDEO_ENCODING_PROFILE
+    )
+    if (
+        profile_matches
+        and playlist.is_file()
+        and playlist.stat().st_mtime_ns >= source.stat().st_mtime_ns
+    ):
+        return f"./media/{case_id}/index.m3u8"
+
+    for old_output in output_dir.iterdir():
+        if old_output.is_dir():
+            shutil.rmtree(old_output)
+        else:
+            old_output.unlink()
+
+    ffmpeg = shutil.which("ffmpeg")
+    if ffmpeg is None:
+        raise RuntimeError("ffmpeg is required to prepare public playback videos")
+    command = [
+        ffmpeg,
+        "-v", "error",
+        "-i", os.fspath(source),
+        "-map", "0:v:0",
+        "-map", "0:a?",
+        "-vf", "scale=1280:720:force_original_aspect_ratio=decrease:force_divisible_by=2,fps=16",
+        "-c:v", "libx264",
+        "-preset", "medium",
+        "-crf", "37",
+        "-pix_fmt", "yuv420p",
+        "-c:a", "aac",
+        "-ac", "2",
+        "-b:a", "48k",
+        "-g", "160",
+        "-keyint_min", "160",
+        "-sc_threshold", "0",
+        "-f", "hls",
+        "-hls_time", "60",
+        "-hls_playlist_type", "vod",
+        "-hls_segment_type", "mpegts",
+        "-hls_flags", "independent_segments",
+        "-hls_segment_filename", os.fspath(output_dir / "segment_%03d.ts"),
+        "-y", os.fspath(playlist),
+    ]
+    subprocess.run(command, check=True)
+    profile_file.write_text(VIDEO_ENCODING_PROFILE + "\n", encoding="utf-8")
+    return f"./media/{case_id}/index.m3u8"
+
+
+def mirror_dist_to_docs() -> None:
+    """Keep the GitHub Pages copy in sync with the public Site snapshot."""
+    DOCS_ROOT.mkdir(parents=True, exist_ok=True)
+    docs_media = DOCS_ROOT / "media"
+    if docs_media.exists():
+        shutil.rmtree(docs_media)
+    if (DIST_ROOT / "media").is_dir():
+        shutil.copytree(DIST_ROOT / "media", docs_media)
+    for path in DIST_ROOT.rglob("*"):
+        if path.is_dir() or path.is_relative_to(DIST_ROOT / "media"):
+            continue
+        relative = path.relative_to(DIST_ROOT)
+        destination = DOCS_ROOT / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, destination)
 
 
 def main() -> None:
@@ -98,6 +182,7 @@ def main() -> None:
     report_output = DIST_ROOT / "reports"
     case_output.mkdir(parents=True, exist_ok=True)
     report_output.mkdir(parents=True, exist_ok=True)
+    public_media_ids: set[str] = set()
 
     for result_dir in sorted(path for path in OUTPUT_ROOT.iterdir() if path.is_dir()):
         case_id = result_dir.name
@@ -123,7 +208,21 @@ def main() -> None:
         intent = detail["intent_map"]
         alignment = detail["alignment"]
         video_asset = VIDEO_ASSETS.get(case_id)
-        video_url = f"{VIDEO_RELEASE_URL}/{video_asset}" if video_asset else None
+        public_playback = bool(
+            metadata.get("public_video_allowed")
+            and str(metadata.get("public_video_permission_evidence") or "").strip()
+        )
+        local_video = INPUT_ROOT / case_id / "video.mp4"
+        if video_asset:
+            video_url = f"{VIDEO_RELEASE_URL}/{video_asset}"
+            video_format = "mp4"
+        elif public_playback and local_video.is_file():
+            video_url = prepare_public_video(case_id, local_video)
+            video_format = "hls"
+            public_media_ids.add(case_id)
+        else:
+            video_url = None
+            video_format = None
         source_page_url = SOURCE_PAGES.get(case_id)
         script_source = metadata.get("script_source")
         review_label = (
@@ -148,6 +247,7 @@ def main() -> None:
                 "verdict_counts": verdict_counts(alignment),
                 "decision_count": len(alignment.get("decisions", [])),
                 "video_url": video_url,
+                "video_format": video_format,
                 "source_page_url": source_page_url,
                 "source_page_label": SOURCE_PAGE_LABELS.get(case_id),
                 "video_publication_status": (
@@ -167,6 +267,7 @@ def main() -> None:
                 "case_id": case_id,
                 "metadata": public_metadata(metadata),
                 "video_url": video_url,
+                "video_format": video_format,
                 "source_page_url": source_page_url,
                 "source_page_label": SOURCE_PAGE_LABELS.get(case_id),
                 "video_publication_status": (
@@ -178,14 +279,26 @@ def main() -> None:
         write_json(case_output / f"{case_id}.json", detail)
         shutil.copyfile(result_dir / "report.md", report_output / f"{case_id}.md")
 
+    media_root = DIST_ROOT / "media"
+    if media_root.is_dir():
+        for stale_entry in media_root.iterdir():
+            if stale_entry.name not in public_media_ids or stale_entry.is_file():
+                if stale_entry.is_dir():
+                    shutil.rmtree(stale_entry)
+                else:
+                    stale_entry.unlink()
+
     write_json(
         DIST_ROOT / "data" / "cases.json",
         {
             "cases": cases,
             "snapshot": True,
-            "video_publication_status": "mixed",
+            "video_publication_status": (
+                "all_published" if all(case.get("video_url") for case in cases) else "mixed"
+            ),
         },
     )
+    mirror_dist_to_docs()
     print(f"Exported {len(cases)} cases to {DIST_ROOT}")
 
 

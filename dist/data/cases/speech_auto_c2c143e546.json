@@ -168255,11 +168255,13 @@
     "transcript_source": "faster_whisper",
     "imported_at": "2026-10-13T09:13:59.920714+00:00",
     "source_script_name": "script.txt",
-    "permission_verified": true
+    "permission_verified": true,
+    "public_video_playback_enabled": true
   },
-  "video_url": null,
+  "video_url": "./media/speech_auto_c2c143e546/index.m3u8",
+  "video_format": "hls",
   "source_page_url": "https://www.toutiao.com/article/7687871927624466963/",
   "source_page_label": "打开演讲来源页 ↗",
-  "video_publication_status": "source_page",
+  "video_publication_status": "published",
   "report_url": "./reports/speech_auto_c2c143e546.md"
 }

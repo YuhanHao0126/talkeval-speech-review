@@ -2,6 +2,7 @@
 "use strict";
 const state = {
   cases: [], selectedCase: null, selectedBeat: null,
+  hls: null,
   live: { caseData: null, session: null, lastSession: null, stream: null, recognition: null, audioContext: null, analyser: null, raf: 0, levels: [], startedAt: 0, stoppedByUser: false, interim: "", lastFinalAt: 0 },
 };
 
@@ -554,7 +555,7 @@ function renderDetail(data) {
     provisional ? `<span class="badge badge-neutral">${esc(sourceReviewDetail(metadata))}</span>` : "",
   ].join("");
   const video = data.video_url
-    ? `<video id="case-video" class="video-frame" controls preload="metadata" src="${esc(data.video_url)}"></video>`
+    ? `<video id="case-video" class="video-frame" controls preload="metadata" playsinline></video>`
     : `<div class="video-placeholder"><div><strong>案例分析已完整收录</strong><span>原视频在公开来源页播放；本页仍可查看语义判定、语音与视觉观察、证据时间线和复盘报告。</span>${data.source_page_url ? `<a class="video-source-link" href="${esc(data.source_page_url)}" target="_blank" rel="noopener noreferrer">${esc(data.source_page_label || "打开原视频来源页 ↗")}</a>` : ""}</div></div>`;
   const videoInstruction = data.video_url ? "拖动播放，右侧重点同步定位" : "原片通过来源页打开；本页可按时间点复盘分析证据";
   const cards = decisions.map((decision, index) => {
@@ -610,6 +611,24 @@ function renderDetail(data) {
   document.querySelector("#export-annotations").addEventListener("click", () => exportCaseAnnotations(data));
   const caseVideo = document.querySelector("#case-video");
   if (caseVideo) {
+    state.hls?.destroy();
+    state.hls = null;
+    if (data.video_format === "hls" && window.Hls?.isSupported()) {
+      state.hls = new window.Hls({ enableWorker: true });
+      state.hls.on(window.Hls.Events.ERROR, (_event, detail) => {
+        if (detail.fatal) {
+          document.querySelector(".video-heading > p").textContent = "视频流暂时无法载入，请刷新页面后重试";
+        }
+      });
+      state.hls.attachMedia(caseVideo);
+      state.hls.loadSource(data.video_url);
+    } else if (data.video_format === "hls" && caseVideo.canPlayType("application/vnd.apple.mpegurl")) {
+      caseVideo.src = data.video_url;
+    } else if (data.video_format === "hls") {
+      document.querySelector(".video-heading > p").textContent = "当前浏览器不支持此视频流格式";
+    } else {
+      caseVideo.src = data.video_url;
+    }
     caseVideo.addEventListener("loadedmetadata", () => {
       document.querySelector("#case-duration").textContent = time(caseVideo.duration);
       updateCasePlayback(data, caseVideo.currentTime);

@@ -19,6 +19,22 @@ const verdictClass = (verdict) => {
   return "uncertain";
 };
 
+function sourceReviewLabel(source, scriptType) {
+  if (source === "provided_script_or_outline") return "文稿已匹配";
+  if (["sidecar_captions", "embedded_video_subtitles"].includes(source)) return "视频字幕已匹配";
+  if (source === "faster_whisper_transcription" || scriptType === "transcript_proxy") return "无讲稿 · 转写提取";
+  if (scriptType === "reference_script_proxy") return "参考文稿代理";
+  return "稿件来源待确认";
+}
+
+function sourceReviewDetail(metadata) {
+  if (metadata.script_source === "provided_script_or_outline") return "重点由系统从已匹配的讲稿或大纲提取，建议核对";
+  if (["sidecar_captions", "embedded_video_subtitles"].includes(metadata.script_source)) return "重点根据视频字幕提取，建议核对";
+  if (metadata.script_source === "faster_whisper_transcription" || metadata.script_type === "transcript_proxy") return "未匹配讲稿 · 重点根据视频转写提取，优先核对";
+  if (metadata.script_type === "reference_script_proxy") return "重点由系统从参考材料提取，建议核对";
+  return "重点由系统自动提取，建议核对";
+}
+
 const pct = (value) => `${Math.round(Math.max(0, Math.min(1, Number(value || 0))) * 100)}%`;
 const time = (seconds) => {
   if (seconds === null || seconds === undefined || Number.isNaN(Number(seconds))) return "未定位";
@@ -67,7 +83,7 @@ function renderCaseList() {
     return `<button class="case-button ${state.selectedCase === item.case_id ? "active" : ""}" data-case="${esc(item.case_id)}">
       <span class="case-index">${String(index + 1).padStart(2, "0")}</span><span class="case-title">${esc(item.title || item.case_id)}</span>
       <span class="case-speaker">${esc(item.speaker_id || "未登记演讲者")}</span>
-      <span class="case-pills">${pills || `<span class="mini-pill pill-uncertain">未完成</span>`}</span>
+      <span class="case-pills"><span class="mini-pill pill-uncertain">${esc(item.source_review_label || sourceReviewLabel(item.script_source, item.script_type))}</span>${pills || `<span class="mini-pill pill-uncertain">未完成</span>`}</span>
     </button>`;
   }).join("");
   list.querySelectorAll("[data-case]").forEach((button) => button.addEventListener("click", () => selectCase(button.dataset.case)));
@@ -110,7 +126,8 @@ function renderDetail(data) {
   }, {});
   const detailSummary = `<div class="detail-summary"><div><strong>${decisions.length}</strong><span>目标观点</span></div><div><strong>${verdictCounts.sufficiently_realized || 0}</strong><span>完整表达</span></div><div><strong>${verdictCounts.partially_realized || 0}</strong><span>部分表达</span></div></div>`;
   const badges = [
-    `<span class="badge badge-neutral">${esc(metadata.script_type || "reference_script_proxy")}</span>`,
+    `<span class="badge badge-neutral">${esc(sourceReviewLabel(metadata.script_source, metadata.script_type))}</span>`,
+    `<span class="badge badge-neutral">${esc(sourceReviewDetail(metadata))}</span>`,
     `<span class="badge badge-neutral">ASR：${esc(data.run_metadata?.asr_backend || "未知")}</span>`,
     `<span class="badge badge-neutral">语义：${esc(data.run_metadata?.semantic_backend || "未知")}</span>`,
   ].join("");

@@ -8,6 +8,7 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23122d3b'/%3E%3Ccircle cx='47' cy='47' r='18' fill='none' stroke='%235bd2c0' stroke-width='3'/%3E%3Cpath d='M17 18h30v7H35v25h-7V25H17z' fill='%235bd2c0'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="./styles.css" />
     <link rel="stylesheet" href="./replay.css" />
+    <link rel="stylesheet" href="./light-theme.css" />
   </head>
   <body class="public-site">
     <div class="app-shell">
@@ -34,14 +35,14 @@
       <main class="workspace" id="review-view">
               <section class="hero-panel case-hero">
                 <div class="hero-content">
-                  <div class="hero-kicker"><span class="kicker-line"></span><span>REFERENCE CASE REVIEW</span><span class="kicker-index" id="library-summary">本地参考案例</span></div>
+                    <div class="hero-kicker"><span class="kicker-line"></span><span>REFERENCE CASE REVIEW</span><span class="kicker-index" id="library-summary">10 场本地参考演讲</span></div>
                   <h1>以视频为证，<em>逐个核对重点。</em></h1>
                   <p class="hero-copy">播放演讲时同步查看核心观点、转写证据与语音节奏。人工复核结果可导出，作为后续模型训练的标注基础。</p>
                   <div class="hero-foot"><span class="hero-foot-label">CASE REVIEW</span><span class="hero-foot-text">回放结论来自离线分析，仍需人工核对语义与表达效果</span></div>
                 </div>
                 <div class="hero-visual" aria-hidden="true">
                   <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
-                  <div class="hero-orbit-label"><strong>5</strong><span>CASE<br />STUDIES</span></div>
+                  <div class="hero-orbit-label"><strong>10</strong><span>VIDEO<br />CASES</span></div>
                   <div class="orbit-dot dot-a"></div><div class="orbit-dot dot-b"></div><div class="orbit-dot dot-c"></div>
                 </div>
               </section>
@@ -52,7 +53,7 @@
                 <aside class="case-panel panel">
                   <div class="panel-heading">
                     <div>
-                      <p class="eyebrow">LIBRARY / 05</p>
+                      <p class="eyebrow">LIBRARY / 10</p>
                       <h2>案例库</h2>
                     </div>
                     <span class="case-count" id="case-count">0</span>
@@ -128,6 +129,7 @@
               <section id="coach-report" class="coach-report panel" hidden><div class="coach-panel-head"><div><p class="eyebrow">SESSION SUMMARY</p><h2>本场演讲报告</h2></div><div class="report-actions"><button id="coach-copy-report" class="secondary-button">复制报告</button><button id="coach-download-report" class="secondary-button">下载文字</button><button id="coach-download-json" class="secondary-button">导出复盘 JSON</button></div></div><textarea id="coach-report-text" rows="12" readonly></textarea><div id="coach-replay-detail" class="coach-replay-detail"></div></section>
             </main>
     </div>
+    <script src="./hls.min.js"></script>
     <script src="./replay.js"></script>
     <script src="./live.js"></script>
   </body>

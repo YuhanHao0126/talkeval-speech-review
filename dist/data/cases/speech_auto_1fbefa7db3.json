@@ -65240,11 +65240,13 @@
     "transcript_source": "faster_whisper",
     "imported_at": "2026-10-13T09:05:24.142359+00:00",
     "source_script_name": "你的大脑**被零食骗了多少次**.md",
-    "permission_verified": true
+    "permission_verified": true,
+    "public_video_playback_enabled": true
   },
-  "video_url": null,
+  "video_url": "./media/speech_auto_1fbefa7db3/index.m3u8",
+  "video_format": "hls",
   "source_page_url": "https://yixi.tv/h5/speech/1419/",
   "source_page_label": "打开一席原视频页 ↗",
-  "video_publication_status": "source_page",
+  "video_publication_status": "published",
   "report_url": "./reports/speech_auto_1fbefa7db3.md"
 }

@@ -135,6 +135,7 @@
   .case-review-grid { gap: 10px; }
   .full-video-overview > summary { align-items: flex-start; }
   .detail-header { padding: 19px 18px; }
+
   .detail-actions { justify-content: flex-start; margin-top: 10px; }
   .evidence-dimensions { grid-template-columns: 1fr; }
   .playback-signal-grid { grid-template-columns: 1fr; }

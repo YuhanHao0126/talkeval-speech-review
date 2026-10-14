@@ -86900,11 +86900,13 @@
     "transcript_source": "faster_whisper",
     "imported_at": "2026-10-13T09:24:44.552240+00:00",
     "source_script_name": "生命，不是智能.md",
-    "permission_verified": true
+    "permission_verified": true,
+    "public_video_playback_enabled": true
   },
-  "video_url": null,
+  "video_url": "./media/speech_auto_594f9836f9/index.m3u8",
+  "video_format": "hls",
   "source_page_url": "https://yixi.tv/h5/speech/1447/",
   "source_page_label": "打开一席原视频页 ↗",
-  "video_publication_status": "source_page",
+  "video_publication_status": "published",
   "report_url": "./reports/speech_auto_594f9836f9.md"
 }
