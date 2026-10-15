@@ -1,7 +1,7 @@
 {
   "schema_version": "talkeval_context_fit_v1",
   "case_id": "speech_004_whales",
-  "algorithm_version": "context-rules-2026.10.15-v1",
+  "algorithm_version": "context-rules-2026.10.15-v2",
   "configuration": {
     "minSamples": 3,
     "minCoverage": 0.6,
@@ -12,10 +12,10 @@
   },
   "results": [
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
-      "status": "neutral",
-      "label": "自然 / 中性候选",
+      "status": "supportive",
+      "label": "可能支持表达",
       "time_span": [
         320.68,
         326.02
@@ -25,57 +25,177 @@
       "text": "在2004年 当时已经看不到了 所以说我最终只能研究了突变的三种",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "cause",
+        "roleLabel": "解释原因",
+        "cue": "所以",
+        "source": "转写线索「所以」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 3,
-        "face_samples": 2,
-        "comparable_hand_samples": 3,
-        "coverage": 0.94,
-        "face_coverage": 0.749,
-        "hand_coverage": 0.94,
-        "sampling_interval_seconds": 2,
+        "observations": 27,
+        "face_samples": 27,
+        "comparable_hand_samples": 24,
+        "coverage": 0.993,
+        "face_coverage": 0.993,
+        "hand_coverage": 0.899,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "status": "supportive",
+        "label": "可能支持表达",
+        "reason": "在这段解释原因中，有 1 个动作片段与较强声音同窗出现，可能帮助突出“在2004年 当时已经看不到了 所以说我最终只能研究…”这层信息。",
+        "suggestion": "保留与关键句一起出现的动作；时间共现还不能证明每个动作都准确对应关键词。",
         "evidence": [
           {
-            "id": "motion-322",
+            "id": "motion-322.08",
             "kind": "motion",
-            "start": 322,
-            "end": 326,
-            "peak": 326,
-            "count": 3,
-            "magnitude": 0.116,
-            "duration": 4
+            "start": 322.08,
+            "end": 322.28,
+            "peak": 322.28,
+            "count": 2,
+            "magnitude": 1.588,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "outward"
+              },
+              {
+                "side": "right",
+                "direction": "inward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.2
           }
-        ]
+        ],
+        "observation": "在 24 帧中获得可比较的手部轨迹，手部主要位于躯干高度。2 个连续变化片段；05:22 左手向外展开、右手向身体收回，05:23 左手向身体收回。"
       },
       "expression": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
-        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "当前是解释原因，已识别的嘴角变化没有提供明确冲突线索；“在2004年 当时已经看不到了 所以说我最终只能研究…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [
+          {
+            "id": "smile-321.88",
+            "kind": "smile",
+            "start": 321.88,
+            "end": 323.28,
+            "peak": 322.08,
+            "count": 8,
+            "magnitude": 0.749,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "inward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "inward",
+            "duration": 1.4
+          }
+        ],
+        "observation": "获得 27 帧面部结果。05:21–05:23 有连续嘴角上提。"
       },
       "events": [
         {
-          "id": "motion-322",
+          "id": "smile-321.88",
+          "kind": "smile",
+          "start": 321.88,
+          "end": 323.28,
+          "peak": 322.08,
+          "count": 8,
+          "magnitude": 0.749,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "inward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "inward",
+          "duration": 1.4
+        },
+        {
+          "id": "motion-322.08",
           "kind": "motion",
-          "start": 322,
-          "end": 326,
-          "peak": 326,
-          "count": 3,
-          "magnitude": 0.116,
-          "duration": 4
+          "start": 322.08,
+          "end": 322.28,
+          "peak": 322.28,
+          "count": 2,
+          "magnitude": 1.588,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "outward"
+            },
+            {
+              "side": "right",
+              "direction": "inward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.2
+        },
+        {
+          "id": "motion-323.68",
+          "kind": "motion",
+          "start": 323.68,
+          "end": 324.48,
+          "peak": 323.68,
+          "count": 5,
+          "magnitude": 1.466,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "inward"
+            }
+          ],
+          "sides": [
+            "left"
+          ],
+          "direction": "inward",
+          "duration": 0.8
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 320.68,
+          "frame_url": "./context-evidence/speech_004_whales/b01-1.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b01-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 323.28,
+          "frame_url": "./context-evidence/speech_004_whales/b01-2.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b01-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 325.88,
+          "frame_url": "./context-evidence/speech_004_whales/b01-3.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b01-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [
@@ -300,18 +420,16 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         1087.92,
         1095.78
@@ -321,57 +439,326 @@
       "text": "后来我们经过了两次的照相识别 没有一头一样的 所以咱们的经济跟它们是不是同一个群",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "cause",
+        "roleLabel": "解释原因",
+        "cue": "所以",
+        "source": "转写线索「所以」",
         "explicit": false,
         "ambiguous": true
       },
       "quality": {
-        "observations": 4,
-        "face_samples": 4,
-        "comparable_hand_samples": 3,
-        "coverage": 0.901,
-        "face_coverage": 0.901,
-        "hand_coverage": 0.763,
-        "sampling_interval_seconds": 2,
+        "observations": 40,
+        "face_samples": 40,
+        "comparable_hand_samples": 36,
+        "coverage": 1,
+        "face_coverage": 1,
+        "hand_coverage": 0.911,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "label": "基本协调 · 候选",
+        "reason": "这段解释原因伴随 6 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
         "evidence": [
           {
-            "id": "motion-1090",
+            "id": "motion-1088.52",
             "kind": "motion",
-            "start": 1090,
-            "end": 1094,
-            "peak": 1092,
+            "start": 1088.52,
+            "end": 1088.72,
+            "peak": 1088.72,
+            "count": 2,
+            "magnitude": 0.897,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "outward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "outward",
+            "duration": 0.2
+          },
+          {
+            "id": "motion-1089.12",
+            "kind": "motion",
+            "start": 1089.12,
+            "end": 1089.72,
+            "peak": 1089.52,
+            "count": 4,
+            "magnitude": 0.93,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "upward"
+              },
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.6
+          },
+          {
+            "id": "motion-1090.52",
+            "kind": "motion",
+            "start": 1090.52,
+            "end": 1090.72,
+            "peak": 1090.52,
+            "count": 2,
+            "magnitude": 1.743,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "outward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.2
+          },
+          {
+            "id": "motion-1091.52",
+            "kind": "motion",
+            "start": 1091.52,
+            "end": 1092.52,
+            "peak": 1092.32,
+            "count": 6,
+            "magnitude": 3.164,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left"
+            ],
+            "direction": "downward",
+            "duration": 1
+          },
+          {
+            "id": "motion-1093.92",
+            "kind": "motion",
+            "start": 1093.92,
+            "end": 1094.32,
+            "peak": 1094.12,
             "count": 3,
-            "magnitude": 0.459,
-            "duration": 4
+            "magnitude": 2.425,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left"
+            ],
+            "direction": "upward",
+            "duration": 0.4
+          },
+          {
+            "id": "motion-1095.12",
+            "kind": "motion",
+            "start": 1095.12,
+            "end": 1095.52,
+            "peak": 1095.32,
+            "count": 3,
+            "magnitude": 1.68,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left"
+            ],
+            "direction": "downward",
+            "duration": 0.4
           }
-        ]
+        ],
+        "observation": "在 36 帧中获得可比较的手部轨迹，手部主要位于躯干高度。6 个连续变化片段；18:08 右手向外展开，18:09 左手向上移动、右手向下移动。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是解释原因，已识别的面部动作没有提供明确冲突线索；“后来我们经过了两次的照相识别 没有一头一样的 所以咱…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 40 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 8 帧。"
       },
       "events": [
         {
-          "id": "motion-1090",
+          "id": "motion-1088.52",
           "kind": "motion",
-          "start": 1090,
-          "end": 1094,
-          "peak": 1092,
+          "start": 1088.52,
+          "end": 1088.72,
+          "peak": 1088.72,
+          "count": 2,
+          "magnitude": 0.897,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "outward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "outward",
+          "duration": 0.2
+        },
+        {
+          "id": "motion-1089.12",
+          "kind": "motion",
+          "start": 1089.12,
+          "end": 1089.72,
+          "peak": 1089.52,
+          "count": 4,
+          "magnitude": 0.93,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "upward"
+            },
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.6
+        },
+        {
+          "id": "motion-1090.52",
+          "kind": "motion",
+          "start": 1090.52,
+          "end": 1090.72,
+          "peak": 1090.52,
+          "count": 2,
+          "magnitude": 1.743,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "outward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.2
+        },
+        {
+          "id": "motion-1091.52",
+          "kind": "motion",
+          "start": 1091.52,
+          "end": 1092.52,
+          "peak": 1092.32,
+          "count": 6,
+          "magnitude": 3.164,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left"
+          ],
+          "direction": "downward",
+          "duration": 1
+        },
+        {
+          "id": "motion-1093.92",
+          "kind": "motion",
+          "start": 1093.92,
+          "end": 1094.32,
+          "peak": 1094.12,
           "count": 3,
-          "magnitude": 0.459,
-          "duration": 4
+          "magnitude": 2.425,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left"
+          ],
+          "direction": "upward",
+          "duration": 0.4
+        },
+        {
+          "id": "motion-1095.12",
+          "kind": "motion",
+          "start": 1095.12,
+          "end": 1095.52,
+          "peak": 1095.32,
+          "count": 3,
+          "magnitude": 1.68,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left"
+          ],
+          "direction": "downward",
+          "duration": 0.4
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 1087.92,
+          "frame_url": "./context-evidence/speech_004_whales/b02-1.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b02-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1091.92,
+          "frame_url": "./context-evidence/speech_004_whales/b02-2.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b02-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1095.72,
+          "frame_url": "./context-evidence/speech_004_whales/b02-3.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b02-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [],
@@ -561,18 +948,16 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         1416.4,
         1425.14
@@ -582,77 +967,146 @@
       "text": "最后解剖的时候也发现它的脂肪就只有1厘米 正常的话有4厘米 5厘米的样子 所以说它在割浅之前它就是有问题的",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "cause",
+        "roleLabel": "解释原因",
+        "cue": "所以",
+        "source": "转写线索「所以」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 4,
-        "face_samples": 3,
-        "comparable_hand_samples": 4,
-        "coverage": 0.915,
-        "face_coverage": 0.686,
-        "hand_coverage": 0.915,
-        "sampling_interval_seconds": 2,
+        "observations": 44,
+        "face_samples": 29,
+        "comparable_hand_samples": 24,
+        "coverage": 0.995,
+        "face_coverage": 0.664,
+        "hand_coverage": 0.549,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "status": "partial",
+        "label": "局部片段可评",
+        "reason": "只能评价 23:39–23:45 中已识别的局部轨迹，不能代表整句动作。",
+        "suggestion": "结合原片复核未识别的时间，不把漏检描述为遮挡。",
         "evidence": [
           {
-            "id": "motion-1420",
+            "id": "motion-1422",
             "kind": "motion",
-            "start": 1420,
-            "end": 1420,
-            "peak": 1420,
-            "count": 1,
-            "magnitude": 0.378,
-            "duration": 0
+            "start": 1422,
+            "end": 1422.4,
+            "peak": 1422.2,
+            "count": 3,
+            "magnitude": 2.92,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left"
+            ],
+            "direction": "downward",
+            "duration": 0.4
           },
           {
-            "id": "motion-1424",
+            "id": "motion-1423.2",
             "kind": "motion",
-            "start": 1424,
-            "end": 1424,
-            "peak": 1424,
-            "count": 1,
-            "magnitude": 0.142,
-            "duration": 0
+            "start": 1423.2,
+            "end": 1424.6,
+            "peak": 1424.4,
+            "count": 8,
+            "magnitude": 1.388,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left"
+            ],
+            "direction": "downward",
+            "duration": 1.4
           }
-        ]
+        ],
+        "observation": "在 24 帧中获得可比较的手部轨迹，手部主要位于躯干高度。2 个连续变化片段；23:42 左手向下移动，23:44 左手向下移动。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是解释原因，已识别的面部动作没有提供明确冲突线索；“最后解剖的时候也发现它的脂肪就只有1厘米 正常的话有…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 29 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 18 帧。"
       },
       "events": [
         {
-          "id": "motion-1420",
+          "id": "motion-1422",
           "kind": "motion",
-          "start": 1420,
-          "end": 1420,
-          "peak": 1420,
-          "count": 1,
-          "magnitude": 0.378,
-          "duration": 0
+          "start": 1422,
+          "end": 1422.4,
+          "peak": 1422.2,
+          "count": 3,
+          "magnitude": 2.92,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left"
+          ],
+          "direction": "downward",
+          "duration": 0.4
         },
         {
-          "id": "motion-1424",
+          "id": "motion-1423.2",
           "kind": "motion",
-          "start": 1424,
-          "end": 1424,
-          "peak": 1424,
-          "count": 1,
-          "magnitude": 0.142,
-          "duration": 0
+          "start": 1423.2,
+          "end": 1424.6,
+          "peak": 1424.4,
+          "count": 8,
+          "magnitude": 1.388,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left"
+          ],
+          "direction": "downward",
+          "duration": 1.4
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 1416.4,
+          "frame_url": "./context-evidence/speech_004_whales/b03-1.jpg",
+          "person_url": null,
+          "face_detected": false,
+          "pose_detected": false
+        },
+        {
+          "timestamp": 1420.8,
+          "frame_url": "./context-evidence/speech_004_whales/b03-2.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b03-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1425,
+          "frame_url": "./context-evidence/speech_004_whales/b03-3.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b03-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [],
@@ -893,18 +1347,16 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         1549.94,
         1554.54
@@ -914,57 +1366,216 @@
       "text": "不应该等到它割浅了再保护它 对吧 我们应该把事情做在前边",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "explain",
+        "roleLabel": "陈述 / 说明",
+        "cue": "",
+        "source": "依据当前转写",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 3,
-        "face_samples": 3,
-        "comparable_hand_samples": 3,
-        "coverage": 1,
-        "face_coverage": 1,
-        "hand_coverage": 1,
-        "sampling_interval_seconds": 2,
+        "observations": 23,
+        "face_samples": 23,
+        "comparable_hand_samples": 19,
+        "coverage": 0.983,
+        "face_coverage": 0.983,
+        "hand_coverage": 0.826,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "label": "基本协调 · 候选",
+        "reason": "这段陈述 / 说明伴随 3 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
         "evidence": [
           {
-            "id": "motion-1550",
+            "id": "motion-1550.36",
             "kind": "motion",
-            "start": 1550,
-            "end": 1554,
-            "peak": 1552,
+            "start": 1550.36,
+            "end": 1551.76,
+            "peak": 1551.36,
+            "count": 8,
+            "magnitude": 2.144,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "downward"
+              },
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 1.4
+          },
+          {
+            "id": "motion-1553.16",
+            "kind": "motion",
+            "start": 1553.16,
+            "end": 1553.56,
+            "peak": 1553.56,
             "count": 3,
-            "magnitude": 0.066,
-            "duration": 4
+            "magnitude": 1.57,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "inward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.4
+          },
+          {
+            "id": "motion-1553.96",
+            "kind": "motion",
+            "start": 1553.96,
+            "end": 1554.16,
+            "peak": 1553.96,
+            "count": 2,
+            "magnitude": 2.54,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "outward"
+              },
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.2
           }
-        ]
+        ],
+        "observation": "在 19 帧中获得可比较的手部轨迹，手部主要位于躯干高度。3 个连续变化片段；25:51 双手向下移动，25:53 左手向身体收回、右手向上移动。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是陈述 / 说明，已识别的面部动作没有提供明确冲突线索；“不应该等到它割浅了再保护它 对吧 我们应该把事情做在…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 23 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 6 帧。"
       },
       "events": [
         {
-          "id": "motion-1550",
+          "id": "motion-1550.36",
           "kind": "motion",
-          "start": 1550,
-          "end": 1554,
-          "peak": 1552,
+          "start": 1550.36,
+          "end": 1551.76,
+          "peak": 1551.36,
+          "count": 8,
+          "magnitude": 2.144,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "downward"
+            },
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 1.4
+        },
+        {
+          "id": "motion-1553.16",
+          "kind": "motion",
+          "start": 1553.16,
+          "end": 1553.56,
+          "peak": 1553.56,
           "count": 3,
-          "magnitude": 0.066,
-          "duration": 4
+          "magnitude": 1.57,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "inward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.4
+        },
+        {
+          "id": "motion-1553.96",
+          "kind": "motion",
+          "start": 1553.96,
+          "end": 1554.16,
+          "peak": 1553.96,
+          "count": 2,
+          "magnitude": 2.54,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "outward"
+            },
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.2
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 1549.96,
+          "frame_url": "./context-evidence/speech_004_whales/b04-1.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b04-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1552.16,
+          "frame_url": "./context-evidence/speech_004_whales/b04-2.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b04-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1554.36,
+          "frame_url": "./context-evidence/speech_004_whales/b04-3.jpg",
+          "person_url": "./context-evidence/speech_004_whales/b04-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [],
@@ -1319,10 +1930,8 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     }

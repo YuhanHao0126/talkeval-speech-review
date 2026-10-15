@@ -1,7 +1,7 @@
 {
   "schema_version": "talkeval_context_fit_v1",
   "case_id": "speech_005_climate",
-  "algorithm_version": "context-rules-2026.10.15-v1",
+  "algorithm_version": "context-rules-2026.10.15-v2",
   "configuration": {
     "minSamples": 3,
     "minCoverage": 0.6,
@@ -12,10 +12,10 @@
   },
   "results": [
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "insufficient",
-      "label": "证据不足",
+      "label": "暂不能评价",
       "time_span": [
         633.36,
         638.64
@@ -25,37 +25,66 @@
       "text": "比如说云南的大部分地区 还有新疆的西部 它的舒适日数能够达到一百四十天以上",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "example",
+        "roleLabel": "举例说明",
+        "cue": "比如",
+        "source": "转写线索「比如」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 3,
+        "observations": 27,
         "face_samples": 0,
         "comparable_hand_samples": 0,
         "coverage": 1,
         "face_coverage": 0,
         "hand_coverage": 0,
-        "sampling_interval_seconds": 2,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
         "status": "insufficient",
-        "label": "证据不足",
-        "reason": "手部出画、遮挡或连续可比较样本不足。",
-        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
-        "evidence": []
+        "label": "暂不能评价",
+        "reason": "手部检测未形成可靠的连续轨迹，当前无法评价动作效果。",
+        "suggestion": "先对照下面的原片帧；识别失败属于分析缺口，不作为演讲者扣分项。",
+        "evidence": [],
+        "observation": "本段 27 次抽样未获得连续可比较的手部轨迹；这不证明手部出画或被遮挡。"
       },
       "expression": {
         "status": "insufficient",
-        "label": "证据不足",
-        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
-        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
-        "evidence": []
+        "label": "暂不能评价",
+        "reason": "人脸检测未成功或连续结果不足，当前无法评价表情效果。",
+        "suggestion": "先对照原片中的人脸；不能用检测失败代替表情评价。",
+        "evidence": [],
+        "observation": "本段 27 次抽样均未取得面部关键点；不能由此断言原视频没有清晰人脸。"
       },
       "events": [],
+      "evidence_frames": [
+        {
+          "timestamp": 633.36,
+          "frame_url": "./context-evidence/speech_005_climate/b01-1.jpg",
+          "person_url": null,
+          "face_detected": false,
+          "pose_detected": false
+        },
+        {
+          "timestamp": 635.96,
+          "frame_url": "./context-evidence/speech_005_climate/b01-2.jpg",
+          "person_url": null,
+          "face_detected": false,
+          "pose_detected": false
+        },
+        {
+          "timestamp": 638.56,
+          "frame_url": "./context-evidence/speech_005_climate/b01-3.jpg",
+          "person_url": null,
+          "face_detected": false,
+          "pose_detected": false
+        }
+      ],
       "voice_windows": [],
       "slide": {
         "beat_id": "b01",
@@ -466,15 +495,15 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         640.32,
         648.02
@@ -484,37 +513,66 @@
       "text": "2022年我国绝大多数城市 它的气候舒适天数是只有七十到一百四十天之间的",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "enumerate",
+        "roleLabel": "分点 / 数量说明",
+        "cue": "2022年",
+        "source": "转写线索「2022年」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 4,
-        "face_samples": 4,
-        "comparable_hand_samples": 2,
-        "coverage": 0.912,
-        "face_coverage": 0.912,
-        "hand_coverage": 0.392,
-        "sampling_interval_seconds": 2,
+        "observations": 39,
+        "face_samples": 36,
+        "comparable_hand_samples": 34,
+        "coverage": 1,
+        "face_coverage": 0.935,
+        "hand_coverage": 0.883,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "手部出画、遮挡或连续可比较样本不足。",
-        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "“2022年我国绝大多数城市 它的气候舒适天数是只有七…”主要靠语句完成分点 / 数量说明，已识别手部保持小幅变化，与这种讲述方式基本协调。",
+        "suggestion": "可以保留这种幅度，不需要为了得分刻意增加手势。",
+        "evidence": [],
+        "observation": "在 34 帧中获得可比较的手部轨迹，手部主要位于躯干高度。这段已识别轨迹以小幅变化为主。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是分点 / 数量说明，已识别的口部开合和面部变化没有提供明确冲突线索；“2022年我国绝大多数城市 它的气候舒适天数是只有七…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 36 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 1 帧。嘴部开合随发言有变化。"
       },
       "events": [],
+      "evidence_frames": [
+        {
+          "timestamp": 640.32,
+          "frame_url": "./context-evidence/speech_005_climate/b02-1.jpg",
+          "person_url": null,
+          "face_detected": false,
+          "pose_detected": false
+        },
+        {
+          "timestamp": 644.12,
+          "frame_url": "./context-evidence/speech_005_climate/b02-2.jpg",
+          "person_url": "./context-evidence/speech_005_climate/b02-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 647.92,
+          "frame_url": "./context-evidence/speech_005_climate/b02-3.jpg",
+          "person_url": "./context-evidence/speech_005_climate/b02-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        }
+      ],
       "voice_windows": [],
       "slide": {
         "beat_id": "b02",
@@ -844,19 +902,16 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
         "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         1109.68,
         1117.18
@@ -866,37 +921,108 @@
       "text": "中国因此人均每年损失的睡眠时长是接近10个小时的 大家可能觉得一年10小时这个总量好像也没有多大",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "cause",
+        "roleLabel": "解释原因",
+        "cue": "因此",
+        "source": "转写线索「因此」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 4,
-        "face_samples": 3,
-        "comparable_hand_samples": 2,
-        "coverage": 0.976,
-        "face_coverage": 0.709,
-        "hand_coverage": 0.443,
-        "sampling_interval_seconds": 2,
+        "observations": 38,
+        "face_samples": 38,
+        "comparable_hand_samples": 34,
+        "coverage": 1,
+        "face_coverage": 1,
+        "hand_coverage": 0.907,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "手部出画、遮挡或连续可比较样本不足。",
-        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "这段解释原因伴随 1 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
+        "evidence": [
+          {
+            "id": "motion-1114.28",
+            "kind": "motion",
+            "start": 1114.28,
+            "end": 1114.88,
+            "peak": 1114.28,
+            "count": 4,
+            "magnitude": 1.402,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "upward",
+            "duration": 0.6
+          }
+        ],
+        "observation": "在 34 帧中获得可比较的手部轨迹，手部主要位于躯干高度。1 个连续变化片段；18:34 右手向上移动。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是解释原因，已识别的口部开合和面部变化没有提供明确冲突线索；“中国因此人均每年损失的睡眠时长是接近10个小时的 大…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 38 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 8 帧。嘴部开合随发言有变化。"
       },
-      "events": [],
+      "events": [
+        {
+          "id": "motion-1114.28",
+          "kind": "motion",
+          "start": 1114.28,
+          "end": 1114.88,
+          "peak": 1114.28,
+          "count": 4,
+          "magnitude": 1.402,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "upward",
+          "duration": 0.6
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 1109.68,
+          "frame_url": "./context-evidence/speech_005_climate/b03-1.jpg",
+          "person_url": "./context-evidence/speech_005_climate/b03-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1113.48,
+          "frame_url": "./context-evidence/speech_005_climate/b03-2.jpg",
+          "person_url": "./context-evidence/speech_005_climate/b03-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1117.08,
+          "frame_url": "./context-evidence/speech_005_climate/b03-3.jpg",
+          "person_url": "./context-evidence/speech_005_climate/b03-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        }
+      ],
       "voice_windows": [],
       "slide": {
         "beat_id": "b03",
@@ -1161,18 +1287,16 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
-      "status": "insufficient",
-      "label": "证据不足",
+      "status": "neutral",
+      "label": "基本协调 · 候选",
       "time_span": [
         1591.14,
         1594.34
@@ -1182,37 +1306,108 @@
       "text": "能够贡献全球40%到70%的潜力",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "enumerate",
+        "roleLabel": "分点 / 数量说明",
+        "cue": "40%",
+        "source": "转写线索「40%」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 2,
-        "face_samples": 2,
-        "comparable_hand_samples": 2,
-        "coverage": 1,
-        "face_coverage": 1,
-        "hand_coverage": 1,
-        "sampling_interval_seconds": 2,
+        "observations": 16,
+        "face_samples": 16,
+        "comparable_hand_samples": 15,
+        "coverage": 0.975,
+        "face_coverage": 0.975,
+        "hand_coverage": 0.937,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "手部出画、遮挡或连续可比较样本不足。",
-        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "这段分点 / 数量说明伴随 1 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
+        "evidence": [
+          {
+            "id": "motion-1593.76",
+            "kind": "motion",
+            "start": 1593.76,
+            "end": 1593.96,
+            "peak": 1593.76,
+            "count": 2,
+            "magnitude": 0.788,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 0.2
+          }
+        ],
+        "observation": "在 15 帧中获得可比较的手部轨迹，手部主要位于躯干高度。1 个连续变化片段；26:33 右手向下移动。"
       },
       "expression": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
-        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "当前是分点 / 数量说明，已识别的口部开合和面部变化没有提供明确冲突线索；“能够贡献全球40%到70%的潜力…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 16 帧面部结果。未检测到持续的双侧嘴角上提。嘴部开合随发言有变化。"
       },
-      "events": [],
+      "events": [
+        {
+          "id": "motion-1593.76",
+          "kind": "motion",
+          "start": 1593.76,
+          "end": 1593.96,
+          "peak": 1593.76,
+          "count": 2,
+          "magnitude": 0.788,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 0.2
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 1591.16,
+          "frame_url": "./context-evidence/speech_005_climate/b04-1.jpg",
+          "person_url": "./context-evidence/speech_005_climate/b04-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1592.76,
+          "frame_url": "./context-evidence/speech_005_climate/b04-2.jpg",
+          "person_url": "./context-evidence/speech_005_climate/b04-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1594.16,
+          "frame_url": "./context-evidence/speech_005_climate/b04-3.jpg",
+          "person_url": "./context-evidence/speech_005_climate/b04-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        }
+      ],
       "voice_windows": [],
       "slide": {
         "beat_id": "b04",
@@ -1388,10 +1583,7 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     }

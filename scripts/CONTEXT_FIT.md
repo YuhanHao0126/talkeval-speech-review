@@ -1,29 +1,36 @@
-# Contextual expression review — first baseline
+# Contextual expression review — source-aligned revision
 
-The browser and the offline build use the same deterministic module: `dist/context-fit.js`.
-Run `node scripts/build_context_fit.cjs` to derive case artifacts in `dist/context-fit/` and `docs/context-fit/` from the existing timestamped case data. This is data processing, not training or benchmark evaluation.
+The browser and offline artifact builder share `dist/context-fit.js` (v2).
+Run `node scripts/build_context_fit.cjs` after updating case observations.
 
-## Inputs and outputs
+## Source extraction
 
-- Inputs: aligned transcript span, point candidate, visible face coefficients, comparable hand motion, relative loudness windows, scene-change candidates and optional explicit delivery goal.
-- Outputs: possible support, neutral candidate, possible conflict or insufficient evidence, separately for face and gesture. Each result contains text, time range, coverage, event peaks, rationale and limitations.
-- Automatic context uses a small lexical rule set for welcome/thanks and emphasis. It is not semantic intent recognition. Quoted/negated cues disable automatic tone attribution. Conflict rules require an explicitly chosen restrained/solemn goal.
-- At least three usable samples and 60% time coverage are required. Missing coefficients are unknown. The baseline's thresholds are uncalibrated; no accuracy, probability or causal effectiveness is implied.
-- Existing cases remain at their original 1–2 second sampling intervals; precision is declared in each result. Camera changes suppress nearby hand displacement. Legacy motion remains in image coordinates, and its limitation is disclosed.
+All 10 public cases and their 40 aligned core-point windows have been re-extracted from the original local videos at approximately 0.2-second intervals. This is inference on real footage, not synthetic data or an accuracy benchmark. Other timestamps retain the older overview observations.
 
-## Live data
+The Python implementation is `src/talkeval/visual_refinement.py` in the local algorithm project. Run `python src/talkeval/visual_refinement.py --demo <demo-root>`; optional `--case` and `--beat` select a window. It checks the existing analysis permission record, resolves incoming video pointers and uses the original resolution. `visual.py` delegates future full-video analysis to the same detector (observations v4).
 
-- Camera analysis targets a 0.2 second interval. Actual sample intervals and visibility determine usable coverage.
-- Hand movement uses shoulder-centred coordinates, aspect-ratio correction and shoulder-width units per second; occlusion, large scale changes and long gaps reset comparison.
-- Full face coefficients are retained in the 120 second analysis window. The saved session keeps whole-session samples at roughly one-second intervals, all per-sentence candidate results, compact audio observations and the video.
-- Archived face vectors use `session.visualSampling.coefficient_names` and each sample's `face.blendshape_values`; null means missing, never zero.
-- Browser speech boundaries are approximate. No boundary, manual text or ambiguous point matching means insufficient evidence. Timestamp origin is reset when recording starts.
-- `segment.contextFitIndex` indexes `session.contextFits`; there is no duplicated nested result in every segment.
+- MediaPipe 0.10.21 / Pose Full: independent IMAGE detection; full-frame, tracked-region and fallback tiles. Pose geometry rejects collapsed or horizontal diagram skeletons. These heuristics are intended for upright speaking footage and remain imperfect.
+- Head crops at several scales recover small faces. Full-frame faces must agree with the detected speaker head; unassociated faces are not counted as speaker evidence.
+- All returned face coefficients are retained. Wrists are compared in shoulder-width coordinates per second. Body-relative margins classify hand height. Camera-change candidates, missing tracking, scale jumps and long gaps reset movement comparison.
+- `visual_refinement` stores exact video timestamps, frame size, source-video SHA-256, per-frame detector results, body landmarks and errors. Each window includes its first/middle/last source frame plus the detected person crop, when available. These thumbnails are original pixels, not generated illustrations.
+- A failed detection is an unknown model result. It is never proof of an unclear face, occlusion or hands leaving the image.
 
-## Future extraction / validation
+## Context candidates and UI
 
-The local Python extractor `src/talkeval/visual.py` now emits v3 observations and all face coefficients, and computes body-relative wrist speed. Its CLI default interval is 0.2 seconds; extraction is therefore slower. Existing public cases were not reprocessed.
+Each card shows the aligned sentence, source-frame links, measured observations, candidate interpretation and evidence times. The image links seek the corresponding video timestamp. Reports include the measured observations as well as the interpretation.
 
-Human labels remain separate from machine candidates in annotation exports. Next steps require contextual labels, speaker-disjoint evaluation, neutral/insufficient classes, temporal alignment ablations and confidence calibration. TCN/MulT are research candidates; neither has been trained or claimed as part of this release.
+Automatic context is a small lexical rule set for causes, contrasts, examples, questions, enumeration, emphasis and welcome/thanks. It is not a trained semantic-understanding model. Hand events and relative-loudness windows can suggest support; temporal co-occurrence is not precise word-level synchronization. Explicit solemn delivery goals can suggest conflict. Lack of conflict alone does not establish that a gesture is optimal.
 
-The GitHub site is static. Persistent cloud save/delete and recovery of older recordings still depend on access to the existing backend. This frontend release does not grant that access or replace the backend.
+At least three usable samples and 60% time coverage are required for a whole-window channel candidate. Lower coverage with usable samples is reported as partial. Face and gesture channels are gated separately. Thresholds remain uncalibrated; neither probabilities nor accuracy claims are reported. Small source faces may produce unstable coefficients even when detected.
+
+## Live and saved sessions
+
+The live camera uses independent IMAGE detection with Pose Full and person/head retry crops, targeting a 0.2-second interval; actual timing controls coverage. Missing observations do not penalize the speaker. The same context engine is used for live sentences and saved results. Browser ASR boundaries are approximate; manual text without reliable timing cannot be evaluated against the footage. Ambiguous point matching does not prevent evaluating a reliable current sentence, but its point association remains unconfirmed.
+
+All face coefficients remain in the 120-second live window. Saved sessions retain approximately one-second samples, per-sentence results, audio observations and video according to the existing save/discard flow. Existing archived results are not silently presented as newly recomputed results. Their version is visible in the card.
+
+Human labels remain separate from machine candidates. Contextual training labels, speaker-disjoint evaluation and confidence calibration are still future work; no TCN/MulT training is claimed.
+
+GitHub Pages is static. Existing cloud persistence and deletion still depend on access to the existing backend.
+
+Reference APIs: https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker/python and https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker/python

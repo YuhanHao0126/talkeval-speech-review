@@ -1,7 +1,7 @@
 {
   "schema_version": "talkeval_context_fit_v1",
   "case_id": "speech_auto_1fbefa7db3",
-  "algorithm_version": "context-rules-2026.10.15-v1",
+  "algorithm_version": "context-rules-2026.10.15-v2",
   "configuration": {
     "minSamples": 3,
     "minCoverage": 0.6,
@@ -12,10 +12,10 @@
   },
   "results": [
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         320.69,
         326.03
@@ -25,57 +25,156 @@
       "text": "简直快翻倍了 对吧 它这并不是你一个人的选择 并不是因为你很残",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "cause",
+        "roleLabel": "解释原因",
+        "cue": "因为",
+        "source": "转写线索「因为」",
         "explicit": false,
         "ambiguous": true
       },
       "quality": {
-        "observations": 6,
-        "face_samples": 4,
-        "comparable_hand_samples": 4,
-        "coverage": 1,
-        "face_coverage": 0.661,
-        "hand_coverage": 0.625,
-        "sampling_interval_seconds": 1,
+        "observations": 27,
+        "face_samples": 26,
+        "comparable_hand_samples": 23,
+        "coverage": 0.998,
+        "face_coverage": 0.961,
+        "hand_coverage": 0.861,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "label": "基本协调 · 候选",
+        "reason": "这段解释原因伴随 2 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
         "evidence": [
           {
-            "id": "motion-325",
+            "id": "motion-324.52",
             "kind": "motion",
-            "start": 325,
-            "end": 325,
-            "peak": 325,
-            "count": 1,
-            "magnitude": 0.048,
-            "duration": 0
+            "start": 324.52,
+            "end": 325.12,
+            "peak": 324.52,
+            "count": 4,
+            "magnitude": 1.571,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "outward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.6
+          },
+          {
+            "id": "motion-325.72",
+            "kind": "motion",
+            "start": 325.72,
+            "end": 325.92,
+            "peak": 325.72,
+            "count": 2,
+            "magnitude": 2.35,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left"
+            ],
+            "direction": "upward",
+            "duration": 0.2
           }
-        ]
+        ],
+        "observation": "在 23 帧中获得可比较的手部轨迹，手部主要位于躯干高度。2 个连续变化片段；05:24 左手向外展开、右手向上移动，05:25 左手向上移动。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是解释原因，已识别的面部动作没有提供明确冲突线索；“简直快翻倍了 对吧 它这并不是你一个人的选择 并不是…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 26 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 13 帧。"
       },
       "events": [
         {
-          "id": "motion-325",
+          "id": "motion-324.52",
           "kind": "motion",
-          "start": 325,
-          "end": 325,
-          "peak": 325,
-          "count": 1,
-          "magnitude": 0.048,
-          "duration": 0
+          "start": 324.52,
+          "end": 325.12,
+          "peak": 324.52,
+          "count": 4,
+          "magnitude": 1.571,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "outward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.6
+        },
+        {
+          "id": "motion-325.72",
+          "kind": "motion",
+          "start": 325.72,
+          "end": 325.92,
+          "peak": 325.72,
+          "count": 2,
+          "magnitude": 2.35,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left"
+          ],
+          "direction": "upward",
+          "duration": 0.2
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 320.72,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b01-1.jpg",
+          "person_url": "./context-evidence/speech_auto_1fbefa7db3/b01-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 323.32,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b01-2.jpg",
+          "person_url": "./context-evidence/speech_auto_1fbefa7db3/b01-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 325.92,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b01-3.jpg",
+          "person_url": "./context-evidence/speech_auto_1fbefa7db3/b01-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [
@@ -290,18 +389,16 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         508.16,
         513.66
@@ -311,77 +408,256 @@
       "text": "因为我们无论是对糖还是对脂肪 当你反复刺激之后 其实大脑里它会慢慢地上瘾",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "cause",
+        "roleLabel": "解释原因",
+        "cue": "因为",
+        "source": "转写线索「因为」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 5,
-        "face_samples": 5,
-        "comparable_hand_samples": 5,
-        "coverage": 0.909,
-        "face_coverage": 0.909,
-        "hand_coverage": 0.909,
-        "sampling_interval_seconds": 1,
+        "observations": 28,
+        "face_samples": 28,
+        "comparable_hand_samples": 27,
+        "coverage": 1,
+        "face_coverage": 1,
+        "hand_coverage": 0.982,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "label": "基本协调 · 候选",
+        "reason": "这段解释原因伴随 4 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
         "evidence": [
           {
-            "id": "motion-509",
+            "id": "motion-508.76",
             "kind": "motion",
-            "start": 509,
-            "end": 509,
-            "peak": 509,
-            "count": 1,
-            "magnitude": 0.128,
-            "duration": 0
+            "start": 508.76,
+            "end": 509.16,
+            "peak": 508.76,
+            "count": 3,
+            "magnitude": 1.199,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "upward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": "upward",
+            "duration": 0.4
           },
           {
-            "id": "motion-512",
+            "id": "motion-509.96",
             "kind": "motion",
-            "start": 512,
-            "end": 513,
-            "peak": 513,
+            "start": 509.96,
+            "end": 510.36,
+            "peak": 509.96,
+            "count": 3,
+            "magnitude": 1.273,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "inward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.4
+          },
+          {
+            "id": "motion-511.36",
+            "kind": "motion",
+            "start": 511.36,
+            "end": 511.56,
+            "peak": 511.56,
             "count": 2,
-            "magnitude": 0.226,
-            "duration": 1
+            "magnitude": 0.834,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "downward"
+              },
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 0.2
+          },
+          {
+            "id": "motion-512.56",
+            "kind": "motion",
+            "start": 512.56,
+            "end": 512.76,
+            "peak": 512.56,
+            "count": 2,
+            "magnitude": 1.763,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "upward",
+            "duration": 0.2
           }
-        ]
+        ],
+        "observation": "在 27 帧中获得可比较的手部轨迹，手部主要位于躯干高度。4 个连续变化片段；08:28 双手向上移动，08:29 左手向身体收回、右手向上移动。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是解释原因，已识别的口部开合和面部变化没有提供明确冲突线索；“因为我们无论是对糖还是对脂肪 当你反复刺激之后 其实…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 28 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 26 帧。嘴部开合随发言有变化。"
       },
       "events": [
         {
-          "id": "motion-509",
+          "id": "motion-508.76",
           "kind": "motion",
-          "start": 509,
-          "end": 509,
-          "peak": 509,
-          "count": 1,
-          "magnitude": 0.128,
-          "duration": 0
+          "start": 508.76,
+          "end": 509.16,
+          "peak": 508.76,
+          "count": 3,
+          "magnitude": 1.199,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "upward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": "upward",
+          "duration": 0.4
         },
         {
-          "id": "motion-512",
+          "id": "motion-509.96",
           "kind": "motion",
-          "start": 512,
-          "end": 513,
-          "peak": 513,
+          "start": 509.96,
+          "end": 510.36,
+          "peak": 509.96,
+          "count": 3,
+          "magnitude": 1.273,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "inward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.4
+        },
+        {
+          "id": "motion-511.36",
+          "kind": "motion",
+          "start": 511.36,
+          "end": 511.56,
+          "peak": 511.56,
           "count": 2,
-          "magnitude": 0.226,
-          "duration": 1
+          "magnitude": 0.834,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "downward"
+            },
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 0.2
+        },
+        {
+          "id": "motion-512.56",
+          "kind": "motion",
+          "start": 512.56,
+          "end": 512.76,
+          "peak": 512.56,
+          "count": 2,
+          "magnitude": 1.763,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "upward",
+          "duration": 0.2
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 508.16,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b02-1.jpg",
+          "person_url": "./context-evidence/speech_auto_1fbefa7db3/b02-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 510.96,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b02-2.jpg",
+          "person_url": "./context-evidence/speech_auto_1fbefa7db3/b02-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 513.56,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b02-3.jpg",
+          "person_url": "./context-evidence/speech_auto_1fbefa7db3/b02-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [],
@@ -483,18 +759,15 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
-      "status": "insufficient",
-      "label": "证据不足",
+      "status": "neutral",
+      "label": "基本协调 · 候选",
       "time_span": [
         558.68,
         565.16
@@ -504,46 +777,156 @@
       "text": "所以大家也可以回想一下 是不是你去了超市里 看到的那些包装颜色非常鲜艳",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "cause",
+        "roleLabel": "解释原因",
+        "cue": "所以",
+        "source": "转写线索「所以」",
         "explicit": false,
         "ambiguous": true
       },
       "quality": {
-        "observations": 7,
-        "face_samples": 1,
-        "comparable_hand_samples": 1,
+        "observations": 33,
+        "face_samples": 32,
+        "comparable_hand_samples": 29,
         "coverage": 1,
-        "face_coverage": 0.102,
-        "hand_coverage": 0.102,
-        "sampling_interval_seconds": 1,
+        "face_coverage": 0.969,
+        "hand_coverage": 0.892,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "手部出画、遮挡或连续可比较样本不足。",
-        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "这段解释原因伴随 2 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
+        "evidence": [
+          {
+            "id": "motion-561.48",
+            "kind": "motion",
+            "start": 561.48,
+            "end": 561.68,
+            "peak": 561.48,
+            "count": 2,
+            "magnitude": 1.34,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left"
+            ],
+            "direction": "downward",
+            "duration": 0.2
+          },
+          {
+            "id": "motion-563.88",
+            "kind": "motion",
+            "start": 563.88,
+            "end": 564.08,
+            "peak": 563.88,
+            "count": 2,
+            "magnitude": 2.963,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "upward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": "upward",
+            "duration": 0.2
+          }
+        ],
+        "observation": "在 29 帧中获得可比较的手部轨迹，手部主要位于躯干高度。2 个连续变化片段；09:21 左手向下移动，09:23 双手向上移动。"
       },
       "expression": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
-        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "当前是解释原因，已识别的口部开合和面部变化没有提供明确冲突线索；“所以大家也可以回想一下 是不是你去了超市里 看到的那…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 32 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 4 帧。嘴部开合随发言有变化。"
       },
       "events": [
         {
-          "id": "motion-565",
+          "id": "motion-561.48",
           "kind": "motion",
-          "start": 565,
-          "end": 565,
-          "peak": 565,
-          "count": 1,
-          "magnitude": 0.146,
-          "duration": 0
+          "start": 561.48,
+          "end": 561.68,
+          "peak": 561.48,
+          "count": 2,
+          "magnitude": 1.34,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left"
+          ],
+          "direction": "downward",
+          "duration": 0.2
+        },
+        {
+          "id": "motion-563.88",
+          "kind": "motion",
+          "start": 563.88,
+          "end": 564.08,
+          "peak": 563.88,
+          "count": 2,
+          "magnitude": 2.963,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "upward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": "upward",
+          "duration": 0.2
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 558.68,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b03-1.jpg",
+          "person_url": "./context-evidence/speech_auto_1fbefa7db3/b03-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 561.88,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b03-2.jpg",
+          "person_url": "./context-evidence/speech_auto_1fbefa7db3/b03-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 565.08,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b03-3.jpg",
+          "person_url": "./context-evidence/speech_auto_1fbefa7db3/b03-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [
@@ -830,18 +1213,16 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
-      "status": "insufficient",
-      "label": "证据不足",
+      "status": "partial",
+      "label": "局部片段可评",
       "time_span": [
         928.8,
         936.28
@@ -851,46 +1232,64 @@
       "text": "每100克大约会加7%左右的糖 再加上本身酸奶中 就自然有一些乳糖之类的成分",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "enumerate",
+        "roleLabel": "分点 / 数量说明",
+        "cue": "7%",
+        "source": "转写线索「7%」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 8,
-        "face_samples": 1,
-        "comparable_hand_samples": 3,
+        "observations": 38,
+        "face_samples": 18,
+        "comparable_hand_samples": 13,
         "coverage": 1,
-        "face_coverage": 0.094,
-        "hand_coverage": 0.361,
-        "sampling_interval_seconds": 1,
+        "face_coverage": 0.468,
+        "hand_coverage": 0.348,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "手部出画、遮挡或连续可比较样本不足。",
-        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
-        "evidence": []
+        "status": "partial",
+        "label": "局部片段可评",
+        "reason": "只能评价 15:29–15:32 中已识别的局部轨迹，不能代表整句动作。",
+        "suggestion": "结合原片复核未识别的时间，不把漏检描述为遮挡。",
+        "evidence": [],
+        "observation": "在 13 帧中获得可比较的手部轨迹，手部主要位于躯干高度。这段已识别轨迹以小幅变化为主。"
       },
       "expression": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
-        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
-        "evidence": []
+        "status": "partial",
+        "label": "局部片段可评",
+        "reason": "人脸在 18/38 次抽样中得到识别，现有表情证据仅覆盖部分时段，暂不评价整句。",
+        "suggestion": "图中人物可能清晰可见，模型仍会漏检；可回看对应帧，不据此评价演讲者。",
+        "evidence": [],
+        "observation": "获得 18 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 7 帧。嘴部开合随发言有变化。"
       },
-      "events": [
+      "events": [],
+      "evidence_frames": [
         {
-          "id": "motion-930",
-          "kind": "motion",
-          "start": 930,
-          "end": 931,
-          "peak": 931,
-          "count": 2,
-          "magnitude": 0.075,
-          "duration": 1
+          "timestamp": 928.8,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b04-1.jpg",
+          "person_url": "./context-evidence/speech_auto_1fbefa7db3/b04-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 932.6,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b04-2.jpg",
+          "person_url": null,
+          "face_detected": false,
+          "pose_detected": false
+        },
+        {
+          "timestamp": 936.2,
+          "frame_url": "./context-evidence/speech_auto_1fbefa7db3/b04-3.jpg",
+          "person_url": null,
+          "face_detected": false,
+          "pose_detected": false
         }
       ],
       "voice_windows": [
@@ -1891,11 +2290,8 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
         "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     }

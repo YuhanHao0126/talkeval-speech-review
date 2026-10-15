@@ -670,7 +670,7 @@
     });
     state.session.timeline.push({ at: segment.at, type: "speech", text: clean, activePoint: segment.pointMatch.pointId, scores: scores.map(({ point, score }) => ({ id: point.id, score: Number(score.toFixed(3)) })), voice: metrics, visual: segment.visual });
     $("#coach-context-fit").innerHTML = TalkEvalFit.card(fit, { compact: true, seekAttribute: null });
-    setText("#visual-point-note", segment.pointMatch.reliable ? `当前语句对应：${segment.pointMatch.pointText}` : "当前语句与提纲的对应尚不明确，暂不作适配判断。");
+    setText("#visual-point-note", segment.pointMatch.reliable ? `当前语句对应：${segment.pointMatch.pointText}` : "当前语句尚未明确对应提纲；先依据这句话复核表情与动作。");
     updateTranscript(); renderPoints(); updateMetrics();
   }
 
@@ -700,16 +700,63 @@
       const vision = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/+esm");
       const files = await vision.FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
       const faceModel = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
-      const poseModel = "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task";
-      state.faceTask = await vision.FaceLandmarker.createFromOptions(files, { baseOptions: { modelAssetPath: faceModel, delegate: "CPU" }, runningMode: "VIDEO", numFaces: 1, outputFaceBlendshapes: true });
-      state.poseTask = await vision.PoseLandmarker.createFromOptions(files, { baseOptions: { modelAssetPath: poseModel, delegate: "CPU" }, runningMode: "VIDEO", numPoses: 1 });
-      setText("#coach-model-status", "视觉模型已就绪；面部动作与手腕移动在本机抽样分析。");
+      const poseModel = "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task";
+      state.faceTask = await vision.FaceLandmarker.createFromOptions(files, { baseOptions: { modelAssetPath: faceModel, delegate: "CPU" }, runningMode: "IMAGE", numFaces: 1, outputFaceBlendshapes: true });
+      state.poseTask = await vision.PoseLandmarker.createFromOptions(files, { baseOptions: { modelAssetPath: poseModel, delegate: "CPU" }, runningMode: "IMAGE", numPoses: 1 });
+      setText("#coach-model-status", "视觉模型已就绪；逐帧定位人物，漏检时重新检测人物和头部区域。");
       setVisualStatus("视觉观察中", "等待有效人脸与身体关键点。分数表示可见动作强度，不代表情绪或得当程度。");
       runVisionLoop();
     } catch (error) {
       setText("#coach-model-status", `视觉模型未能加载：${error.message}；本场仍可用语音和手动转写。`);
       setVisualStatus("模型不可用", "无法取得视觉模型；请确保网络允许加载 MediaPipe CDN 和模型文件。摄像头画面仍只显示在本机浏览器。");
     } finally { state.visionLoading = false; }
+  }
+
+  // Independent images prevent stale tracking across subject movement and camera changes.
+  function detectLiveFrame(video) {
+    const width = video.videoWidth, height = video.videoHeight;
+    const canvas = state.visionCropCanvas || (state.visionCropCanvas = document.createElement("canvas"));
+    const crop = box => {
+      const [x0, y0, x1, y1] = box.map(value => Math.max(0, Math.min(1, value)));
+      canvas.width = Math.max(1, Math.round((x1 - x0) * width));
+      canvas.height = Math.max(1, Math.round((y1 - y0) * height));
+      canvas.getContext("2d").drawImage(video, x0 * width, y0 * height, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+      return { image: canvas, box: [x0, y0, x1, y1] };
+    };
+    const plausible = points => {
+      if (!points?.length) return false;
+      const [nose, left, right, lh, rh] = [0, 11, 12, 23, 24].map(index => points[index]);
+      const shoulder = Math.hypot((left.x - right.x) * width, (left.y - right.y) * height);
+      if (shoulder < 8 || Math.min(left.visibility, right.visibility) < .5) return false;
+      if (nose.visibility >= .5 && ((left.y + right.y) / 2 - nose.y) * height < shoulder * .08) return false;
+      return !(Math.min(lh.visibility, rh.visibility) >= .5 && ((lh.y + rh.y - left.y - right.y) / 2) * height < shoulder * .5);
+    };
+    let pose = state.poseTask.detect(video), faceView = "full_frame";
+    if (!plausible(pose.landmarks?.[0])) {
+      pose = { landmarks: [] };
+      for (const box of [[.2, 0, .8, 1], [0, 0, .55, 1], [.45, 0, 1, 1]]) {
+        const patch = crop(box), result = state.poseTask.detect(patch.image);
+        const [x0, y0, x1, y1] = patch.box;
+        const points = result.landmarks?.[0]?.map(point => ({ ...point, x: x0 + point.x * (x1 - x0), y: y0 + point.y * (y1 - y0) }));
+        if (plausible(points)) { pose = { landmarks: [points] }; break; }
+      }
+    }
+    let face = state.faceTask.detect(video);
+    const points = pose.landmarks?.[0];
+    if (points && points[0].visibility >= .5) {
+      const nose = points[0], shoulder = Math.hypot((points[11].x - points[12].x) * width, (points[11].y - points[12].y) * height);
+      const mesh = face.faceLandmarks?.[0];
+      if (mesh && Math.hypot((mesh[1].x - nose.x) * width, (mesh[1].y - nose.y) * height) > shoulder) face = { faceLandmarks: [], faceBlendshapes: [] };
+      if (!face.faceLandmarks?.length) {
+        for (const scale of [.8, 1.3]) {
+          const cw = Math.max(40, shoulder * scale), ch = Math.max(48, shoulder * scale * 1.3);
+          const patch = crop([nose.x - cw / width / 2, nose.y - ch / height * .45, nose.x + cw / width / 2, nose.y + ch / height * .55]);
+          const candidate = state.faceTask.detect(patch.image);
+          if (candidate.faceLandmarks?.length) { face = candidate; faceView = "person_head_crop"; break; }
+        }
+      }
+    }
+    return { face, pose, faceView };
   }
 
   function runVisionLoop() {
@@ -721,22 +768,22 @@
       if (video.readyState >= 2 && performance.now() - state.lastVisionAt >= 200) {
         state.lastVisionAt = performance.now();
         try {
-          const now = performance.now(), at = elapsed();
-          const face = state.faceTask.detectForVideo(video, now), pose = state.poseTask.detectForVideo(video, now);
+          const at = elapsed();
+          const { face, pose, faceView } = detectLiveFrame(video);
           const categories = face.faceBlendshapes?.[0]?.categories || [];
           const coefficients = Object.fromEntries(categories.map(item => [item.categoryName, Number(item.score.toFixed(4))]));
           const get = name => coefficients[name] ?? 0;
           const smile = (get("mouthSmileLeft") + get("mouthSmileRight")) / 2;
           const brow = Math.max(get("browInnerUp"), get("browOuterUpLeft"), get("browOuterUpRight")), jaw = get("jawOpen");
           const faceVisible = Boolean(face.faceLandmarks?.length);
-          const faceCue = !faceVisible ? "未检测到清晰人脸" : smile > .5 ? "观察到嘴角上提" : brow > .52 ? "观察到眉部上提" : jaw > .58 ? "观察到张口动作" : "面部可见，动作变化较小";
+          const faceCue = !faceVisible ? "该帧人脸模型暂无结果" : smile > .5 ? "观察到嘴角上提" : brow > .52 ? "观察到眉部上提" : jaw > .58 ? "观察到张口动作" : "面部可见，动作变化较小";
           const landmarks = pose.landmarks?.[0] || [], ls = landmarks[11], rs = landmarks[12];
           // Measure in body coordinates and reset on occlusion, large scale changes or sampling gaps.
           const aspect = (video.videoWidth || 640) / (video.videoHeight || 360);
           const shoulderWidth = visible(ls) && visible(rs) ? Math.hypot((ls.x - rs.x) * aspect, ls.y - rs.y) : 0;
-          const center = shoulderWidth >= .08 ? { x: (ls.x + rs.x) / 2, y: (ls.y + rs.y) / 2 } : null;
+          const center = shoulderWidth >= .02 ? { x: (ls.x + rs.x) / 2, y: (ls.y + rs.y) / 2 } : null;
           const previous = state.previousWrists, dt = previous ? at - previous.at : 0;
-          const comparable = center && previous && dt > 0 && dt <= .8 && shoulderWidth / previous.width > .7 && shoulderWidth / previous.width < 1.4;
+          const comparable = center && previous && dt > 0 && dt <= .8 && shoulderWidth / previous.width > .7 && shoulderWidth / previous.width < 1.4 && previous.center && Math.hypot((center.x - previous.center.x) * aspect, center.y - previous.center.y) <= Math.max(shoulderWidth, previous.width);
           const hands = {}, positions = {};
           for (const [side, index] of [["left", 15], ["right", 16]]) {
             const wrist = landmarks[index];
@@ -744,12 +791,15 @@
             const position = center ? { x: (wrist.x - center.x) * aspect / shoulderWidth, y: (wrist.y - center.y) / shoulderWidth } : null;
             positions[side] = position;
             const speed = comparable && position && previous[side] ? Math.hypot(position.x - previous[side].x, position.y - previous[side].y) / dt : null;
-            hands[side] = { visible: true, visibility: Number(wrist.visibility.toFixed(3)), movement: speed === null ? "not_comparable" : speed >= TalkEvalFit.CONFIG.motionSpeed ? "clear_motion" : "small_motion", speed_body_per_second: speed === null ? null : Number(speed.toFixed(4)) };
+            const dx = comparable && position && previous[side] ? position.x - previous[side].x : null;
+            const dy = comparable && position && previous[side] ? position.y - previous[side].y : null;
+            const direction = dx === null ? null : Math.abs(dx) > Math.abs(dy) ? Math.abs(position.x) > Math.abs(previous[side].x) ? "outward" : "inward" : dy < 0 ? "upward" : "downward";
+            hands[side] = { motion_direction: direction, visible: true, visibility: Number(wrist.visibility.toFixed(3)), movement: speed === null ? "not_comparable" : speed >= TalkEvalFit.CONFIG.motionSpeed ? "clear_motion" : "small_motion", body_xy: position ? [Number(position.x.toFixed(4)), Number(position.y.toFixed(4))] : null, position: position ? position.y < 0 ? "above_shoulder" : position.y < 1.8 ? "torso_level" : "below_waist" : null, speed_body_per_second: speed === null ? null : Number(speed.toFixed(4)) };
           }
-          state.previousWrists = center ? { at, width: shoulderWidth, ...positions } : null;
+          state.previousWrists = center ? { at, center, width: shoulderWidth, ...positions } : null;
           const validHands = Object.values(hands).filter(hand => hand.movement !== "not_comparable");
-          const gestureCue = validHands.some(hand => hand.movement === "clear_motion") ? "观察到相对身体的手部变化" : validHands.length ? "可见手部变化较小" : "手部或肩部遮挡，等待连续可比较画面";
-          const sample = { timestamp: Number(at.toFixed(3)), face: { visible: faceVisible, view: "full_frame", blendshape_scores: coefficients }, pose: { hands }, faceText: faceCue, gestureText: gestureCue };
+          const gestureCue = validHands.some(hand => hand.movement === "clear_motion") ? "观察到相对身体的手部变化" : validHands.length ? "可见手部变化较小" : "手部或肩部关键点尚未连续检出，原因未确认";
+          const sample = { timestamp: Number(at.toFixed(3)), face: { visible: faceVisible, view: faceView, detector_status: faceVisible ? "detected" : "not_detected_unknown_cause", blendshape_scores: coefficients }, pose: { hands }, faceText: faceCue, gestureText: gestureCue };
           state.visualWindow.push(sample); state.visualWindow = state.visualWindow.filter(item => item.timestamp >= at - 120);
           if (at - state.lastVisualArchiveAt >= 1) {
             // Retain all returned coefficients as a compact vector; names are stored once per session.

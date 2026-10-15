@@ -1,7 +1,7 @@
 {
   "schema_version": "talkeval_context_fit_v1",
   "case_id": "speech_auto_7e27718c13",
-  "algorithm_version": "context-rules-2026.10.15-v1",
+  "algorithm_version": "context-rules-2026.10.15-v2",
   "configuration": {
     "minSamples": 3,
     "minCoverage": 0.6,
@@ -12,10 +12,10 @@
   },
   "results": [
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         473.85,
         481.09
@@ -25,57 +25,146 @@
       "text": "那职校的氛围其实相对来说 是非常宽松的 反而也会给学生不少试措和成长的空间",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "explain",
+        "roleLabel": "陈述 / 说明",
+        "cue": "",
+        "source": "依据当前转写",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 7,
-        "face_samples": 5,
-        "comparable_hand_samples": 7,
-        "coverage": 0.967,
-        "face_coverage": 0.691,
-        "hand_coverage": 0.967,
-        "sampling_interval_seconds": 1.001,
+        "observations": 37,
+        "face_samples": 37,
+        "comparable_hand_samples": 34,
+        "coverage": 0.999,
+        "face_coverage": 0.999,
+        "hand_coverage": 0.927,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "label": "基本协调 · 候选",
+        "reason": "这段陈述 / 说明伴随 2 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
         "evidence": [
           {
-            "id": "motion-478.478",
+            "id": "motion-474.474",
             "kind": "motion",
-            "start": 478.478,
-            "end": 480.48,
-            "peak": 479.479,
-            "count": 3,
-            "magnitude": 0.13,
-            "duration": 2.002
+            "start": 474.474,
+            "end": 475.275,
+            "peak": 475.075,
+            "count": 5,
+            "magnitude": 1.157,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 0.801
+          },
+          {
+            "id": "motion-479.679",
+            "kind": "motion",
+            "start": 479.679,
+            "end": 479.879,
+            "peak": 479.879,
+            "count": 2,
+            "magnitude": 1.361,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 0.2
           }
-        ]
+        ],
+        "observation": "在 34 帧中获得可比较的手部轨迹，手部主要位于躯干高度。2 个连续变化片段；07:55 右手向下移动，07:59 右手向下移动。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是陈述 / 说明，已识别的口部开合和面部变化没有提供明确冲突线索；“那职校的氛围其实相对来说 是非常宽松的 反而也会给学…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 37 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 4 帧。嘴部开合随发言有变化。"
       },
       "events": [
         {
-          "id": "motion-478.478",
+          "id": "motion-474.474",
           "kind": "motion",
-          "start": 478.478,
-          "end": 480.48,
-          "peak": 479.479,
-          "count": 3,
-          "magnitude": 0.13,
-          "duration": 2.002
+          "start": 474.474,
+          "end": 475.275,
+          "peak": 475.075,
+          "count": 5,
+          "magnitude": 1.157,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 0.801
+        },
+        {
+          "id": "motion-479.679",
+          "kind": "motion",
+          "start": 479.679,
+          "end": 479.879,
+          "peak": 479.879,
+          "count": 2,
+          "magnitude": 1.361,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 0.2
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 473.873,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b01-1.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b01-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 477.477,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b01-2.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b01-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 481.081,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b01-3.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b01-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [
@@ -304,18 +393,16 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         659.71,
         667.17
@@ -325,57 +412,106 @@
       "text": "那具体来说就是你通过三年的中职学习 通过内部的衔接不需要考高考 再读两年的高职",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "explain",
+        "roleLabel": "陈述 / 说明",
+        "cue": "",
+        "source": "依据当前转写",
         "explicit": false,
         "ambiguous": true
       },
       "quality": {
-        "observations": 7,
-        "face_samples": 7,
-        "comparable_hand_samples": 5,
-        "coverage": 0.938,
-        "face_coverage": 0.938,
-        "hand_coverage": 0.67,
-        "sampling_interval_seconds": 1.001,
+        "observations": 38,
+        "face_samples": 38,
+        "comparable_hand_samples": 21,
+        "coverage": 0.999,
+        "face_coverage": 0.999,
+        "hand_coverage": 0.555,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "status": "partial",
+        "label": "局部片段可评",
+        "reason": "只能评价 11:00–11:07 中已识别的局部轨迹，不能代表整句动作。",
+        "suggestion": "结合原片复核未识别的时间，不把漏检描述为遮挡。",
         "evidence": [
           {
-            "id": "motion-663.663",
+            "id": "motion-661.327",
             "kind": "motion",
-            "start": 663.663,
-            "end": 664.664,
-            "peak": 663.663,
-            "count": 2,
-            "magnitude": 0.136,
-            "duration": 1.001
+            "start": 661.327,
+            "end": 661.728,
+            "peak": 661.728,
+            "count": 3,
+            "magnitude": 2.338,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 0.401
           }
-        ]
+        ],
+        "observation": "在 21 帧中获得可比较的手部轨迹，手部主要位于躯干高度。1 个连续变化片段；11:01 右手向下移动。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是陈述 / 说明，已识别的口部开合和面部变化没有提供明确冲突线索；“那具体来说就是你通过三年的中职学习 通过内部的衔接不…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 38 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 2 帧。嘴部开合随发言有变化。"
       },
       "events": [
         {
-          "id": "motion-663.663",
+          "id": "motion-661.327",
           "kind": "motion",
-          "start": 663.663,
-          "end": 664.664,
-          "peak": 663.663,
-          "count": 2,
-          "magnitude": 0.136,
-          "duration": 1.001
+          "start": 661.327,
+          "end": 661.728,
+          "peak": 661.728,
+          "count": 3,
+          "magnitude": 2.338,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 0.401
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 659.726,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b02-1.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b02-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 663.53,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b02-2.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b02-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 667.133,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b02-3.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b02-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [
@@ -1790,19 +1926,16 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
         "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         886.05,
         893.57
@@ -1812,57 +1945,226 @@
       "text": "可是终止的老师不是 这批孩子其实成长经历各异 他们身上还背着很多结构性的一些创伤",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "explain",
+        "roleLabel": "陈述 / 说明",
+        "cue": "",
+        "source": "依据当前转写",
         "explicit": false,
         "ambiguous": true
       },
       "quality": {
-        "observations": 7,
-        "face_samples": 7,
-        "comparable_hand_samples": 7,
-        "coverage": 0.931,
-        "face_coverage": 0.931,
-        "hand_coverage": 0.931,
-        "sampling_interval_seconds": 1.001,
+        "observations": 38,
+        "face_samples": 38,
+        "comparable_hand_samples": 34,
+        "coverage": 0.998,
+        "face_coverage": 0.998,
+        "hand_coverage": 0.904,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "label": "基本协调 · 候选",
+        "reason": "这段陈述 / 说明伴随 4 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
         "evidence": [
           {
-            "id": "motion-890.89",
+            "id": "motion-888.454",
             "kind": "motion",
-            "start": 890.89,
-            "end": 892.892,
-            "peak": 890.89,
+            "start": 888.454,
+            "end": 888.654,
+            "peak": 888.654,
+            "count": 2,
+            "magnitude": 1.65,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 0.2
+          },
+          {
+            "id": "motion-889.055",
+            "kind": "motion",
+            "start": 889.055,
+            "end": 889.455,
+            "peak": 889.455,
             "count": 3,
-            "magnitude": 0.167,
-            "duration": 2.002
+            "magnitude": 1.122,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 0.4
+          },
+          {
+            "id": "motion-890.857",
+            "kind": "motion",
+            "start": 890.857,
+            "end": 891.457,
+            "peak": 891.057,
+            "count": 4,
+            "magnitude": 1.057,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 0.6
+          },
+          {
+            "id": "motion-892.058",
+            "kind": "motion",
+            "start": 892.058,
+            "end": 892.258,
+            "peak": 892.058,
+            "count": 2,
+            "magnitude": 0.99,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "upward",
+            "duration": 0.2
           }
-        ]
+        ],
+        "observation": "在 34 帧中获得可比较的手部轨迹，手部主要位于躯干高度。4 个连续变化片段；14:48 右手向下移动，14:49 右手向下移动。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是陈述 / 说明，已识别的口部开合和面部变化没有提供明确冲突线索；“可是终止的老师不是 这批孩子其实成长经历各异 他们身…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 38 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 1 帧。嘴部开合随发言有变化。"
       },
       "events": [
         {
-          "id": "motion-890.89",
+          "id": "motion-888.454",
           "kind": "motion",
-          "start": 890.89,
-          "end": 892.892,
-          "peak": 890.89,
+          "start": 888.454,
+          "end": 888.654,
+          "peak": 888.654,
+          "count": 2,
+          "magnitude": 1.65,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 0.2
+        },
+        {
+          "id": "motion-889.055",
+          "kind": "motion",
+          "start": 889.055,
+          "end": 889.455,
+          "peak": 889.455,
           "count": 3,
-          "magnitude": 0.167,
-          "duration": 2.002
+          "magnitude": 1.122,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 0.4
+        },
+        {
+          "id": "motion-890.857",
+          "kind": "motion",
+          "start": 890.857,
+          "end": 891.457,
+          "peak": 891.057,
+          "count": 4,
+          "magnitude": 1.057,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 0.6
+        },
+        {
+          "id": "motion-892.058",
+          "kind": "motion",
+          "start": 892.058,
+          "end": 892.258,
+          "peak": 892.058,
+          "count": 2,
+          "magnitude": 0.99,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "upward",
+          "duration": 0.2
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 886.052,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b03-1.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b03-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 889.856,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b03-2.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b03-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 893.459,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b03-3.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b03-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [],
@@ -2055,18 +2357,16 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         1498.49,
         1503.57
@@ -2076,77 +2376,64 @@
       "text": "不需要给每个孩子发一张 标准统一千篇一律的地图",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "explain",
+        "roleLabel": "陈述 / 说明",
+        "cue": "",
+        "source": "依据当前转写",
         "explicit": false,
         "ambiguous": true
       },
       "quality": {
-        "observations": 6,
-        "face_samples": 6,
-        "comparable_hand_samples": 6,
+        "observations": 26,
+        "face_samples": 26,
+        "comparable_hand_samples": 13,
         "coverage": 0.999,
         "face_coverage": 0.999,
-        "hand_coverage": 0.999,
-        "sampling_interval_seconds": 1.001,
+        "hand_coverage": 0.506,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
-        "evidence": [
-          {
-            "id": "motion-1499.498",
-            "kind": "motion",
-            "start": 1499.498,
-            "end": 1499.498,
-            "peak": 1499.498,
-            "count": 1,
-            "magnitude": 0.067,
-            "duration": 0
-          },
-          {
-            "id": "motion-1501.5",
-            "kind": "motion",
-            "start": 1501.5,
-            "end": 1502.501,
-            "peak": 1502.501,
-            "count": 2,
-            "magnitude": 0.12,
-            "duration": 1.001
-          }
-        ]
+        "status": "partial",
+        "label": "局部片段可评",
+        "reason": "只能评价 24:58–25:03 中已识别的局部轨迹，不能代表整句动作。",
+        "suggestion": "结合原片复核未识别的时间，不把漏检描述为遮挡。",
+        "evidence": [],
+        "observation": "在 13 帧中获得可比较的手部轨迹，手部主要位于躯干高度。这段已识别轨迹以小幅变化为主。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是陈述 / 说明，已识别的口部开合和面部变化没有提供明确冲突线索；“不需要给每个孩子发一张 标准统一千篇一律的地图…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 26 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 5 帧。嘴部开合随发言有变化。"
       },
-      "events": [
+      "events": [],
+      "evidence_frames": [
         {
-          "id": "motion-1499.498",
-          "kind": "motion",
-          "start": 1499.498,
-          "end": 1499.498,
-          "peak": 1499.498,
-          "count": 1,
-          "magnitude": 0.067,
-          "duration": 0
+          "timestamp": 1498.497,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b04-1.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b04-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         },
         {
-          "id": "motion-1501.5",
-          "kind": "motion",
-          "start": 1501.5,
-          "end": 1502.501,
-          "peak": 1502.501,
-          "count": 2,
-          "magnitude": 0.12,
-          "duration": 1.001
+          "timestamp": 1501.1,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b04-2.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b04-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1503.502,
+          "frame_url": "./context-evidence/speech_auto_7e27718c13/b04-3.jpg",
+          "person_url": "./context-evidence/speech_auto_7e27718c13/b04-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [],
@@ -2227,10 +2514,8 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     }

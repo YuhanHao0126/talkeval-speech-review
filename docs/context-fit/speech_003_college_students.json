@@ -1,7 +1,7 @@
 {
   "schema_version": "talkeval_context_fit_v1",
   "case_id": "speech_003_college_students",
-  "algorithm_version": "context-rules-2026.10.15-v1",
+  "algorithm_version": "context-rules-2026.10.15-v2",
   "configuration": {
     "minSamples": 3,
     "minCoverage": 0.6,
@@ -12,10 +12,10 @@
   },
   "results": [
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
-      "status": "supportive",
-      "label": "可能支持表达",
+      "status": "neutral",
+      "label": "基本协调 · 候选",
       "time_span": [
         382.98,
         394.86
@@ -24,68 +24,167 @@
       "point_text": "因此，与其一直牢牢地记住和回顾那些失败，我们更应该常常想起自己过去的成功经历，那些自己觉得做得还不错的事情",
       "text": "所以和一直牢牢的记住和回顾那些失败相比 我们更应该常常想起的是我过去的成功经验 那些我觉得自己做的还很不错的事情",
       "context": {
-        "goal": "emphasize",
-        "source": "转写词汇线索",
+        "goal": "explain",
+        "kind": "contrast",
+        "roleLabel": "比较与转折",
+        "cue": "相比",
+        "source": "转写线索「相比」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 6,
-        "face_samples": 6,
-        "comparable_hand_samples": 6,
-        "coverage": 0.965,
-        "face_coverage": 0.965,
-        "hand_coverage": 0.965,
-        "sampling_interval_seconds": 2.002,
+        "observations": 60,
+        "face_samples": 60,
+        "comparable_hand_samples": 59,
+        "coverage": 0.999,
+        "face_coverage": 0.999,
+        "hand_coverage": 0.99,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "supportive",
-        "label": "可能支持表达",
-        "reason": "强调语境中，手部变化与较强声音出现在同一语句时段，可能帮助突出重点。",
-        "suggestion": "回看动作峰值与关键词是否一致；本结果只确认时段共现。",
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "这段比较与转折伴随 2 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
         "evidence": [
           {
-            "id": "motion-384.384",
+            "id": "motion-388.188",
             "kind": "motion",
-            "start": 384.384,
-            "end": 384.384,
-            "peak": 384.384,
-            "count": 1,
-            "magnitude": 0.057,
-            "duration": 0
+            "start": 388.188,
+            "end": 388.388,
+            "peak": 388.188,
+            "count": 2,
+            "magnitude": 0.931,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "upward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": "upward",
+            "duration": 0.2
+          },
+          {
+            "id": "motion-392.392",
+            "kind": "motion",
+            "start": 392.392,
+            "end": 392.592,
+            "peak": 392.392,
+            "count": 2,
+            "magnitude": 0.778,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "outward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.2
           }
-        ]
+        ],
+        "observation": "在 59 帧中获得可比较的手部轨迹，手部主要位于躯干高度。2 个连续变化片段；06:28 双手向上移动，06:32 左手向外展开、右手向上移动。"
       },
       "expression": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
-        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "当前是比较与转折，已识别的口部开合和面部变化没有提供明确冲突线索；“所以和一直牢牢的记住和回顾那些失败相比 我们更应该常…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 60 帧面部结果。未检测到持续的双侧嘴角上提。嘴部开合随发言有变化。"
       },
       "events": [
         {
-          "id": "motion-384.384",
+          "id": "motion-388.188",
           "kind": "motion",
-          "start": 384.384,
-          "end": 384.384,
-          "peak": 384.384,
-          "count": 1,
-          "magnitude": 0.057,
-          "duration": 0
+          "start": 388.188,
+          "end": 388.388,
+          "peak": 388.188,
+          "count": 2,
+          "magnitude": 0.931,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "upward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": "upward",
+          "duration": 0.2
         },
         {
-          "id": "motion-394.394",
+          "id": "motion-392.392",
           "kind": "motion",
-          "start": 394.394,
-          "end": 394.394,
-          "peak": 394.394,
-          "count": 1,
-          "magnitude": 0.048,
-          "duration": 0
+          "start": 392.392,
+          "end": 392.592,
+          "peak": 392.392,
+          "count": 2,
+          "magnitude": 0.778,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "outward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.2
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 382.983,
+          "frame_url": "./context-evidence/speech_003_college_students/b01-1.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b01-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 388.989,
+          "frame_url": "./context-evidence/speech_003_college_students/b01-2.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b01-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 394.794,
+          "frame_url": "./context-evidence/speech_003_college_students/b01-3.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b01-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
         }
       ],
       "voice_windows": [
@@ -209,18 +308,15 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
-        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
-        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
-      "status": "insufficient",
-      "label": "证据不足",
+      "status": "neutral",
+      "label": "基本协调 · 候选",
       "time_span": [
         400.32,
         408.64
@@ -230,37 +326,158 @@
       "text": "他们会抱着对美好未来的愿景 放弃当下的生活 投入保言 考功 进大厂的浪潮",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "explain",
+        "roleLabel": "陈述 / 说明",
+        "cue": "",
+        "source": "依据当前转写",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 5,
-        "face_samples": 0,
-        "comparable_hand_samples": 0,
+        "observations": 42,
+        "face_samples": 42,
+        "comparable_hand_samples": 41,
         "coverage": 0.999,
-        "face_coverage": 0,
-        "hand_coverage": 0,
-        "sampling_interval_seconds": 2.002,
+        "face_coverage": 0.999,
+        "hand_coverage": 0.985,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "手部出画、遮挡或连续可比较样本不足。",
-        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "这段陈述 / 说明伴随 2 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
+        "evidence": [
+          {
+            "id": "motion-401.134",
+            "kind": "motion",
+            "start": 401.134,
+            "end": 401.735,
+            "peak": 401.334,
+            "count": 4,
+            "magnitude": 1.167,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "outward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.601
+          },
+          {
+            "id": "motion-403.737",
+            "kind": "motion",
+            "start": 403.737,
+            "end": 404.137,
+            "peak": 403.937,
+            "count": 3,
+            "magnitude": 1.005,
+            "motions": [
+              {
+                "side": "right",
+                "direction": "inward"
+              }
+            ],
+            "sides": [
+              "right"
+            ],
+            "direction": "inward",
+            "duration": 0.4
+          }
+        ],
+        "observation": "在 41 帧中获得可比较的手部轨迹，手部主要位于躯干高度。2 个连续变化片段；06:41 左手向外展开、右手向上移动，06:43 右手向身体收回。"
       },
       "expression": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
-        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "当前是陈述 / 说明，已识别的口部开合和面部变化没有提供明确冲突线索；“他们会抱着对美好未来的愿景 放弃当下的生活 投入保言…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 42 帧面部结果。未检测到持续的双侧嘴角上提。嘴部开合随发言有变化。"
       },
-      "events": [],
+      "events": [
+        {
+          "id": "motion-401.134",
+          "kind": "motion",
+          "start": 401.134,
+          "end": 401.735,
+          "peak": 401.334,
+          "count": 4,
+          "magnitude": 1.167,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "outward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.601
+        },
+        {
+          "id": "motion-403.737",
+          "kind": "motion",
+          "start": 403.737,
+          "end": 404.137,
+          "peak": 403.937,
+          "count": 3,
+          "magnitude": 1.005,
+          "motions": [
+            {
+              "side": "right",
+              "direction": "inward"
+            }
+          ],
+          "sides": [
+            "right"
+          ],
+          "direction": "inward",
+          "duration": 0.4
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 400.333,
+          "frame_url": "./context-evidence/speech_003_college_students/b02-1.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b02-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 404.537,
+          "frame_url": "./context-evidence/speech_003_college_students/b02-2.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b02-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 408.541,
+          "frame_url": "./context-evidence/speech_003_college_students/b02-3.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b02-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        }
+      ],
       "voice_windows": [
         {
           "span": [
@@ -497,15 +714,15 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
       "status": "neutral",
-      "label": "自然 / 中性候选",
+      "label": "基本协调 · 候选",
       "time_span": [
         893.13,
         906.57
@@ -515,37 +732,308 @@
       "text": "所以大学生很习惯于将那些消极的情绪打包成一团 他们无法说出自己是悲伤 担忧 不满还是委屈 只是诗途将那些不好的东西统统丢进垃圾桶",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "cause",
+        "roleLabel": "解释原因",
+        "cue": "所以",
+        "source": "转写线索「所以」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 6,
-        "face_samples": 0,
-        "comparable_hand_samples": 6,
-        "coverage": 0.893,
-        "face_coverage": 0,
-        "hand_coverage": 0.893,
-        "sampling_interval_seconds": 2.002,
+        "observations": 67,
+        "face_samples": 67,
+        "comparable_hand_samples": 66,
+        "coverage": 0.992,
+        "face_coverage": 0.992,
+        "hand_coverage": 0.982,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
         "status": "neutral",
-        "label": "自然 / 中性候选",
-        "reason": "这一段手部变化较小；说明性表达不必依赖频繁动作。",
-        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
-        "evidence": []
+        "label": "基本协调 · 候选",
+        "reason": "这段解释原因伴随 5 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
+        "evidence": [
+          {
+            "id": "motion-894.56",
+            "kind": "motion",
+            "start": 894.56,
+            "end": 894.961,
+            "peak": 894.56,
+            "count": 3,
+            "magnitude": 1.394,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left"
+            ],
+            "direction": "upward",
+            "duration": 0.401
+          },
+          {
+            "id": "motion-896.362",
+            "kind": "motion",
+            "start": 896.362,
+            "end": 896.963,
+            "peak": 896.763,
+            "count": 4,
+            "magnitude": 1.576,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "downward"
+              },
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 0.601
+          },
+          {
+            "id": "motion-900.967",
+            "kind": "motion",
+            "start": 900.967,
+            "end": 901.167,
+            "peak": 900.967,
+            "count": 2,
+            "magnitude": 0.998,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "inward"
+              },
+              {
+                "side": "right",
+                "direction": "inward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": "inward",
+            "duration": 0.2
+          },
+          {
+            "id": "motion-902.568",
+            "kind": "motion",
+            "start": 902.568,
+            "end": 903.369,
+            "peak": 902.769,
+            "count": 5,
+            "magnitude": 1.101,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "upward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": "upward",
+            "duration": 0.801
+          },
+          {
+            "id": "motion-905.972",
+            "kind": "motion",
+            "start": 905.972,
+            "end": 906.172,
+            "peak": 905.972,
+            "count": 2,
+            "magnitude": 2.201,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "downward"
+              },
+              {
+                "side": "right",
+                "direction": "downward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": "downward",
+            "duration": 0.2
+          }
+        ],
+        "observation": "在 66 帧中获得可比较的手部轨迹，手部主要位于躯干高度。5 个连续变化片段；14:54 左手向上移动，14:56 双手向下移动。"
       },
       "expression": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
-        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "当前是解释原因，已识别的口部开合和面部变化没有提供明确冲突线索；“所以大学生很习惯于将那些消极的情绪打包成一团 他们无…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 67 帧面部结果。未检测到持续的双侧嘴角上提。嘴部开合随发言有变化。"
       },
-      "events": [],
+      "events": [
+        {
+          "id": "motion-894.56",
+          "kind": "motion",
+          "start": 894.56,
+          "end": 894.961,
+          "peak": 894.56,
+          "count": 3,
+          "magnitude": 1.394,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left"
+          ],
+          "direction": "upward",
+          "duration": 0.401
+        },
+        {
+          "id": "motion-896.362",
+          "kind": "motion",
+          "start": 896.362,
+          "end": 896.963,
+          "peak": 896.763,
+          "count": 4,
+          "magnitude": 1.576,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "downward"
+            },
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 0.601
+        },
+        {
+          "id": "motion-900.967",
+          "kind": "motion",
+          "start": 900.967,
+          "end": 901.167,
+          "peak": 900.967,
+          "count": 2,
+          "magnitude": 0.998,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "inward"
+            },
+            {
+              "side": "right",
+              "direction": "inward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": "inward",
+          "duration": 0.2
+        },
+        {
+          "id": "motion-902.568",
+          "kind": "motion",
+          "start": 902.568,
+          "end": 903.369,
+          "peak": 902.769,
+          "count": 5,
+          "magnitude": 1.101,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "upward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": "upward",
+          "duration": 0.801
+        },
+        {
+          "id": "motion-905.972",
+          "kind": "motion",
+          "start": 905.972,
+          "end": 906.172,
+          "peak": 905.972,
+          "count": 2,
+          "magnitude": 2.201,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "downward"
+            },
+            {
+              "side": "right",
+              "direction": "downward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": "downward",
+          "duration": 0.2
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 893.159,
+          "frame_url": "./context-evidence/speech_003_college_students/b03-1.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b03-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 899.766,
+          "frame_url": "./context-evidence/speech_003_college_students/b03-2.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b03-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 906.372,
+          "frame_url": "./context-evidence/speech_003_college_students/b03-3.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b03-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        }
+      ],
       "voice_windows": [],
       "slide": {
         "beat_id": "b03",
@@ -806,16 +1294,15 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     },
     {
-      "version": "context-rules-2026.10.15-v1",
+      "version": "context-rules-2026.10.15-v2",
       "method": "context_conditioned_rules",
-      "status": "insufficient",
-      "label": "证据不足",
+      "status": "neutral",
+      "label": "基本协调 · 候选",
       "time_span": [
         1093.08,
         1101.26
@@ -825,37 +1312,168 @@
       "text": "而是因为他们对自己的要求从来都没有降低 他们的进取心也没有降低 他们总是希望自己可以做得更好",
       "context": {
         "goal": "explain",
-        "source": "一般说明语境",
+        "kind": "contrast",
+        "roleLabel": "比较与转折",
+        "cue": "而是",
+        "source": "转写线索「而是」",
         "explicit": false,
         "ambiguous": false
       },
       "quality": {
-        "observations": 5,
-        "face_samples": 0,
-        "comparable_hand_samples": 2,
-        "coverage": 0.999,
-        "face_coverage": 0,
-        "hand_coverage": 0.368,
-        "sampling_interval_seconds": 2.002,
+        "observations": 41,
+        "face_samples": 30,
+        "comparable_hand_samples": 37,
+        "coverage": 0.992,
+        "face_coverage": 0.723,
+        "hand_coverage": 0.905,
+        "sampling_interval_seconds": 0.2,
         "timing_quality": "asr-segment",
         "time_uncertainty_seconds": 1,
+        "detector_absence_is_not_occlusion": true,
         "reasons": []
       },
       "gesture": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "手部出画、遮挡或连续可比较样本不足。",
-        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "这段比较与转折伴随 2 个动作变化片段，与讲述结构没有发现可确定的冲突；具体动作功能可沿时间点复核。",
+        "suggestion": "重点回看动作开始和收回的位置，确认它们是否对应句子的转折或收束。",
+        "evidence": [
+          {
+            "id": "motion-1093.492",
+            "kind": "motion",
+            "start": 1093.492,
+            "end": 1094.293,
+            "peak": 1094.093,
+            "count": 5,
+            "magnitude": 1.099,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "inward"
+              },
+              {
+                "side": "right",
+                "direction": "outward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.801
+          },
+          {
+            "id": "motion-1095.494",
+            "kind": "motion",
+            "start": 1095.494,
+            "end": 1096.295,
+            "peak": 1096.095,
+            "count": 5,
+            "magnitude": 2.136,
+            "motions": [
+              {
+                "side": "left",
+                "direction": "downward"
+              },
+              {
+                "side": "right",
+                "direction": "upward"
+              }
+            ],
+            "sides": [
+              "left",
+              "right"
+            ],
+            "direction": null,
+            "duration": 0.801
+          }
+        ],
+        "observation": "在 37 帧中获得可比较的手部轨迹，手部主要位于躯干高度。2 个连续变化片段；18:14 左手向身体收回、右手向外展开，18:16 左手向下移动、右手向上移动。"
       },
       "expression": {
-        "status": "insufficient",
-        "label": "证据不足",
-        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
-        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
-        "evidence": []
+        "status": "neutral",
+        "label": "基本协调 · 候选",
+        "reason": "当前是比较与转折，已识别的口部开合和面部变化没有提供明确冲突线索；“而是因为他们对自己的要求从来都没有降低 他们的进取心…”不要求固定微笑或夸张表情。",
+        "suggestion": "可保持自然表情；优先通过句子重音和停顿传达这一层意思。",
+        "evidence": [],
+        "observation": "获得 30 帧面部结果。未检测到持续的双侧嘴角上提。眉部上提线索出现于 3 帧。嘴部开合随发言有变化。"
       },
-      "events": [],
+      "events": [
+        {
+          "id": "motion-1093.492",
+          "kind": "motion",
+          "start": 1093.492,
+          "end": 1094.293,
+          "peak": 1094.093,
+          "count": 5,
+          "magnitude": 1.099,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "inward"
+            },
+            {
+              "side": "right",
+              "direction": "outward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.801
+        },
+        {
+          "id": "motion-1095.494",
+          "kind": "motion",
+          "start": 1095.494,
+          "end": 1096.295,
+          "peak": 1096.095,
+          "count": 5,
+          "magnitude": 2.136,
+          "motions": [
+            {
+              "side": "left",
+              "direction": "downward"
+            },
+            {
+              "side": "right",
+              "direction": "upward"
+            }
+          ],
+          "sides": [
+            "left",
+            "right"
+          ],
+          "direction": null,
+          "duration": 0.801
+        }
+      ],
+      "evidence_frames": [
+        {
+          "timestamp": 1093.092,
+          "frame_url": "./context-evidence/speech_003_college_students/b04-1.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b04-1-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1097.096,
+          "frame_url": "./context-evidence/speech_003_college_students/b04-2.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b04-2-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        },
+        {
+          "timestamp": 1101.1,
+          "frame_url": "./context-evidence/speech_003_college_students/b04-3.jpg",
+          "person_url": "./context-evidence/speech_003_college_students/b04-3-person.jpg",
+          "face_detected": true,
+          "pose_detected": true
+        }
+      ],
       "voice_windows": [],
       "slide": {
         "beat_id": "b04",
@@ -1082,8 +1700,8 @@
       },
       "limitations": [
         "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
-        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
-        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "本段已从原视频按约0.2秒重新取帧，采用人物与头部局部识别；未检出只代表模型没有输出。远景面部细节仍可能不稳定。",
         "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
       ]
     }

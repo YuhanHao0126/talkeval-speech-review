@@ -53,7 +53,7 @@ const time = (seconds) => {
 };
 
 async function getJson(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
   return response.json();
 }
@@ -269,14 +269,15 @@ function visualPermissionMessage(data) {
 }
 
 function visualObservationAt(data, seconds) {
-  const observations = data.visual_observations?.observations || [];
+  const refined = Object.values(data.visual_refinement?.windows || {}).find(window => seconds >= window.time_span[0] && seconds <= window.time_span[1]);
+  const observations = refined?.observations || data.visual_observations?.observations || [];
   if (!observations.length) return null;
   let closest = null;
   for (const item of observations) {
     const distance = Math.abs(Number(item.timestamp) - Number(seconds));
     if (!closest || distance < closest.distance) closest = { item, distance };
   }
-  const tolerance = Math.max(1.25, Number(data.visual_observations?.sampling_interval_seconds || 1) * .75);
+  const tolerance = refined ? .4 : Math.max(1.25, Number(data.visual_observations?.sampling_interval_seconds || 1) * .75);
   return closest && closest.distance <= tolerance ? closest.item : null;
 }
 
@@ -319,15 +320,15 @@ function currentVoiceEvidence(data, seconds) {
 
 function faceEvidenceText(face) {
   if (!face) return "当前时间点没有近邻视觉样本";
-  if (!face.visible) return face.view === "pose_guided_crop" ? "远景局部未检测到清晰人脸" : "画面中未检测到清晰人脸";
+  if (!face.visible) return "该帧未取得人脸关键点；不能据此认定人脸出画或不清晰";
   const features = face.visible_features || [];
-  const source = face.view === "pose_guided_crop" ? "远景局部放大 · " : "";
+  const source = ["pose_guided_crop", "person_head_crop"].includes(face.view) ? "人物头部局部识别 · " : "";
   if (!features.length) return `${source}检测到人脸；动作系数未超过展示阈值`;
   return source + features.slice(0, 4).map((item) => `${faceFeatureLabel(item.name)} ${Number(item.score).toFixed(2)}`).join(" · ");
 }
 
 function gestureEvidenceText(pose) {
-  if (!pose) return "当前画面没有足够清晰的上半身姿态点";
+  if (!pose) return "该帧姿态检测没有输出，原视频是否可见需直接回看";
   const hands = pose.hands || {};
   const parts = ["left", "right"].filter((side) => hands[side]?.visible).map((side) => {
     const hand = hands[side];
@@ -377,8 +378,9 @@ function presentationCoordination(data, decision) {
   const voiceFinding = (decision.delivery_findings || []).find((item) => item.startsWith("语音强调判断：")) || "";
   const voice = voiceFinding.replace(/^语音强调判断：/, "").trim() || "缺少可靠声音特征，暂不判断";
   const voiceSupports = /多项声音线索支持强调|有部分声音强调线索/.test(voice);
-  const observations = data.visual_observations?.observations || [];
-  const interval = Number(data.visual_observations?.sampling_interval_seconds || 2);
+  const refined = data.visual_refinement?.windows?.[decision.beat_id];
+  const observations = refined?.observations || data.visual_observations?.observations || [];
+  const interval = Number(refined?.sampling_interval_seconds || data.visual_observations?.sampling_interval_seconds || 2);
   const allUnits = data.expression_map?.units || [];
   const selectedUnits = (decision.matched_observed_ids || []).map((id) => allUnits.find((unit) => unit.observed_id === id)).filter((unit) => unit && (unit.reliability?.audio || 0) >= .5);
   const reliableUnits = allUnits.filter((unit) => (unit.reliability?.audio || 0) >= .5);
@@ -407,7 +409,7 @@ function presentationCoordination(data, decision) {
     movingSamples = poses.filter((item) => ["left", "right"].some((side) => item.pose?.hands?.[side]?.movement === "clear_motion")).length;
     const motionTimes = poses.filter((item) => ["left", "right"].some((side) => item.pose?.hands?.[side]?.movement === "clear_motion")).map((item) => Number(item.timestamp) - interval / 2);
     synchronizedSamples = motionTimes.filter((motionTime) => localVoiceEmphasisUnits.some((unit) => motionTime >= unit.time_span[0] - interval / 2 && motionTime <= unit.time_span[1] + interval / 2)).length;
-    if (!poses.length) gesture = "观点时间窗附近没有足够清晰的手腕姿态样本";
+    if (!poses.length) gesture = "观点时间窗附近没有获得手腕检测结果，原因尚未确定";
     else if (!movingSamples) gesture = "观点时间窗附近 " + poseSamples + " 个姿态样本未检出明显手腕位移（抽样间隔约 " + interval + " 秒）";
     else {
       const firstMotion = poses.find((item) => ["left", "right"].some((side) => item.pose?.hands?.[side]?.movement === "clear_motion"));
@@ -459,19 +461,19 @@ function coordinationEvidence(data, decision) {
 
 function visualBeatEvidence(data, decision) {
   const span = decision.actual_time_span;
-  const observations = data.visual_observations?.observations || [];
+  const observations = data.visual_refinement?.windows?.[decision.beat_id]?.observations || data.visual_observations?.observations || [];
   if (!observations.length) return `<div class="visual-beat unavailable">${esc(visualPermissionMessage(data))}</div>`;
   if (!span) return `<div class="visual-beat unavailable">该观点没有定位时间，无法汇总视觉证据</div>`;
   const relevant = observations.filter((item) => Number(item.timestamp) >= span[0] - .5 && Number(item.timestamp) <= span[1] + .5);
   if (!relevant.length) return `<div class="visual-beat unavailable">该观点时间范围内没有视觉样本</div>`;
   const visibleFaces = relevant.filter((item) => item.face?.visible).length;
-  const cropFaces = relevant.filter((item) => item.face?.visible && item.face?.view === "pose_guided_crop").length;
+  const cropFaces = relevant.filter((item) => item.face?.visible && ["pose_guided_crop", "person_head_crop"].includes(item.face?.view)).length;
   const faceNames = new Map();
   relevant.forEach((item) => (item.face?.visible_features || []).forEach((feature) => {
     const name = faceFeatureLabel(feature.name);
     faceNames.set(name, (faceNames.get(name) || 0) + 1);
   }));
-  const faceSummary = [...faceNames.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name, count]) => `${name}（${count}个样本）`).join("、") || (visibleFaces ? "面部动作系数未超过展示阈值" : "该片段未检测到清晰人脸");
+  const faceSummary = [...faceNames.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name, count]) => `${name}（${count}个样本）`).join("、") || (visibleFaces ? "面部动作系数未超过展示阈值" : "该片段人脸检测没有有效输出，不代表人脸不可见");
   const faceText = `${faceSummary}${cropFaces ? `；${cropFaces} 个样本经姿态定位后局部放大识别` : ""}`;
   return `<div class="visual-beat"><span><b>表情可见动作</b>${esc(faceText)}</span><small>只描述可见动作系数，不据此推断情绪或表达是否得当。</small></div>`;
 }
@@ -567,7 +569,7 @@ function renderDetail(data) {
       <div class="decision-meta"><span class="beat-id">POINT ${String(index+1).padStart(2,"0")}</span><span class="badge badge-${verdictClass(decision.verdict)}"><i></i>${esc(verdictText[decision.verdict] || decision.verdict)}</span></div>
       <div class="point-visual-main">${note?.frame_url ? `<button type="button" class="point-frame" data-start="${note.time}" aria-label="回看观点 ${index+1} 的视频证据"><img src="${esc(note.frame_url)}" alt="观点 ${index+1} 对应的真实演讲画面" loading="lazy" /><span class="frame-play">▷</span><span class="frame-time">${time(note.time)}</span></button>` : ""}<div class="point-visual-copy"><div class="decision-heading"><h3>${esc(note?.note_title || beat.target_meaning || "目标观点")}</h3></div><p class="point-note">${esc(note?.note_summary || decision.reason || "回看视频核对表达证据")}</p></div></div>
       ${note ? `<div class="point-keyword"><span>✎</span>${esc(note.keywords)}<button type="button" data-preview-image="${esc(note.frame_url)}" data-preview-caption="${esc(note.note_title)} · 视频关键帧 ${time(note.time)}">放大画面 ↗</button></div>` : ""}
-      <div class="point-fit-preview"><span class="fit-badge ${fit.status}">${esc(fit.label)}</span><p>动作：${esc(fit.gesture.reason)}</p><p>表情：${esc(fit.expression.reason)}</p></div>
+      <div class="point-fit-preview"><span class="fit-badge ${fit.status}">${esc(fit.label)}</span><p>动作：${esc(fit.gesture.observation || fit.gesture.reason)}</p><p>表情：${esc(fit.expression.observation || fit.expression.reason)}</p></div>
       <details class="decision-details"><summary><span>完整观点与多模态证据</span><span class="details-chevron">⌄</span></summary><div class="decision-detail-body"><div class="original-point"><b>原始核心观点</b><p>${esc(beat.target_meaning || "目标观点")}</p></div><p class="decision-reason">${esc(decision.reason || "暂无判定理由")}</p><div class="metrics">${metric("语义相似度",decision.semantic_similarity)}${metric("命题覆盖",decision.claim_coverage)}${metric("置信度",decision.confidence)}</div><div class="evidence-box"><div class="evidence-heading"><span>转写证据</span>${span ? `<button class="decision-time" type="button" data-start="${span[0]}">▷ ${time(span[0])} – ${time(span[1])}</button>` : '<span class="decision-time">未定位</span>'}</div><p class="evidence-text">${esc(evidence.map(u=>u.text).join(" ") || "未找到可引用的实际转写")}</p></div>
       ${note?.ppt_url ? `<section class="ppt-proof"><div><strong>画面 / PPT 文字线索</strong><button type="button" class="decision-time" data-start="${note.ppt_time}">▷ ${time(note.ppt_time)}</button></div><button class="ppt-proof-image" type="button" data-preview-image="${esc(note.ppt_url)}" data-preview-caption="画面 / PPT 候选帧 · ${time(note.ppt_time)}"><img src="${esc(note.ppt_url)}" alt="观点附近包含画面文字线索的真实截图" loading="lazy" /><span>放大查看 ↗</span></button><small>原视频抽帧 · ${esc(note.ppt_label)}，结合原片复核</small></section>` : ""}
       ${TalkEvalFit.card(fit)}${coordinationEvidence(data,decision)}${voiceEvidence(data,decision)}${visualBeatEvidence(data,decision)}${annotationForm(data.case_id,decision)}</div></details>
@@ -590,7 +592,7 @@ function renderDetail(data) {
           <div class="timeline-panel"><div class="timeline-header"><h3>表达时间轴</h3><span class="timeline-legend"><i></i>已定位表达 <i></i>当前观点</span></div>${renderTimeline(data)}</div>${chapterStrip}
         </section>
         <section class="playback-focus panel"><div class="focus-top"><span class="live-led"></span><span id="case-play-state">回放准备就绪</span><span id="case-point-progress">重点 — / ${decisions.length}</span><span id="case-play-time">00:00</span></div><h3 id="case-current-title">选择一个观点开始回看</h3><p id="case-current-copy">播放后同步显示当前观点及其离线判定。</p><div class="focus-footer"><span id="case-current-verdict">等待播放</span><span id="case-current-coverage">—</span></div><details class="coaching-hint"><summary>表达复盘建议</summary><span id="case-current-hint">播放或选择观点后显示建议</span></details></section>
-        <section class="case-context-panel panel"><div class="coach-panel-head"><div><p class="eyebrow">EXPRESSION IN CONTEXT</p><h3>此刻的表情与动作</h3></div><span class="mini-badge">语境适配初筛</span></div><div id="case-context-fit">${TalkEvalFit.card(null)}</div></section>
+        <section class="case-context-panel panel"><div class="coach-panel-head"><div><p class="eyebrow">EXPRESSION IN CONTEXT</p><h3>这一句的表情与动作</h3></div><span class="mini-badge">语境适配初筛</span></div><div id="case-context-fit">${TalkEvalFit.card(null)}</div></section>
         <section class="insight-panel panel"><div class="insight-tabs" role="tablist" aria-label="回放辅助信息"><button type="button" id="tab-notes" role="tab" aria-selected="true" aria-controls="panel-notes" data-insight-tab="notes">图解笔记</button><button type="button" id="tab-map" role="tab" aria-selected="false" aria-controls="panel-map" data-insight-tab="map">观点导图</button><button type="button" id="tab-transcript" role="tab" aria-selected="false" aria-controls="panel-transcript" data-insight-tab="transcript">同步转写 <span>${data.expression_map?.units?.length || 0}</span></button><button type="button" id="tab-signals" role="tab" aria-selected="false" aria-controls="panel-signals" data-insight-tab="signals">声音与画面</button><button type="button" id="tab-overview" role="tab" aria-selected="false" aria-controls="panel-overview" data-insight-tab="overview">全片概览</button></div><div role="tabpanel" id="panel-notes" aria-labelledby="tab-notes" data-insight-panel="notes">${imagePanel("notes")}</div><div role="tabpanel" id="panel-map" aria-labelledby="tab-map" data-insight-panel="map" hidden>${imagePanel("map")}</div><div role="tabpanel" id="panel-transcript" hidden aria-labelledby="tab-transcript" data-insight-panel="transcript"><div class="transcript-caption">点击任意语句，回到视频中的那一刻。<span>时间 / 转写内容</span></div><div class="transcript-list">${transcript || '<p class="loading-card">暂无转写内容</p>'}</div></div><div role="tabpanel" id="panel-signals" aria-labelledby="tab-signals" data-insight-panel="signals" hidden>${signals}</div><div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" data-insight-panel="overview" hidden>${fullVideoOverview(data)}</div></section>
         <details class="provenance-panel panel"><summary>分析来源与数据说明<span>⌄</span></summary><div class="detail-badges">${badges}</div><p>${esc(sourceReviewDetail(metadata))}${metadata.can_evaluate_original_intent === false ? "。本案例使用参考材料或演讲后转写稿生成代理重点，不代表演讲者原始意图。" : ""}</p><details class="raw-panel"><summary>查看原始 JSON</summary><pre>${esc(JSON.stringify(data.alignment,null,2))}</pre></details></details>
       </section>
