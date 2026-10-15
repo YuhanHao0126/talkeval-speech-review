@@ -217,6 +217,8 @@
       updated.cloudVideoReady = Boolean(result.session.cloudVideoReady);
       updated.cloudUploadError = session.videoSaved && !updated.cloudVideoReady ? "报告已保存，后台尚未确认录像完整。" : "";
       state.remoteSessions = [updated, ...state.remoteSessions.filter(item => item.id !== updated.id)];
+      state.cloudState = "ready"; state.cloudError = "";
+      setText("#cloud-session-status", `公开云端 · ${state.remoteSessions.length} 场`);
       persistSession(updated);
       if (state.reportSession?.id === updated.id) renderReplay(updated);
       return updated;
