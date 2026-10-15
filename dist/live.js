@@ -1216,6 +1216,7 @@
           try { await deleteFromCloud(job.id); job.cloudDeleted = true; job.completedAt = Date.now(); job.lastError = ""; }
           catch (error) { job.lastError = error.message; }
           saveDeletionJob(job);
+          if (job.cloudDeleted) state.remoteSessions = state.remoteSessions.filter(item => item.id !== job.id);
         }
         state.historyEpoch += 1;
       }
