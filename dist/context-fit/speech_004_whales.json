@@ -1,0 +1,1331 @@
+{
+  "schema_version": "talkeval_context_fit_v1",
+  "case_id": "speech_004_whales",
+  "algorithm_version": "context-rules-2026.10.15-v1",
+  "configuration": {
+    "minSamples": 3,
+    "minCoverage": 0.6,
+    "smile": 0.5,
+    "minSmileSeconds": 1.2,
+    "maxTimingUncertainty": 2,
+    "motionSpeed": 0.65
+  },
+  "results": [
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        320.68,
+        326.02
+      ],
+      "point_id": "b01",
+      "point_text": "白鱀豚有「长江女神」的称号，但是已经功能性灭绝，在2004年我进入鲸界的时候就已经看不到了，所以我最终只能研究后三种",
+      "text": "在2004年 当时已经看不到了 所以说我最终只能研究了突变的三种",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 3,
+        "face_samples": 2,
+        "comparable_hand_samples": 3,
+        "coverage": 0.94,
+        "face_coverage": 0.749,
+        "hand_coverage": 0.94,
+        "sampling_interval_seconds": 2,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-322",
+            "kind": "motion",
+            "start": 322,
+            "end": 326,
+            "peak": 326,
+            "count": 3,
+            "magnitude": 0.116,
+            "duration": 4
+          }
+        ]
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-322",
+          "kind": "motion",
+          "start": 322,
+          "end": 326,
+          "peak": 326,
+          "count": 3,
+          "magnitude": 0.116,
+          "duration": 4
+        }
+      ],
+      "voice_windows": [
+        {
+          "span": [
+            321.66,
+            322.64
+          ],
+          "reliable": true,
+          "emphasis": true,
+          "basis": "句级响度高于本场基线（≥0.6σ）"
+        }
+      ],
+      "slide": {
+        "beat_id": "b01",
+        "target_meaning": "白鱀豚有「长江女神」的称号，但是已经功能性灭绝，在2004年我进入鲸界的时候就已经看不到了，所以我最终只能研究后三种",
+        "required_claims": [
+          "白鱀豚有「长江女神」的称号，但是已经功能性灭绝，在2004年我进入鲸界的时候就已经看不到了，所以我最终只能研究后三种"
+        ],
+        "time_span": [
+          320.68,
+          326.02
+        ],
+        "verdict": "partial_text_overlap",
+        "label": "有部分文字线索关联",
+        "match_score": 0.2355,
+        "lexical_overlap_score": 0.019,
+        "concept_coverage": 0.5,
+        "matched_concepts": [
+          "白鱀豚与鲸豚"
+        ],
+        "matched_target": "白鱀豚有「长江女神」的称号，但是已经功能性灭绝，在2004年我进入鲸界的时候就已经看不到了，所以我最终只能研究后三种",
+        "best_frame_timestamp": 325.685,
+        "best_frame_text": "长江江豚 · 白薰豚 · BUICK · IXIX · 华泰证券 · 布氏鲸 · 中华白海豚 · HUATAI SECURITIES · 席 · BUICK",
+        "best_frame_confidence": 0.933,
+        "frames": [
+          {
+            "timestamp": 318.68,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 321.015,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 323.35,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 325.685,
+            "text_lines": [
+              {
+                "text": "长江江豚",
+                "confidence": 0.996,
+                "x": 0.613,
+                "y": 0.523
+              },
+              {
+                "text": "白薰豚",
+                "confidence": 0.747,
+                "x": 0.401,
+                "y": 0.524
+              },
+              {
+                "text": "BUICK",
+                "confidence": 0.751,
+                "x": 0.933,
+                "y": 0.707
+              },
+              {
+                "text": "IXIX",
+                "confidence": 0.851,
+                "x": 0.123,
+                "y": 0.729
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.848,
+                "y": 0.76
+              },
+              {
+                "text": "布氏鲸",
+                "confidence": 0.993,
+                "x": 0.612,
+                "y": 0.765
+              },
+              {
+                "text": "中华白海豚",
+                "confidence": 0.998,
+                "x": 0.4,
+                "y": 0.767
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.997,
+                "x": 0.847,
+                "y": 0.784
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.939,
+                "y": 0.792
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.131,
+                "y": 0.822
+              }
+            ],
+            "extracted_text": "长江江豚 · 白薰豚 · BUICK · IXIX · 华泰证券 · 布氏鲸 · 中华白海豚 · HUATAI SECURITIES · 席 · BUICK",
+            "mean_ocr_confidence": 0.933,
+            "match_score": 0.2355,
+            "lexical_overlap_score": 0.019,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "白鱀豚与鲸豚"
+            ],
+            "matched_concepts": [
+              "白鱀豚与鲸豚"
+            ]
+          },
+          {
+            "timestamp": 328.02,
+            "text_lines": [
+              {
+                "text": "长江江豚",
+                "confidence": 0.996,
+                "x": 0.613,
+                "y": 0.523
+              },
+              {
+                "text": "白薰豚",
+                "confidence": 0.744,
+                "x": 0.401,
+                "y": 0.524
+              },
+              {
+                "text": "BUICK",
+                "confidence": 0.753,
+                "x": 0.933,
+                "y": 0.707
+              },
+              {
+                "text": "IXIX",
+                "confidence": 0.83,
+                "x": 0.123,
+                "y": 0.729
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.848,
+                "y": 0.76
+              },
+              {
+                "text": "布氏鲸",
+                "confidence": 0.993,
+                "x": 0.612,
+                "y": 0.765
+              },
+              {
+                "text": "中华白海豚",
+                "confidence": 1,
+                "x": 0.4,
+                "y": 0.767
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.997,
+                "x": 0.847,
+                "y": 0.784
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.939,
+                "y": 0.791
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.131,
+                "y": 0.822
+              }
+            ],
+            "extracted_text": "长江江豚 · 白薰豚 · BUICK · IXIX · 华泰证券 · 布氏鲸 · 中华白海豚 · HUATAI SECURITIES · 席 · BUICK",
+            "mean_ocr_confidence": 0.931,
+            "match_score": 0.2355,
+            "lexical_overlap_score": 0.019,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "白鱀豚与鲸豚"
+            ],
+            "matched_concepts": [
+              "白鱀豚与鲸豚"
+            ]
+          }
+        ],
+        "extracted_text": "长江江豚 · 白薰豚 · BUICK · IXIX · 华泰证券 · 布氏鲸 · 中华白海豚 · HUATAI SECURITIES · 席 · BUICK\n长江江豚 · 白薰豚 · BUICK · IXIX · 华泰证券 · 布氏鲸 · 中华白海豚 · HUATAI SECURITIES · 席 · BUICK",
+        "review_hint": "页面只出现部分相关词句；需人工核对页面是在解释、举例还是仅作背景。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        1087.92,
+        1095.78
+      ],
+      "point_id": "b02",
+      "point_text": "泰国湾跟涠洲岛的群体在时间上是吻合的，但经过两次照相识别，我们发现没有一头一样，所以它们不是同一个群",
+      "text": "后来我们经过了两次的照相识别 没有一头一样的 所以咱们的经济跟它们是不是同一个群",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": true
+      },
+      "quality": {
+        "observations": 4,
+        "face_samples": 4,
+        "comparable_hand_samples": 3,
+        "coverage": 0.901,
+        "face_coverage": 0.901,
+        "hand_coverage": 0.763,
+        "sampling_interval_seconds": 2,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-1090",
+            "kind": "motion",
+            "start": 1090,
+            "end": 1094,
+            "peak": 1092,
+            "count": 3,
+            "magnitude": 0.459,
+            "duration": 4
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-1090",
+          "kind": "motion",
+          "start": 1090,
+          "end": 1094,
+          "peak": 1092,
+          "count": 3,
+          "magnitude": 0.459,
+          "duration": 4
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b02",
+        "target_meaning": "泰国湾跟涠洲岛的群体在时间上是吻合的，但经过两次照相识别，我们发现没有一头一样，所以它们不是同一个群",
+        "required_claims": [
+          "泰国湾跟涠洲岛的群体在时间上是吻合的，但经过两次照相识别，我们发现没有一头一样，所以它们不是同一个群"
+        ],
+        "time_span": [
+          1087.92,
+          1095.78
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0.0028,
+        "lexical_overlap_score": 0.0028,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "泰国湾跟涠洲岛的群体在时间上是吻合的，但经过两次照相识别，我们发现没有一头一样，所以它们不是同一个群",
+        "best_frame_timestamp": 1093.036,
+        "best_frame_text": "BUICK · 华泰证券 · 席 · HUATAI SECURITIES",
+        "best_frame_confidence": 0.992,
+        "frames": [
+          {
+            "timestamp": 1085.92,
+            "text_lines": [
+              {
+                "text": "2021.4.28",
+                "confidence": 1,
+                "x": 0.171,
+                "y": 0.097
+              }
+            ],
+            "extracted_text": "2021.4.28",
+            "mean_ocr_confidence": 1,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1088.292,
+            "text_lines": [
+              {
+                "text": "2021.4.28",
+                "confidence": 1,
+                "x": 0.171,
+                "y": 0.097
+              }
+            ],
+            "extracted_text": "2021.4.28",
+            "mean_ocr_confidence": 1,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1090.664,
+            "text_lines": [
+              {
+                "text": "2021.4.28",
+                "confidence": 1,
+                "x": 0.171,
+                "y": 0.097
+              }
+            ],
+            "extracted_text": "2021.4.28",
+            "mean_ocr_confidence": 1,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1093.036,
+            "text_lines": [
+              {
+                "text": "BUICK",
+                "confidence": 0.999,
+                "x": 0.894,
+                "y": 0.436
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.75,
+                "y": 0.557
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.912,
+                "y": 0.609
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.97,
+                "x": 0.75,
+                "y": 0.61
+              }
+            ],
+            "extracted_text": "BUICK · 华泰证券 · 席 · HUATAI SECURITIES",
+            "mean_ocr_confidence": 0.992,
+            "match_score": 0.0028,
+            "lexical_overlap_score": 0.0028,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1095.408,
+            "text_lines": [
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.895,
+                "y": 0.437
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.75,
+                "y": 0.557
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.971,
+                "x": 0.75,
+                "y": 0.609
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.912,
+                "y": 0.609
+              }
+            ],
+            "extracted_text": "BUICK · 华泰证券 · HUATAI SECURITIES · 席",
+            "mean_ocr_confidence": 0.993,
+            "match_score": 0.0028,
+            "lexical_overlap_score": 0.0028,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1097.78,
+            "text_lines": [
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.895,
+                "y": 0.437
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.75,
+                "y": 0.557
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.971,
+                "x": 0.75,
+                "y": 0.609
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.911,
+                "y": 0.61
+              }
+            ],
+            "extracted_text": "BUICK · 华泰证券 · HUATAI SECURITIES · 席",
+            "mean_ocr_confidence": 0.993,
+            "match_score": 0.0028,
+            "lexical_overlap_score": 0.0028,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "2021.4.28\n2021.4.28\n2021.4.28\nBUICK · 华泰证券 · 席 · HUATAI SECURITIES\nBUICK · 华泰证券 · HUATAI SECURITIES · 席\nBUICK · 华泰证券 · HUATAI SECURITIES · 席",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        1416.4,
+        1425.14
+      ],
+      "point_id": "b03",
+      "point_text": "而且它很瘦弱，解剖的时候我们发现它的脂肪层只有1厘米，正常应该有4-5厘米，所以在搁浅之前它可能就有一些问题",
+      "text": "最后解剖的时候也发现它的脂肪就只有1厘米 正常的话有4厘米 5厘米的样子 所以说它在割浅之前它就是有问题的",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 4,
+        "face_samples": 3,
+        "comparable_hand_samples": 4,
+        "coverage": 0.915,
+        "face_coverage": 0.686,
+        "hand_coverage": 0.915,
+        "sampling_interval_seconds": 2,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-1420",
+            "kind": "motion",
+            "start": 1420,
+            "end": 1420,
+            "peak": 1420,
+            "count": 1,
+            "magnitude": 0.378,
+            "duration": 0
+          },
+          {
+            "id": "motion-1424",
+            "kind": "motion",
+            "start": 1424,
+            "end": 1424,
+            "peak": 1424,
+            "count": 1,
+            "magnitude": 0.142,
+            "duration": 0
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-1420",
+          "kind": "motion",
+          "start": 1420,
+          "end": 1420,
+          "peak": 1420,
+          "count": 1,
+          "magnitude": 0.378,
+          "duration": 0
+        },
+        {
+          "id": "motion-1424",
+          "kind": "motion",
+          "start": 1424,
+          "end": 1424,
+          "peak": 1424,
+          "count": 1,
+          "magnitude": 0.142,
+          "duration": 0
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b03",
+        "target_meaning": "而且它很瘦弱，解剖的时候我们发现它的脂肪层只有1厘米，正常应该有4-5厘米，所以在搁浅之前它可能就有一些问题",
+        "required_claims": [
+          "而且它很瘦弱，解剖的时候我们发现它的脂肪层只有1厘米，正常应该有4-5厘米，所以在搁浅之前它可能就有一些问题"
+        ],
+        "time_span": [
+          1416.4,
+          1425.14
+        ],
+        "verdict": "partial_text_overlap",
+        "label": "有部分文字线索关联",
+        "match_score": 0.2353,
+        "lexical_overlap_score": 0.0187,
+        "concept_coverage": 0.5,
+        "matched_concepts": [
+          "搁浅与鲸类健康"
+        ],
+        "matched_target": "而且它很瘦弱，解剖的时候我们发现它的脂肪层只有1厘米，正常应该有4-5厘米，所以在搁浅之前它可能就有一些问题",
+        "best_frame_timestamp": 1427.14,
+        "best_frame_text": "为什么搁浅的鲸很难存活？ · 自身问题 · 体力消耗极大 · 水分缺失 · 呼吸孔吸入泥沙 · 内脏损伤 · BUICK · IX!X · 华泰证券 · HUATAI SECURITIES · 席 · BUICK",
+        "best_frame_confidence": 0.961,
+        "frames": [
+          {
+            "timestamp": 1414.4,
+            "text_lines": [
+              {
+                "text": "IXIX",
+                "confidence": 0.621,
+                "x": 0.307,
+                "y": 0.672
+              }
+            ],
+            "extracted_text": "IXIX",
+            "mean_ocr_confidence": 0.621,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1416.523,
+            "text_lines": [
+              {
+                "text": "山",
+                "confidence": 0.587,
+                "x": 0.579,
+                "y": 0.304
+              }
+            ],
+            "extracted_text": "山",
+            "mean_ocr_confidence": 0.587,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1418.647,
+            "text_lines": [
+              {
+                "text": "山",
+                "confidence": 0.544,
+                "x": 0.58,
+                "y": 0.303
+              }
+            ],
+            "extracted_text": "山",
+            "mean_ocr_confidence": 0.544,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1420.77,
+            "text_lines": [
+              {
+                "text": "呼吸孔吸入",
+                "confidence": 0.955,
+                "x": 0.81,
+                "y": 0.187
+              },
+              {
+                "text": "内脏损伤",
+                "confidence": 0.996,
+                "x": 0.787,
+                "y": 0.463
+              }
+            ],
+            "extracted_text": "呼吸孔吸入 · 内脏损伤",
+            "mean_ocr_confidence": 0.976,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1422.893,
+            "text_lines": [
+              {
+                "text": "呼吸孔吸入",
+                "confidence": 0.935,
+                "x": 0.81,
+                "y": 0.188
+              },
+              {
+                "text": "内脏损伤",
+                "confidence": 0.988,
+                "x": 0.786,
+                "y": 0.461
+              }
+            ],
+            "extracted_text": "呼吸孔吸入 · 内脏损伤",
+            "mean_ocr_confidence": 0.962,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1425.017,
+            "text_lines": [
+              {
+                "text": "呼吸孔吸入",
+                "confidence": 0.938,
+                "x": 0.81,
+                "y": 0.188
+              },
+              {
+                "text": "内脏损伤",
+                "confidence": 0.992,
+                "x": 0.786,
+                "y": 0.461
+              }
+            ],
+            "extracted_text": "呼吸孔吸入 · 内脏损伤",
+            "mean_ocr_confidence": 0.965,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1427.14,
+            "text_lines": [
+              {
+                "text": "为什么搁浅的鲸很难存活？",
+                "confidence": 0.982,
+                "x": 0.5,
+                "y": 0.36
+              },
+              {
+                "text": "自身问题",
+                "confidence": 1,
+                "x": 0.595,
+                "y": 0.466
+              },
+              {
+                "text": "体力消耗极大",
+                "confidence": 1,
+                "x": 0.612,
+                "y": 0.515
+              },
+              {
+                "text": "水分缺失",
+                "confidence": 1,
+                "x": 0.595,
+                "y": 0.565
+              },
+              {
+                "text": "呼吸孔吸入泥沙",
+                "confidence": 1,
+                "x": 0.62,
+                "y": 0.613
+              },
+              {
+                "text": "内脏损伤",
+                "confidence": 1,
+                "x": 0.599,
+                "y": 0.665
+              },
+              {
+                "text": "BUICK",
+                "confidence": 0.809,
+                "x": 0.933,
+                "y": 0.707
+              },
+              {
+                "text": "IX!X",
+                "confidence": 0.745,
+                "x": 0.123,
+                "y": 0.729
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.848,
+                "y": 0.759
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.996,
+                "x": 0.848,
+                "y": 0.784
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.939,
+                "y": 0.793
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.132,
+                "y": 0.822
+              }
+            ],
+            "extracted_text": "为什么搁浅的鲸很难存活？ · 自身问题 · 体力消耗极大 · 水分缺失 · 呼吸孔吸入泥沙 · 内脏损伤 · BUICK · IX!X · 华泰证券 · HUATAI SECURITIES · 席 · BUICK",
+            "mean_ocr_confidence": 0.961,
+            "match_score": 0.2353,
+            "lexical_overlap_score": 0.0187,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "搁浅与鲸类健康"
+            ],
+            "matched_concepts": [
+              "搁浅与鲸类健康"
+            ]
+          }
+        ],
+        "extracted_text": "IXIX\n山\n山\n呼吸孔吸入 · 内脏损伤\n呼吸孔吸入 · 内脏损伤\n呼吸孔吸入 · 内脏损伤\n为什么搁浅的鲸很难存活？ · 自身问题 · 体力消耗极大 · 水分缺失 · 呼吸孔吸入泥沙 · 内脏损伤 · BUICK · IX!X · 华泰证券 · HUATAI SECURITIES · 席 · BUICK",
+        "review_hint": "页面只出现部分相关词句；需人工核对页面是在解释、举例还是仅作背景。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        1549.94,
+        1554.54
+      ],
+      "point_id": "b04",
+      "point_text": "我们需要建立搁浅网络，但更应该尽量把保护工作做在前边，不能等到鲸豚搁浅之后再救助它",
+      "text": "不应该等到它割浅了再保护它 对吧 我们应该把事情做在前边",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 3,
+        "face_samples": 3,
+        "comparable_hand_samples": 3,
+        "coverage": 1,
+        "face_coverage": 1,
+        "hand_coverage": 1,
+        "sampling_interval_seconds": 2,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-1550",
+            "kind": "motion",
+            "start": 1550,
+            "end": 1554,
+            "peak": 1552,
+            "count": 3,
+            "magnitude": 0.066,
+            "duration": 4
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-1550",
+          "kind": "motion",
+          "start": 1550,
+          "end": 1554,
+          "peak": 1552,
+          "count": 3,
+          "magnitude": 0.066,
+          "duration": 4
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b04",
+        "target_meaning": "我们需要建立搁浅网络，但更应该尽量把保护工作做在前边，不能等到鲸豚搁浅之后再救助它",
+        "required_claims": [
+          "我们需要建立搁浅网络，但更应该尽量把保护工作做在前边，不能等到鲸豚搁浅之后再救助它"
+        ],
+        "time_span": [
+          1549.94,
+          1554.54
+        ],
+        "verdict": "partial_text_overlap",
+        "label": "有部分文字线索关联",
+        "match_score": 0.1515,
+        "lexical_overlap_score": 0.0028,
+        "concept_coverage": 0.3333,
+        "matched_concepts": [
+          "保护与救助"
+        ],
+        "matched_target": "我们需要建立搁浅网络，但更应该尽量把保护工作做在前边，不能等到鲸豚搁浅之后再救助它",
+        "best_frame_timestamp": 1547.94,
+        "best_frame_text": "康复后放归 · BUICK · 么办？ · 华泰证券 · HUATAI SECURITIES · 席",
+        "best_frame_confidence": 0.98,
+        "frames": [
+          {
+            "timestamp": 1547.94,
+            "text_lines": [
+              {
+                "text": "康复后放归",
+                "confidence": 1,
+                "x": 0.338,
+                "y": 0.023
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.898,
+                "y": 0.413
+              },
+              {
+                "text": "么办？",
+                "confidence": 0.88,
+                "x": 0.046,
+                "y": 0.463
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.753,
+                "y": 0.531
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.998,
+                "x": 0.752,
+                "y": 0.581
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.915,
+                "y": 0.586
+              }
+            ],
+            "extracted_text": "康复后放归 · BUICK · 么办？ · 华泰证券 · HUATAI SECURITIES · 席",
+            "mean_ocr_confidence": 0.98,
+            "match_score": 0.1515,
+            "lexical_overlap_score": 0.0028,
+            "concept_coverage": 0.3333,
+            "active_concepts": [
+              "白鱀豚与鲸豚",
+              "搁浅与鲸类健康",
+              "保护与救助"
+            ],
+            "matched_concepts": [
+              "保护与救助"
+            ]
+          },
+          {
+            "timestamp": 1550.09,
+            "text_lines": [
+              {
+                "text": "康复后放归",
+                "confidence": 1,
+                "x": 0.338,
+                "y": 0.023
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.898,
+                "y": 0.413
+              },
+              {
+                "text": "么办？",
+                "confidence": 0.88,
+                "x": 0.046,
+                "y": 0.463
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.753,
+                "y": 0.531
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.999,
+                "x": 0.752,
+                "y": 0.581
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.915,
+                "y": 0.586
+              }
+            ],
+            "extracted_text": "康复后放归 · BUICK · 么办？ · 华泰证券 · HUATAI SECURITIES · 席",
+            "mean_ocr_confidence": 0.98,
+            "match_score": 0.1515,
+            "lexical_overlap_score": 0.0028,
+            "concept_coverage": 0.3333,
+            "active_concepts": [
+              "白鱀豚与鲸豚",
+              "搁浅与鲸类健康",
+              "保护与救助"
+            ],
+            "matched_concepts": [
+              "保护与救助"
+            ]
+          },
+          {
+            "timestamp": 1552.24,
+            "text_lines": [
+              {
+                "text": "康复后放归",
+                "confidence": 1,
+                "x": 0.338,
+                "y": 0.023
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.898,
+                "y": 0.413
+              },
+              {
+                "text": "么办？",
+                "confidence": 0.898,
+                "x": 0.046,
+                "y": 0.463
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.753,
+                "y": 0.529
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.999,
+                "x": 0.752,
+                "y": 0.582
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.914,
+                "y": 0.586
+              }
+            ],
+            "extracted_text": "康复后放归 · BUICK · 么办？ · 华泰证券 · HUATAI SECURITIES · 席",
+            "mean_ocr_confidence": 0.983,
+            "match_score": 0.1515,
+            "lexical_overlap_score": 0.0028,
+            "concept_coverage": 0.3333,
+            "active_concepts": [
+              "白鱀豚与鲸豚",
+              "搁浅与鲸类健康",
+              "保护与救助"
+            ],
+            "matched_concepts": [
+              "保护与救助"
+            ]
+          },
+          {
+            "timestamp": 1554.39,
+            "text_lines": [
+              {
+                "text": "台湾",
+                "confidence": 0.734,
+                "x": 0.316,
+                "y": 0.012
+              },
+              {
+                "text": "a",
+                "confidence": 0.811,
+                "x": 0.284,
+                "y": 0.02
+              },
+              {
+                "text": "栖息地适宣度指数",
+                "confidence": 0.936,
+                "x": 0.168,
+                "y": 0.214
+              },
+              {
+                "text": "南",
+                "confidence": 0.999,
+                "x": 0.007,
+                "y": 0.236
+              },
+              {
+                "text": "Hish : C.97",
+                "confidence": 0.929,
+                "x": 0.172,
+                "y": 0.247
+              },
+              {
+                "text": "1824.0.2N",
+                "confidence": 0.573,
+                "x": 0.399,
+                "y": 0.285
+              },
+              {
+                "text": "180",
+                "confidence": 1,
+                "x": 0.168,
+                "y": 0.322
+              },
+              {
+                "text": "360",
+                "confidence": 0.99,
+                "x": 0.214,
+                "y": 0.322
+              },
+              {
+                "text": "Km",
+                "confidence": 0.97,
+                "x": 0.221,
+                "y": 0.337
+              },
+              {
+                "text": "118°6'0\"E",
+                "confidence": 0.925,
+                "x": 0.244,
+                "y": 0.392
+              },
+              {
+                "text": "113°35'0\"E",
+                "confidence": 0.987,
+                "x": 0.118,
+                "y": 0.397
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.898,
+                "y": 0.413
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.754,
+                "y": 0.531
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.999,
+                "x": 0.752,
+                "y": 0.582
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.915,
+                "y": 0.585
+              }
+            ],
+            "extracted_text": "台湾 · a · 栖息地适宣度指数 · 南 · Hish : C.97 · 1824.0.2N · 180 · 360 · Km · 118°6'0\"E · 113°35'0\"E · BUICK · 华泰证券 · HUATAI SECURITIES · 席",
+            "mean_ocr_confidence": 0.924,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1556.54,
+            "text_lines": [
+              {
+                "text": "栖息地破碎化",
+                "confidence": 1,
+                "x": 0.505,
+                "y": 0.361
+              },
+              {
+                "text": "纳息块达官座面数",
+                "confidence": 0.578,
+                "x": 0.641,
+                "y": 0.61
+              },
+              {
+                "text": "BUICK",
+                "confidence": 0.812,
+                "x": 0.933,
+                "y": 0.707
+              },
+              {
+                "text": "IX!X",
+                "confidence": 0.778,
+                "x": 0.123,
+                "y": 0.728
+              },
+              {
+                "text": "华泰证券",
+                "confidence": 1,
+                "x": 0.849,
+                "y": 0.76
+              },
+              {
+                "text": "HUATAI SECURITIES",
+                "confidence": 0.998,
+                "x": 0.848,
+                "y": 0.784
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.939,
+                "y": 0.792
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.131,
+                "y": 0.822
+              }
+            ],
+            "extracted_text": "栖息地破碎化 · 纳息块达官座面数 · BUICK · IX!X · 华泰证券 · HUATAI SECURITIES · 席 · BUICK",
+            "mean_ocr_confidence": 0.896,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "康复后放归 · BUICK · 么办？ · 华泰证券 · HUATAI SECURITIES · 席\n康复后放归 · BUICK · 么办？ · 华泰证券 · HUATAI SECURITIES · 席\n康复后放归 · BUICK · 么办？ · 华泰证券 · HUATAI SECURITIES · 席\n台湾 · a · 栖息地适宣度指数 · 南 · Hish : C.97 · 1824.0.2N · 180 · 360 · Km · 118°6'0\"E · 113°35'0\"E · BUICK · 华泰证券 · HUATAI SECURITIES · 席\n栖息地破碎化 · 纳息块达官座面数 · BUICK · IX!X · 华泰证券 · HUATAI SECURITIES · 席 · BUICK",
+        "review_hint": "页面只出现部分相关词句；需人工核对页面是在解释、举例还是仅作背景。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    }
+  ],
+  "interpretation": "Rule candidates for human review; no calibrated accuracy claim."
+}

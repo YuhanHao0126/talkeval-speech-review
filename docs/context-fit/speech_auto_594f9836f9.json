@@ -1,0 +1,2040 @@
+{
+  "schema_version": "talkeval_context_fit_v1",
+  "case_id": "speech_auto_594f9836f9",
+  "algorithm_version": "context-rules-2026.10.15-v1",
+  "configuration": {
+    "minSamples": 3,
+    "minCoverage": 0.6,
+    "smile": 0.5,
+    "minSmileSeconds": 1.2,
+    "maxTimingUncertainty": 2,
+    "motionSpeed": 0.65
+  },
+  "results": [
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        441.4,
+        453.88
+      ],
+      "point_id": "b01",
+      "point_text": "因此在优绩社会中，一个正常的人就应该是一个持续不断上进的人，不然你要如何承担私人生命的失败呢",
+      "text": "那一个正常的人就应该是一个持续的不断的上进的人 那原来你可以安于做一个普通的劳动者 现在你怎么能够承担私人生命的失败呢",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 13,
+        "face_samples": 11,
+        "comparable_hand_samples": 11,
+        "coverage": 0.999,
+        "face_coverage": 0.876,
+        "hand_coverage": 0.839,
+        "sampling_interval_seconds": 1.001,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-441.441",
+            "kind": "motion",
+            "start": 441.441,
+            "end": 441.441,
+            "peak": 441.441,
+            "count": 1,
+            "magnitude": 0.608,
+            "duration": 0
+          },
+          {
+            "id": "motion-444.444",
+            "kind": "motion",
+            "start": 444.444,
+            "end": 444.444,
+            "peak": 444.444,
+            "count": 1,
+            "magnitude": 0.046,
+            "duration": 0
+          },
+          {
+            "id": "motion-446.446",
+            "kind": "motion",
+            "start": 446.446,
+            "end": 453.453,
+            "peak": 446.446,
+            "count": 8,
+            "magnitude": 0.217,
+            "duration": 7.007
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-441.441",
+          "kind": "motion",
+          "start": 441.441,
+          "end": 441.441,
+          "peak": 441.441,
+          "count": 1,
+          "magnitude": 0.608,
+          "duration": 0
+        },
+        {
+          "id": "motion-444.444",
+          "kind": "motion",
+          "start": 444.444,
+          "end": 444.444,
+          "peak": 444.444,
+          "count": 1,
+          "magnitude": 0.046,
+          "duration": 0
+        },
+        {
+          "id": "motion-446.446",
+          "kind": "motion",
+          "start": 446.446,
+          "end": 453.453,
+          "peak": 446.446,
+          "count": 8,
+          "magnitude": 0.217,
+          "duration": 7.007
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b01",
+        "target_meaning": "因此在优绩社会中，一个正常的人就应该是一个持续不断上进的人，不然你要如何承担私人生命的失败呢",
+        "required_claims": [
+          "因此在优绩社会中，一个正常的人就应该是一个持续不断上进的人，不然你要如何承担私人生命的失败呢"
+        ],
+        "time_span": [
+          441.4,
+          453.88
+        ],
+        "verdict": "partial_text_overlap",
+        "label": "有部分文字线索关联",
+        "match_score": 0.2513,
+        "lexical_overlap_score": 0.2513,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "因此在优绩社会中，一个正常的人就应该是一个持续不断上进的人，不然你要如何承担私人生命的失败呢",
+        "best_frame_timestamp": 444.893,
+        "best_frame_text": "优绩社会 · 个人英雄主义渐渐取代集体主义， · 此时一个正常人就该是一个上进的人。",
+        "best_frame_confidence": 1,
+        "frames": [
+          {
+            "timestamp": 439.4,
+            "text_lines": [
+              {
+                "text": "优绩社会",
+                "confidence": 1,
+                "x": 0.618,
+                "y": 0.105
+              },
+              {
+                "text": "个人英雄主义渐渐取代集体主义，",
+                "confidence": 0.999,
+                "x": 0.614,
+                "y": 0.288
+              },
+              {
+                "text": "此时，一正常人就该是一个上进的人。",
+                "confidence": 0.985,
+                "x": 0.62,
+                "y": 0.406
+              }
+            ],
+            "extracted_text": "优绩社会 · 个人英雄主义渐渐取代集体主义， · 此时，一正常人就该是一个上进的人。",
+            "mean_ocr_confidence": 0.995,
+            "match_score": 0.2209,
+            "lexical_overlap_score": 0.2209,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 442.147,
+            "text_lines": [
+              {
+                "text": "优绩社会",
+                "confidence": 1,
+                "x": 0.618,
+                "y": 0.105
+              },
+              {
+                "text": "个人英雄主义渐渐取代集体主义，",
+                "confidence": 0.999,
+                "x": 0.615,
+                "y": 0.288
+              },
+              {
+                "text": "此时，一正常人就该是一个上进的人。",
+                "confidence": 0.997,
+                "x": 0.62,
+                "y": 0.405
+              }
+            ],
+            "extracted_text": "优绩社会 · 个人英雄主义渐渐取代集体主义， · 此时，一正常人就该是一个上进的人。",
+            "mean_ocr_confidence": 0.999,
+            "match_score": 0.2209,
+            "lexical_overlap_score": 0.2209,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 444.893,
+            "text_lines": [
+              {
+                "text": "优绩社会",
+                "confidence": 1,
+                "x": 0.618,
+                "y": 0.105
+              },
+              {
+                "text": "个人英雄主义渐渐取代集体主义，",
+                "confidence": 0.999,
+                "x": 0.615,
+                "y": 0.289
+              },
+              {
+                "text": "此时一个正常人就该是一个上进的人。",
+                "confidence": 1,
+                "x": 0.619,
+                "y": 0.403
+              }
+            ],
+            "extracted_text": "优绩社会 · 个人英雄主义渐渐取代集体主义， · 此时一个正常人就该是一个上进的人。",
+            "mean_ocr_confidence": 1,
+            "match_score": 0.2513,
+            "lexical_overlap_score": 0.2513,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 447.64,
+            "text_lines": [
+              {
+                "text": "雄主文渐渐取代集体三",
+                "confidence": 0.885,
+                "x": 0.5,
+                "y": 0.072
+              },
+              {
+                "text": "正常人就是一个上",
+                "confidence": 1,
+                "x": 0.5,
+                "y": 0.377
+              }
+            ],
+            "extracted_text": "雄主文渐渐取代集体三 · 正常人就是一个上",
+            "mean_ocr_confidence": 0.943,
+            "match_score": 0.1068,
+            "lexical_overlap_score": 0.1068,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 450.387,
+            "text_lines": [
+              {
+                "text": "雄主又渐渐取代集体三",
+                "confidence": 0.856,
+                "x": 0.5,
+                "y": 0.074
+              },
+              {
+                "text": "正常人就是一个上",
+                "confidence": 1,
+                "x": 0.5,
+                "y": 0.376
+              }
+            ],
+            "extracted_text": "雄主又渐渐取代集体三 · 正常人就是一个上",
+            "mean_ocr_confidence": 0.928,
+            "match_score": 0.1068,
+            "lexical_overlap_score": 0.1068,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 453.133,
+            "text_lines": [
+              {
+                "text": "雄主文渐渐取代集体",
+                "confidence": 0.892,
+                "x": 0.5,
+                "y": 0.073
+              },
+              {
+                "text": "是一个上",
+                "confidence": 0.996,
+                "x": 0.781,
+                "y": 0.379
+              },
+              {
+                "text": "正常人就",
+                "confidence": 1,
+                "x": 0.249,
+                "y": 0.381
+              }
+            ],
+            "extracted_text": "雄主文渐渐取代集体 · 是一个上 · 正常人就",
+            "mean_ocr_confidence": 0.963,
+            "match_score": 0.1118,
+            "lexical_overlap_score": 0.1118,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 455.88,
+            "text_lines": [
+              {
+                "text": "优绩社会",
+                "confidence": 1,
+                "x": 0.666,
+                "y": 0.103
+              },
+              {
+                "text": "个人英雄主义渐渐取代集体主义，",
+                "confidence": 0.999,
+                "x": 0.663,
+                "y": 0.287
+              },
+              {
+                "text": "此时，一个正常人就该是一个上进的人。",
+                "confidence": 0.995,
+                "x": 0.668,
+                "y": 0.404
+              }
+            ],
+            "extracted_text": "优绩社会 · 个人英雄主义渐渐取代集体主义， · 此时，一个正常人就该是一个上进的人。",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.2513,
+            "lexical_overlap_score": 0.2513,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "优绩社会 · 个人英雄主义渐渐取代集体主义， · 此时，一正常人就该是一个上进的人。\n优绩社会 · 个人英雄主义渐渐取代集体主义， · 此时，一正常人就该是一个上进的人。\n优绩社会 · 个人英雄主义渐渐取代集体主义， · 此时一个正常人就该是一个上进的人。\n雄主文渐渐取代集体三 · 正常人就是一个上\n雄主又渐渐取代集体三 · 正常人就是一个上\n雄主文渐渐取代集体 · 是一个上 · 正常人就\n优绩社会 · 个人英雄主义渐渐取代集体主义， · 此时，一个正常人就该是一个上进的人。",
+        "review_hint": "页面只出现部分相关词句；需人工核对页面是在解释、举例还是仅作背景。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        728.08,
+        734.68
+      ],
+      "point_id": "b02",
+      "point_text": "是不是有一种可能，他们承受了一个巨大的外部的结构性痛苦，在无力改变的情况下，他们需要加固自己的内心",
+      "text": "是不是有一种可能 是因为他们承受了一个巨大的 外部的结构性痛苦",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": true
+      },
+      "quality": {
+        "observations": 6,
+        "face_samples": 6,
+        "comparable_hand_samples": 5,
+        "coverage": 0.909,
+        "face_coverage": 0.909,
+        "hand_coverage": 0.758,
+        "sampling_interval_seconds": 1.001,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-729.729",
+            "kind": "motion",
+            "start": 729.729,
+            "end": 729.729,
+            "peak": 729.729,
+            "count": 1,
+            "magnitude": 0.12,
+            "duration": 0
+          },
+          {
+            "id": "motion-731.731",
+            "kind": "motion",
+            "start": 731.731,
+            "end": 733.733,
+            "peak": 731.731,
+            "count": 3,
+            "magnitude": 0.116,
+            "duration": 2.002
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-729.729",
+          "kind": "motion",
+          "start": 729.729,
+          "end": 729.729,
+          "peak": 729.729,
+          "count": 1,
+          "magnitude": 0.12,
+          "duration": 0
+        },
+        {
+          "id": "motion-731.731",
+          "kind": "motion",
+          "start": 731.731,
+          "end": 733.733,
+          "peak": 731.731,
+          "count": 3,
+          "magnitude": 0.116,
+          "duration": 2.002
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b02",
+        "target_meaning": "是不是有一种可能，他们承受了一个巨大的外部的结构性痛苦，在无力改变的情况下，他们需要加固自己的内心",
+        "required_claims": [
+          "是不是有一种可能，他们承受了一个巨大的外部的结构性痛苦，在无力改变的情况下，他们需要加固自己的内心"
+        ],
+        "time_span": [
+          728.08,
+          734.68
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0.012,
+        "lexical_overlap_score": 0.012,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "是不是有一种可能，他们承受了一个巨大的外部的结构性痛苦，在无力改变的情况下，他们需要加固自己的内心",
+        "best_frame_timestamp": 736.68,
+        "best_frame_text": "现代人享握概总的途度",
+        "best_frame_confidence": 0.836,
+        "frames": [
+          {
+            "timestamp": 726.08,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 728.2,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 730.32,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 732.44,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 734.56,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 736.68,
+            "text_lines": [
+              {
+                "text": "现代人享握概总的途度",
+                "confidence": 0.836,
+                "x": 0.64,
+                "y": 0.056
+              }
+            ],
+            "extracted_text": "现代人享握概总的途度",
+            "mean_ocr_confidence": 0.836,
+            "match_score": 0.012,
+            "lexical_overlap_score": 0.012,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "现代人享握概总的途度",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        998.17,
+        1005.45
+      ],
+      "point_id": "b03",
+      "point_text": "所以令人无奈的是，在一个人格都要优化的世界里，很多人要去在酒场逼自己打开、在情场逼自己表白、在课堂上猛地举手，就是为了证明自己是一个开放的、积极的、正能量的人",
+      "text": "他要去在酒厂逼自己打开 在情场逼自己表白 在课堂上猛的举手",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 7,
+        "face_samples": 5,
+        "comparable_hand_samples": 7,
+        "coverage": 0.954,
+        "face_coverage": 0.679,
+        "hand_coverage": 0.954,
+        "sampling_interval_seconds": 1.001,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-998.998",
+            "kind": "motion",
+            "start": 998.998,
+            "end": 1001,
+            "peak": 998.998,
+            "count": 3,
+            "magnitude": 0.301,
+            "duration": 2.002
+          },
+          {
+            "id": "motion-1003.002",
+            "kind": "motion",
+            "start": 1003.002,
+            "end": 1005.004,
+            "peak": 1005.004,
+            "count": 3,
+            "magnitude": 0.385,
+            "duration": 2.002
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-998.998",
+          "kind": "motion",
+          "start": 998.998,
+          "end": 1001,
+          "peak": 998.998,
+          "count": 3,
+          "magnitude": 0.301,
+          "duration": 2.002
+        },
+        {
+          "id": "motion-1003.002",
+          "kind": "motion",
+          "start": 1003.002,
+          "end": 1005.004,
+          "peak": 1005.004,
+          "count": 3,
+          "magnitude": 0.385,
+          "duration": 2.002
+        }
+      ],
+      "voice_windows": [
+        {
+          "span": [
+            1003.41,
+            1005.45
+          ],
+          "reliable": true,
+          "emphasis": true,
+          "basis": "句级响度高于本场基线（≥0.6σ）"
+        }
+      ],
+      "slide": {
+        "beat_id": "b03",
+        "target_meaning": "所以令人无奈的是，在一个人格都要优化的世界里，很多人要去在酒场逼自己打开、在情场逼自己表白、在课堂上猛地举手，就是为了证明自己是一个开放的、积极的、正能量的人",
+        "required_claims": [
+          "所以令人无奈的是，在一个人格都要优化的世界里，很多人要去在酒场逼自己打开、在情场逼自己表白、在课堂上猛地举手，就是为了证明自己是一个开放的、积极的、正能量的人"
+        ],
+        "time_span": [
+          998.17,
+          1005.45
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0.0187,
+        "lexical_overlap_score": 0.0187,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "所以令人无奈的是，在一个人格都要优化的世界里，很多人要去在酒场逼自己打开、在情场逼自己表白、在课堂上猛地举手，就是为了证明自己是一个开放的、积极的、正能量的人",
+        "best_frame_timestamp": 998.426,
+        "best_frame_text": "好说话负责， · 踏实负责不意事 · 能干但莫得 · 超脱世浴 · 容易被发好人卡 · 但可能有点死板 · 感情的捐钱机器 · TOP4 · ENFP · ESFP · ESTP · 更选者 · 表演系 · 企业家 · 热情有想法但太 · 灵活、会来事 · 有趣、活跃 · 跳跃、不守规则 · 显得团滑 · 但不靠谱 · TOP5 · ISTP · INTJ · INFJ · 建筑师 · 提倡家 · 主流社交体系里 · 不近人情的、服 · 极度复杂、虚假 · 往往查无此人 · 度低的高智商 · 让人看不透 · INFP · TOP6 · ISFP · 神秘王者 · 太敏层、不 · 于有个性、不 · 0015 · 玻璃心 · 台、拖证",
+        "best_frame_confidence": 0.942,
+        "frames": [
+          {
+            "timestamp": 996.17,
+            "text_lines": [
+              {
+                "text": "好说话负责，",
+                "confidence": 0.951,
+                "x": 0.755,
+                "y": 0.011
+              },
+              {
+                "text": "踏实负责不意事",
+                "confidence": 0.958,
+                "x": 0.639,
+                "y": 0.014
+              },
+              {
+                "text": "能干但莫得",
+                "confidence": 0.998,
+                "x": 0.511,
+                "y": 0.016
+              },
+              {
+                "text": "国脱世浴",
+                "confidence": 0.531,
+                "x": 0.849,
+                "y": 0.016
+              },
+              {
+                "text": "容易被发好人卡",
+                "confidence": 0.993,
+                "x": 0.764,
+                "y": 0.039
+              },
+              {
+                "text": "但可能有点死板",
+                "confidence": 1,
+                "x": 0.64,
+                "y": 0.044
+              },
+              {
+                "text": "感情的指钱机器",
+                "confidence": 0.916,
+                "x": 0.521,
+                "y": 0.047
+              },
+              {
+                "text": "TOP4",
+                "confidence": 0.999,
+                "x": 0.448,
+                "y": 0.141
+              },
+              {
+                "text": "ENFP",
+                "confidence": 1,
+                "x": 0.804,
+                "y": 0.217
+              },
+              {
+                "text": "ENTP",
+                "confidence": 1,
+                "x": 0.576,
+                "y": 0.22
+              },
+              {
+                "text": "ESTP",
+                "confidence": 1,
+                "x": 0.466,
+                "y": 0.222
+              },
+              {
+                "text": "更选者",
+                "confidence": 0.527,
+                "x": 0.804,
+                "y": 0.253
+              },
+              {
+                "text": "辩论家",
+                "confidence": 0.82,
+                "x": 0.575,
+                "y": 0.254
+              },
+              {
+                "text": "企业家",
+                "confidence": 1,
+                "x": 0.467,
+                "y": 0.258
+              },
+              {
+                "text": "热情有想法但太",
+                "confidence": 0.999,
+                "x": 0.803,
+                "y": 0.301
+              },
+              {
+                "text": "灵活、会来事",
+                "confidence": 0.924,
+                "x": 0.459,
+                "y": 0.303
+              },
+              {
+                "text": "认可度全看对",
+                "confidence": 1,
+                "x": 0.586,
+                "y": 0.306
+              },
+              {
+                "text": "跳跃、不守规则",
+                "confidence": 0.988,
+                "x": 0.802,
+                "y": 0.337
+              },
+              {
+                "text": "显得团滑",
+                "confidence": 0.927,
+                "x": 0.447,
+                "y": 0.338
+              },
+              {
+                "text": "方的抗压能力",
+                "confidence": 1,
+                "x": 0.586,
+                "y": 0.341
+              },
+              {
+                "text": "TOP5",
+                "confidence": 0.992,
+                "x": 0.415,
+                "y": 0.417
+              },
+              {
+                "text": "ISTP",
+                "confidence": 1,
+                "x": 0.442,
+                "y": 0.474
+              },
+              {
+                "text": "HNFJ",
+                "confidence": 0.893,
+                "x": 0.816,
+                "y": 0.481
+              },
+              {
+                "text": "提信家",
+                "confidence": 0.783,
+                "x": 0.818,
+                "y": 0.515
+              },
+              {
+                "text": "主流社交体系里",
+                "confidence": 0.997,
+                "x": 0.442,
+                "y": 0.555
+              },
+              {
+                "text": "不切实际的空想",
+                "confidence": 0.932,
+                "x": 0.561,
+                "y": 0.561
+              },
+              {
+                "text": "及度复杂、虚假",
+                "confidence": 0.986,
+                "x": 0.832,
+                "y": 0.564
+              },
+              {
+                "text": "往往查无此人",
+                "confidence": 0.943,
+                "x": 0.437,
+                "y": 0.59
+              },
+              {
+                "text": "家，拖延症晚期",
+                "confidence": 0.996,
+                "x": 0.561,
+                "y": 0.597
+              },
+              {
+                "text": "让人看不透",
+                "confidence": 0.992,
+                "x": 0.814,
+                "y": 0.601
+              },
+              {
+                "text": "INFP",
+                "confidence": 1,
+                "x": 0.523,
+                "y": 0.661
+              },
+              {
+                "text": "TOP6",
+                "confidence": 0.957,
+                "x": 0.38,
+                "y": 0.663
+              },
+              {
+                "text": "w",
+                "confidence": 0.56,
+                "x": 0.772,
+                "y": 0.681
+              },
+              {
+                "text": "语子者",
+                "confidence": 0.822,
+                "x": 0.524,
+                "y": 0.697
+              },
+              {
+                "text": "神秘王者",
+                "confidence": 0.987,
+                "x": 0.825,
+                "y": 0.732
+              },
+              {
+                "text": "太敏感、不现实",
+                "confidence": 0.964,
+                "x": 0.526,
+                "y": 0.737
+              },
+              {
+                "text": "0小015",
+                "confidence": 0.703,
+                "x": 0.848,
+                "y": 0.769
+              },
+              {
+                "text": "玻璃心",
+                "confidence": 0.974,
+                "x": 0.504,
+                "y": 0.772
+              }
+            ],
+            "extracted_text": "好说话负责， · 踏实负责不意事 · 能干但莫得 · 国脱世浴 · 容易被发好人卡 · 但可能有点死板 · 感情的指钱机器 · TOP4 · ENFP · ENTP · ESTP · 更选者 · 辩论家 · 企业家 · 热情有想法但太 · 灵活、会来事 · 认可度全看对 · 跳跃、不守规则 · 显得团滑 · 方的抗压能力 · TOP5 · ISTP · HNFJ · 提信家 · 主流社交体系里 · 不切实际的空想 · 及度复杂、虚假 · 往往查无此人 · 家，拖延症晚期 · 让人看不透 · INFP · TOP6 · w · 语子者 · 神秘王者 · 太敏感、不现实 · 0小015 · 玻璃心",
+            "mean_ocr_confidence": 0.921,
+            "match_score": 0.0145,
+            "lexical_overlap_score": 0.0145,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 998.426,
+            "text_lines": [
+              {
+                "text": "好说话负责，",
+                "confidence": 0.963,
+                "x": 0.755,
+                "y": 0.011
+              },
+              {
+                "text": "踏实负责不意事",
+                "confidence": 0.983,
+                "x": 0.639,
+                "y": 0.014
+              },
+              {
+                "text": "能干但莫得",
+                "confidence": 0.997,
+                "x": 0.511,
+                "y": 0.016
+              },
+              {
+                "text": "超脱世浴",
+                "confidence": 0.629,
+                "x": 0.849,
+                "y": 0.016
+              },
+              {
+                "text": "容易被发好人卡",
+                "confidence": 0.997,
+                "x": 0.764,
+                "y": 0.039
+              },
+              {
+                "text": "但可能有点死板",
+                "confidence": 1,
+                "x": 0.64,
+                "y": 0.044
+              },
+              {
+                "text": "感情的捐钱机器",
+                "confidence": 0.89,
+                "x": 0.522,
+                "y": 0.047
+              },
+              {
+                "text": "TOP4",
+                "confidence": 0.999,
+                "x": 0.448,
+                "y": 0.142
+              },
+              {
+                "text": "ENFP",
+                "confidence": 1,
+                "x": 0.805,
+                "y": 0.217
+              },
+              {
+                "text": "ESFP",
+                "confidence": 1,
+                "x": 0.689,
+                "y": 0.219
+              },
+              {
+                "text": "ESTP",
+                "confidence": 1,
+                "x": 0.466,
+                "y": 0.223
+              },
+              {
+                "text": "更选者",
+                "confidence": 0.726,
+                "x": 0.804,
+                "y": 0.253
+              },
+              {
+                "text": "表演系",
+                "confidence": 0.617,
+                "x": 0.689,
+                "y": 0.255
+              },
+              {
+                "text": "企业家",
+                "confidence": 1,
+                "x": 0.467,
+                "y": 0.258
+              },
+              {
+                "text": "热情有想法但太",
+                "confidence": 0.998,
+                "x": 0.803,
+                "y": 0.301
+              },
+              {
+                "text": "灵活、会来事",
+                "confidence": 0.967,
+                "x": 0.459,
+                "y": 0.303
+              },
+              {
+                "text": "有趣、活跃",
+                "confidence": 0.928,
+                "x": 0.686,
+                "y": 0.305
+              },
+              {
+                "text": "跳跃、不守规则",
+                "confidence": 0.97,
+                "x": 0.802,
+                "y": 0.338
+              },
+              {
+                "text": "显得团滑",
+                "confidence": 0.797,
+                "x": 0.447,
+                "y": 0.339
+              },
+              {
+                "text": "但不靠谱",
+                "confidence": 0.999,
+                "x": 0.68,
+                "y": 0.342
+              },
+              {
+                "text": "TOP5",
+                "confidence": 0.988,
+                "x": 0.415,
+                "y": 0.417
+              },
+              {
+                "text": "ISTP",
+                "confidence": 1,
+                "x": 0.443,
+                "y": 0.474
+              },
+              {
+                "text": "INTJ",
+                "confidence": 0.998,
+                "x": 0.693,
+                "y": 0.478
+              },
+              {
+                "text": "INFJ",
+                "confidence": 0.942,
+                "x": 0.814,
+                "y": 0.48
+              },
+              {
+                "text": "建筑师",
+                "confidence": 0.883,
+                "x": 0.693,
+                "y": 0.515
+              },
+              {
+                "text": "提倡家",
+                "confidence": 0.906,
+                "x": 0.818,
+                "y": 0.515
+              },
+              {
+                "text": "主流社交体系里",
+                "confidence": 0.995,
+                "x": 0.443,
+                "y": 0.555
+              },
+              {
+                "text": "不近人情的、服",
+                "confidence": 0.988,
+                "x": 0.7,
+                "y": 0.561
+              },
+              {
+                "text": "极度复杂、虚假",
+                "confidence": 0.999,
+                "x": 0.829,
+                "y": 0.564
+              },
+              {
+                "text": "往往查无此人",
+                "confidence": 0.916,
+                "x": 0.437,
+                "y": 0.591
+              },
+              {
+                "text": "度低的高智商",
+                "confidence": 0.889,
+                "x": 0.701,
+                "y": 0.598
+              },
+              {
+                "text": "让人看不透",
+                "confidence": 0.996,
+                "x": 0.814,
+                "y": 0.601
+              },
+              {
+                "text": "INFP",
+                "confidence": 1,
+                "x": 0.523,
+                "y": 0.661
+              },
+              {
+                "text": "TOP6",
+                "confidence": 0.984,
+                "x": 0.38,
+                "y": 0.664
+              },
+              {
+                "text": "ISFP",
+                "confidence": 1,
+                "x": 0.692,
+                "y": 0.667
+              },
+              {
+                "text": "神秘王者",
+                "confidence": 0.977,
+                "x": 0.825,
+                "y": 0.732
+              },
+              {
+                "text": "太敏层、不",
+                "confidence": 0.958,
+                "x": 0.515,
+                "y": 0.738
+              },
+              {
+                "text": "于有个性、不",
+                "confidence": 0.999,
+                "x": 0.703,
+                "y": 0.744
+              },
+              {
+                "text": "0015",
+                "confidence": 0.802,
+                "x": 0.847,
+                "y": 0.77
+              },
+              {
+                "text": "玻璃心",
+                "confidence": 0.996,
+                "x": 0.504,
+                "y": 0.773
+              },
+              {
+                "text": "台、拖证",
+                "confidence": 0.926,
+                "x": 0.691,
+                "y": 0.783
+              }
+            ],
+            "extracted_text": "好说话负责， · 踏实负责不意事 · 能干但莫得 · 超脱世浴 · 容易被发好人卡 · 但可能有点死板 · 感情的捐钱机器 · TOP4 · ENFP · ESFP · ESTP · 更选者 · 表演系 · 企业家 · 热情有想法但太 · 灵活、会来事 · 有趣、活跃 · 跳跃、不守规则 · 显得团滑 · 但不靠谱 · TOP5 · ISTP · INTJ · INFJ · 建筑师 · 提倡家 · 主流社交体系里 · 不近人情的、服 · 极度复杂、虚假 · 往往查无此人 · 度低的高智商 · 让人看不透 · INFP · TOP6 · ISFP · 神秘王者 · 太敏层、不 · 于有个性、不 · 0015 · 玻璃心 · 台、拖证",
+            "mean_ocr_confidence": 0.942,
+            "match_score": 0.0187,
+            "lexical_overlap_score": 0.0187,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1000.682,
+            "text_lines": [
+              {
+                "text": "好说话负责，",
+                "confidence": 0.983,
+                "x": 0.754,
+                "y": 0.012
+              },
+              {
+                "text": "踏实负责不意事",
+                "confidence": 0.942,
+                "x": 0.639,
+                "y": 0.014
+              },
+              {
+                "text": "能干但莫得",
+                "confidence": 0.993,
+                "x": 0.51,
+                "y": 0.015
+              },
+              {
+                "text": "G脱世浴",
+                "confidence": 0.737,
+                "x": 0.849,
+                "y": 0.016
+              },
+              {
+                "text": "容易被发好人卡",
+                "confidence": 0.996,
+                "x": 0.764,
+                "y": 0.039
+              },
+              {
+                "text": "但可能有点死板",
+                "confidence": 1,
+                "x": 0.639,
+                "y": 0.044
+              },
+              {
+                "text": "感情的捐钱机器",
+                "confidence": 0.931,
+                "x": 0.522,
+                "y": 0.047
+              },
+              {
+                "text": "TOP4",
+                "confidence": 0.997,
+                "x": 0.449,
+                "y": 0.142
+              },
+              {
+                "text": "ENDO",
+                "confidence": 0.871,
+                "x": 0.596,
+                "y": 0.215
+              },
+              {
+                "text": "ENFP",
+                "confidence": 1,
+                "x": 0.805,
+                "y": 0.217
+              },
+              {
+                "text": "ESFP",
+                "confidence": 1,
+                "x": 0.688,
+                "y": 0.219
+              },
+              {
+                "text": "ESTP",
+                "confidence": 1,
+                "x": 0.466,
+                "y": 0.221
+              },
+              {
+                "text": "竞选者",
+                "confidence": 0.643,
+                "x": 0.805,
+                "y": 0.253
+              },
+              {
+                "text": "表演系",
+                "confidence": 0.659,
+                "x": 0.689,
+                "y": 0.255
+              },
+              {
+                "text": "企业家",
+                "confidence": 0.992,
+                "x": 0.467,
+                "y": 0.258
+              },
+              {
+                "text": "热情有想法但太",
+                "confidence": 0.993,
+                "x": 0.803,
+                "y": 0.301
+              },
+              {
+                "text": "灵活、会来事",
+                "confidence": 0.983,
+                "x": 0.457,
+                "y": 0.302
+              },
+              {
+                "text": "有趣、活跃",
+                "confidence": 0.977,
+                "x": 0.682,
+                "y": 0.305
+              },
+              {
+                "text": "认可度全",
+                "confidence": 0.997,
+                "x": 0.574,
+                "y": 0.306
+              },
+              {
+                "text": "跳跃、不守规则",
+                "confidence": 0.996,
+                "x": 0.801,
+                "y": 0.338
+              },
+              {
+                "text": "显得团滑",
+                "confidence": 0.961,
+                "x": 0.447,
+                "y": 0.339
+              },
+              {
+                "text": "瓶膜",
+                "confidence": 0.804,
+                "x": 0.69,
+                "y": 0.341
+              },
+              {
+                "text": "方的抗压",
+                "confidence": 1,
+                "x": 0.578,
+                "y": 0.342
+              },
+              {
+                "text": "TOP5",
+                "confidence": 0.984,
+                "x": 0.415,
+                "y": 0.417
+              },
+              {
+                "text": "ISTP",
+                "confidence": 1,
+                "x": 0.443,
+                "y": 0.474
+              },
+              {
+                "text": "INFJ",
+                "confidence": 0.97,
+                "x": 0.814,
+                "y": 0.48
+              },
+              {
+                "text": "提倡家",
+                "confidence": 0.9,
+                "x": 0.818,
+                "y": 0.515
+              },
+              {
+                "text": "主流社交体系里",
+                "confidence": 0.997,
+                "x": 0.442,
+                "y": 0.555
+              },
+              {
+                "text": "不切",
+                "confidence": 0.978,
+                "x": 0.54,
+                "y": 0.562
+              },
+              {
+                "text": "青的、服",
+                "confidence": 0.801,
+                "x": 0.719,
+                "y": 0.562
+              },
+              {
+                "text": "极度复杂、虚假",
+                "confidence": 0.998,
+                "x": 0.829,
+                "y": 0.564
+              },
+              {
+                "text": "往往查无此人",
+                "confidence": 0.909,
+                "x": 0.436,
+                "y": 0.59
+              },
+              {
+                "text": "家，拖延",
+                "confidence": 0.793,
+                "x": 0.544,
+                "y": 0.596
+              },
+              {
+                "text": "的高智商",
+                "confidence": 0.888,
+                "x": 0.716,
+                "y": 0.598
+              },
+              {
+                "text": "让人看不透",
+                "confidence": 0.997,
+                "x": 0.814,
+                "y": 0.599
+              },
+              {
+                "text": "INFP",
+                "confidence": 1,
+                "x": 0.523,
+                "y": 0.661
+              },
+              {
+                "text": "TOP6",
+                "confidence": 0.961,
+                "x": 0.38,
+                "y": 0.663
+              },
+              {
+                "text": "SFP",
+                "confidence": 0.932,
+                "x": 0.698,
+                "y": 0.668
+              },
+              {
+                "text": "语子者",
+                "confidence": 0.659,
+                "x": 0.524,
+                "y": 0.697
+              },
+              {
+                "text": "神秘王者",
+                "confidence": 0.993,
+                "x": 0.826,
+                "y": 0.732
+              },
+              {
+                "text": "太敏感、不现实",
+                "confidence": 0.856,
+                "x": 0.525,
+                "y": 0.738
+              },
+              {
+                "text": "个性、不",
+                "confidence": 0.855,
+                "x": 0.716,
+                "y": 0.747
+              },
+              {
+                "text": "小1书",
+                "confidence": 0.92,
+                "x": 0.848,
+                "y": 0.769
+              },
+              {
+                "text": "玻璃心",
+                "confidence": 0.941,
+                "x": 0.504,
+                "y": 0.773
+              },
+              {
+                "text": "杭证",
+                "confidence": 0.566,
+                "x": 0.704,
+                "y": 0.781
+              }
+            ],
+            "extracted_text": "好说话负责， · 踏实负责不意事 · 能干但莫得 · G脱世浴 · 容易被发好人卡 · 但可能有点死板 · 感情的捐钱机器 · TOP4 · ENDO · ENFP · ESFP · ESTP · 竞选者 · 表演系 · 企业家 · 热情有想法但太 · 灵活、会来事 · 有趣、活跃 · 认可度全 · 跳跃、不守规则 · 显得团滑 · 瓶膜 · 方的抗压 · TOP5 · ISTP · INFJ · 提倡家 · 主流社交体系里 · 不切 · 青的、服 · 极度复杂、虚假 · 往往查无此人 · 家，拖延 · 的高智商 · 让人看不透 · INFP · TOP6 · SFP · 语子者 · 神秘王者 · 太敏感、不现实 · 个性、不 · 小1书 · 玻璃心 · 杭证",
+            "mean_ocr_confidence": 0.919,
+            "match_score": 0.0183,
+            "lexical_overlap_score": 0.0183,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1002.938,
+            "text_lines": [
+              {
+                "text": "好说话负责，",
+                "confidence": 0.949,
+                "x": 0.755,
+                "y": 0.011
+              },
+              {
+                "text": "踏实负责不意事",
+                "confidence": 0.958,
+                "x": 0.639,
+                "y": 0.014
+              },
+              {
+                "text": "能干但莫得",
+                "confidence": 0.996,
+                "x": 0.511,
+                "y": 0.016
+              },
+              {
+                "text": "超脱世俗",
+                "confidence": 0.673,
+                "x": 0.849,
+                "y": 0.016
+              },
+              {
+                "text": "容易被发好人卡",
+                "confidence": 0.995,
+                "x": 0.764,
+                "y": 0.039
+              },
+              {
+                "text": "但可能有点死板",
+                "confidence": 1,
+                "x": 0.64,
+                "y": 0.044
+              },
+              {
+                "text": "感情的描钱机器",
+                "confidence": 0.918,
+                "x": 0.522,
+                "y": 0.047
+              },
+              {
+                "text": "TOP4",
+                "confidence": 0.998,
+                "x": 0.448,
+                "y": 0.142
+              },
+              {
+                "text": "ENFP",
+                "confidence": 1,
+                "x": 0.805,
+                "y": 0.217
+              },
+              {
+                "text": "ESFP",
+                "confidence": 1,
+                "x": 0.689,
+                "y": 0.219
+              },
+              {
+                "text": "ESTP",
+                "confidence": 1,
+                "x": 0.466,
+                "y": 0.223
+              },
+              {
+                "text": "竞选者",
+                "confidence": 0.858,
+                "x": 0.804,
+                "y": 0.253
+              },
+              {
+                "text": "丧演家",
+                "confidence": 0.823,
+                "x": 0.689,
+                "y": 0.255
+              },
+              {
+                "text": "企业家",
+                "confidence": 1,
+                "x": 0.467,
+                "y": 0.258
+              },
+              {
+                "text": "热情有想法但太",
+                "confidence": 0.998,
+                "x": 0.803,
+                "y": 0.301
+              },
+              {
+                "text": "灵活、会来事",
+                "confidence": 0.983,
+                "x": 0.459,
+                "y": 0.303
+              },
+              {
+                "text": "有趣、活跃",
+                "confidence": 0.983,
+                "x": 0.686,
+                "y": 0.305
+              },
+              {
+                "text": "跳跃、不守规则",
+                "confidence": 0.982,
+                "x": 0.802,
+                "y": 0.338
+              },
+              {
+                "text": "显得团滑",
+                "confidence": 0.92,
+                "x": 0.447,
+                "y": 0.339
+              },
+              {
+                "text": "方的抗",
+                "confidence": 0.997,
+                "x": 0.569,
+                "y": 0.341
+              },
+              {
+                "text": "日不靠谱",
+                "confidence": 0.804,
+                "x": 0.681,
+                "y": 0.341
+              },
+              {
+                "text": "TOP5",
+                "confidence": 0.994,
+                "x": 0.415,
+                "y": 0.417
+              },
+              {
+                "text": "ISTP",
+                "confidence": 1,
+                "x": 0.443,
+                "y": 0.474
+              },
+              {
+                "text": "NTJ",
+                "confidence": 0.997,
+                "x": 0.699,
+                "y": 0.48
+              },
+              {
+                "text": "INFJ",
+                "confidence": 0.899,
+                "x": 0.814,
+                "y": 0.482
+              },
+              {
+                "text": "提倡家",
+                "confidence": 0.89,
+                "x": 0.817,
+                "y": 0.515
+              },
+              {
+                "text": "主流社交体系里",
+                "confidence": 0.996,
+                "x": 0.442,
+                "y": 0.555
+              },
+              {
+                "text": "不切典",
+                "confidence": 0.753,
+                "x": 0.538,
+                "y": 0.562
+              },
+              {
+                "text": "情的、服",
+                "confidence": 0.995,
+                "x": 0.715,
+                "y": 0.562
+              },
+              {
+                "text": "极度复杂、虚假",
+                "confidence": 0.998,
+                "x": 0.828,
+                "y": 0.563
+              },
+              {
+                "text": "往往查无此人",
+                "confidence": 0.942,
+                "x": 0.437,
+                "y": 0.591
+              },
+              {
+                "text": "家，拖延",
+                "confidence": 0.884,
+                "x": 0.543,
+                "y": 0.597
+              },
+              {
+                "text": "任的高智商",
+                "confidence": 0.873,
+                "x": 0.71,
+                "y": 0.597
+              },
+              {
+                "text": "让人看不透",
+                "confidence": 0.985,
+                "x": 0.813,
+                "y": 0.601
+              },
+              {
+                "text": "INFP",
+                "confidence": 1,
+                "x": 0.523,
+                "y": 0.661
+              },
+              {
+                "text": "TOP6",
+                "confidence": 0.948,
+                "x": 0.38,
+                "y": 0.665
+              },
+              {
+                "text": "SFP",
+                "confidence": 0.896,
+                "x": 0.695,
+                "y": 0.667
+              },
+              {
+                "text": "语子者",
+                "confidence": 0.693,
+                "x": 0.524,
+                "y": 0.697
+              },
+              {
+                "text": "神秘王者",
+                "confidence": 0.995,
+                "x": 0.825,
+                "y": 0.732
+              },
+              {
+                "text": "太敏感、不现",
+                "confidence": 0.911,
+                "x": 0.525,
+                "y": 0.738
+              },
+              {
+                "text": "盲个性、不",
+                "confidence": 0.846,
+                "x": 0.714,
+                "y": 0.747
+              },
+              {
+                "text": "小01书",
+                "confidence": 0.744,
+                "x": 0.848,
+                "y": 0.769
+              },
+              {
+                "text": "玻璃心",
+                "confidence": 0.988,
+                "x": 0.504,
+                "y": 0.773
+              },
+              {
+                "text": "拖证",
+                "confidence": 0.772,
+                "x": 0.702,
+                "y": 0.782
+              }
+            ],
+            "extracted_text": "好说话负责， · 踏实负责不意事 · 能干但莫得 · 超脱世俗 · 容易被发好人卡 · 但可能有点死板 · 感情的描钱机器 · TOP4 · ENFP · ESFP · ESTP · 竞选者 · 丧演家 · 企业家 · 热情有想法但太 · 灵活、会来事 · 有趣、活跃 · 跳跃、不守规则 · 显得团滑 · 方的抗 · 日不靠谱 · TOP5 · ISTP · NTJ · INFJ · 提倡家 · 主流社交体系里 · 不切典 · 情的、服 · 极度复杂、虚假 · 往往查无此人 · 家，拖延 · 任的高智商 · 让人看不透 · INFP · TOP6 · SFP · 语子者 · 神秘王者 · 太敏感、不现 · 盲个性、不 · 小01书 · 玻璃心 · 拖证",
+            "mean_ocr_confidence": 0.928,
+            "match_score": 0.0178,
+            "lexical_overlap_score": 0.0178,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1005.194,
+            "text_lines": [
+              {
+                "text": "假",
+                "confidence": 1,
+                "x": 0.02,
+                "y": 0.699
+              }
+            ],
+            "extracted_text": "假",
+            "mean_ocr_confidence": 1,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1007.45,
+            "text_lines": [
+              {
+                "text": "假",
+                "confidence": 1,
+                "x": 0.02,
+                "y": 0.703
+              }
+            ],
+            "extracted_text": "假",
+            "mean_ocr_confidence": 1,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "好说话负责， · 踏实负责不意事 · 能干但莫得 · 国脱世浴 · 容易被发好人卡 · 但可能有点死板 · 感情的指钱机器 · TOP4 · ENFP · ENTP · ESTP · 更选者 · 辩论家 · 企业家 · 热情有想法但太 · 灵活、会来事 · 认可度全看对 · 跳跃、不守规则 · 显得团滑 · 方的抗压能力 · TOP5 · ISTP · HNFJ · 提信家 · 主流社交体系里 · 不切实际的空想 · 及度复杂、虚假 · 往往查无此人 · 家，拖延症晚期 · 让人看不透 · INFP · TOP6 · w · 语子者 · 神秘王者 · 太敏感、不现实 · 0小015 · 玻璃心\n好说话负责， · 踏实负责不意事 · 能干但莫得 · 超脱世浴 · 容易被发好人卡 · 但可能有点死板 · 感情的捐钱机器 · TOP4 · ENFP · ESFP · ESTP · 更选者 · 表演系 · 企业家 · 热情有想法但太 · 灵活、会来事 · 有趣、活跃 · 跳跃、不守规则 · 显得团滑 · 但不靠谱 · TOP5 · ISTP · INTJ · INFJ · 建筑师 · 提倡家 · 主流社交体系里 · 不近人情的、服 · 极度复杂、虚假 · 往往查无此人 · 度低的高智商 · 让人看不透 · INFP · TOP6 · ISFP · 神秘王者 · 太敏层、不 · 于有个性、不 · 0015 · 玻璃心 · 台、拖证\n好说话负责， · 踏实负责不意事 · 能干但莫得 · G脱世浴 · 容易被发好人卡 · 但可能有点死板 · 感情的捐钱机器 · TOP4 · ENDO · ENFP · ESFP · ESTP · 竞选者 · 表演系 · 企业家 · 热情有想法但太 · 灵活、会来事 · 有趣、活跃 · 认可度全 · 跳跃、不守规则 · 显得团滑 · 瓶膜 · 方的抗压 · TOP5 · ISTP · INFJ · 提倡家 · 主流社交体系里 · 不切 · 青的、服 · 极度复杂、虚假 · 往往查无此人 · 家，拖延 · 的高智商 · 让人看不透 · INFP · TOP6 · SFP · 语子者 · 神秘王者 · 太敏感、不现实 · 个性、不 · 小1书 · 玻璃心 · 杭证\n好说话负责， · 踏实负责不意事 · 能干但莫得 · 超脱世俗 · 容易被发好人卡 · 但可能有点死板 · 感情的描钱机器 · TOP4 · ENFP · ESFP · ESTP · 竞选者 · 丧演家 · 企业家 · 热情有想法但太 · 灵活、会来事 · 有趣、活跃 · 跳跃、不守规则 · 显得团滑 · 方的抗 · 日不靠谱 · TOP5 · ISTP · NTJ · INFJ · 提倡家 · 主流社交体系里 · 不切典 · 情的、服 · 极度复杂、虚假 · 往往查无此人 · 家，拖延 · 任的高智商 · 让人看不透 · INFP · TOP6 · SFP · 语子者 · 神秘王者 · 太敏感、不现 · 盲个性、不 · 小01书 · 玻璃心 · 拖证\n假\n假",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        1068.23,
+        1076.39
+      ],
+      "point_id": "b04",
+      "point_text": "也就是说，我们不应该把情绪看成是自己拥有的、需要被解决的东西，它应该带领我们发现自己，让它去引领你",
+      "text": "我们不应该把情感 看成是自己拥有的东西 情感应该是带领我们发现自己的东西",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 8,
+        "face_samples": 7,
+        "comparable_hand_samples": 8,
+        "coverage": 0.958,
+        "face_coverage": 0.835,
+        "hand_coverage": 0.958,
+        "sampling_interval_seconds": 1.001,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-1071.07",
+            "kind": "motion",
+            "start": 1071.07,
+            "end": 1073.072,
+            "peak": 1073.072,
+            "count": 3,
+            "magnitude": 0.155,
+            "duration": 2.002
+          },
+          {
+            "id": "motion-1075.074",
+            "kind": "motion",
+            "start": 1075.074,
+            "end": 1076.075,
+            "peak": 1076.075,
+            "count": 2,
+            "magnitude": 0.072,
+            "duration": 1.001
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-1071.07",
+          "kind": "motion",
+          "start": 1071.07,
+          "end": 1073.072,
+          "peak": 1073.072,
+          "count": 3,
+          "magnitude": 0.155,
+          "duration": 2.002
+        },
+        {
+          "id": "motion-1075.074",
+          "kind": "motion",
+          "start": 1075.074,
+          "end": 1076.075,
+          "peak": 1076.075,
+          "count": 2,
+          "magnitude": 0.072,
+          "duration": 1.001
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b04",
+        "target_meaning": "也就是说，我们不应该把情绪看成是自己拥有的、需要被解决的东西，它应该带领我们发现自己，让它去引领你",
+        "required_claims": [
+          "也就是说，我们不应该把情绪看成是自己拥有的、需要被解决的东西，它应该带领我们发现自己，让它去引领你"
+        ],
+        "time_span": [
+          1068.23,
+          1076.39
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0.0607,
+        "lexical_overlap_score": 0.0607,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "也就是说，我们不应该把情绪看成是自己拥有的、需要被解决的东西，它应该带领我们发现自己，让它去引领你",
+        "best_frame_timestamp": 1074.337,
+        "best_frame_text": "己」",
+        "best_frame_confidence": 0.983,
+        "frames": [
+          {
+            "timestamp": 1066.23,
+            "text_lines": [
+              {
+                "text": "让人开始有勇气地",
+                "confidence": 1,
+                "x": 0.182,
+                "y": 0.06
+              },
+              {
+                "text": "祁克果",
+                "confidence": 0.999,
+                "x": 0.626,
+                "y": 0.431
+              }
+            ],
+            "extracted_text": "让人开始有勇气地 · 祁克果",
+            "mean_ocr_confidence": 1,
+            "match_score": 0.0095,
+            "lexical_overlap_score": 0.0095,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1068.257,
+            "text_lines": [
+              {
+                "text": "让人开始有勇气地",
+                "confidence": 1,
+                "x": 0.183,
+                "y": 0.06
+              },
+              {
+                "text": "祁克果",
+                "confidence": 0.999,
+                "x": 0.626,
+                "y": 0.431
+              }
+            ],
+            "extracted_text": "让人开始有勇气地 · 祁克果",
+            "mean_ocr_confidence": 1,
+            "match_score": 0.0095,
+            "lexical_overlap_score": 0.0095,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1070.283,
+            "text_lines": [
+              {
+                "text": "让人开始有勇气地",
+                "confidence": 1,
+                "x": 0.182,
+                "y": 0.061
+              },
+              {
+                "text": "祁克果",
+                "confidence": 0.997,
+                "x": 0.626,
+                "y": 0.431
+              }
+            ],
+            "extracted_text": "让人开始有勇气地 · 祁克果",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.0095,
+            "lexical_overlap_score": 0.0095,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1072.31,
+            "text_lines": [
+              {
+                "text": "让人开始有勇气地",
+                "confidence": 1,
+                "x": 0.182,
+                "y": 0.06
+              },
+              {
+                "text": "祁克果",
+                "confidence": 1,
+                "x": 0.626,
+                "y": 0.431
+              }
+            ],
+            "extracted_text": "让人开始有勇气地 · 祁克果",
+            "mean_ocr_confidence": 1,
+            "match_score": 0.0095,
+            "lexical_overlap_score": 0.0095,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1074.337,
+            "text_lines": [
+              {
+                "text": "己」",
+                "confidence": 0.983,
+                "x": 0.092,
+                "y": 0.305
+              }
+            ],
+            "extracted_text": "己」",
+            "mean_ocr_confidence": 0.983,
+            "match_score": 0.0607,
+            "lexical_overlap_score": 0.0607,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1076.363,
+            "text_lines": [
+              {
+                "text": "己」",
+                "confidence": 0.969,
+                "x": 0.093,
+                "y": 0.305
+              }
+            ],
+            "extracted_text": "己」",
+            "mean_ocr_confidence": 0.969,
+            "match_score": 0.0607,
+            "lexical_overlap_score": 0.0607,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1078.39,
+            "text_lines": [
+              {
+                "text": "己」",
+                "confidence": 0.925,
+                "x": 0.092,
+                "y": 0.305
+              }
+            ],
+            "extracted_text": "己」",
+            "mean_ocr_confidence": 0.925,
+            "match_score": 0.0607,
+            "lexical_overlap_score": 0.0607,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "让人开始有勇气地 · 祁克果\n让人开始有勇气地 · 祁克果\n让人开始有勇气地 · 祁克果\n让人开始有勇气地 · 祁克果\n己」\n己」\n己」",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    }
+  ],
+  "interpretation": "Rule candidates for human review; no calibrated accuracy claim."
+}

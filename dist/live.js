@@ -14,7 +14,8 @@
     speech: null, speechOn: false, lastSpeechAt: 0, lastUtteranceAt: 0,
     audioSamples: [], voiceBaseline: [], currentVolume: null, currentPitch: null,
     faceTask: null, poseTask: null, visionLoading: false, visualRaf: null,
-    lastVisionAt: 0, previousWrists: null, visualSummary: [],
+    lastVisionAt: 0, previousWrists: null, visualSummary: [], visualWindow: [], analysisAudio: [], lastVisualArchiveAt: -1,
+    speechWindowStart: null, speechWindowEnd: null, lastSegmentEnd: 0, lastAnalysisAudioAt: 0,
     ocrWorker: null, ocrLoading: null, ocrBusy: false, ocrTimer: null, lastOcrAt: 0,
     caseRequest: 0, lastWaveAt: 0, reportSession: null, stopping: false,
     cloudState: "loading", cloudError: "", cloudRefresh: null, historyEpoch: 0,
@@ -369,7 +370,7 @@
   function updateStartAvailability() {
     $("#coach-start").disabled = !$("#coach-consent").checked || !state.points.length || Boolean(state.session || state.pendingDraft || state.actionBusy);
     const active = Boolean(state.session);
-    ["#coach-case", "#coach-topic", "#coach-speaker", "#coach-language", "#coach-outline", "#coach-consent"].forEach(id => { $(id).disabled = active || Boolean(state.pendingDraft) || state.actionBusy; });
+    ["#coach-case", "#coach-topic", "#coach-speaker", "#coach-language", "#coach-expression-goal", "#coach-outline", "#coach-consent"].forEach(id => { $(id).disabled = active || Boolean(state.pendingDraft) || state.actionBusy; });
     ["#coach-manual-text", "#coach-add-text", "#share-screen"].forEach(id => { $(id).disabled = !active || state.stopping; });
     setText("#coach-outline-count", `${state.points.length} 个重点`);
     const ready = Boolean(state.points.length && $("#coach-consent").checked);
@@ -581,17 +582,24 @@
       const rms = Math.sqrt(energy / data.length);
       const db = rms > 0 ? 20 * Math.log10(rms) : -90;
       if (rms > 0.008) {
-        if (state.voiceBaseline.length < 40) state.voiceBaseline.push(db);
         state.currentVolume = db;
       } else if (state.lastUtteranceAt) {
         state.currentVolume = db;
       }
       const now = performance.now();
+      if (now - state.lastAnalysisAudioAt >= 200) {
+        const at = elapsed();
+        if (rms > .008 && state.voiceBaseline.length < 40) state.voiceBaseline.push(db);
+        const baseline = state.voiceBaseline.length ? state.voiceBaseline.reduce((sum, value) => sum + value, 0) / state.voiceBaseline.length : null;
+        state.analysisAudio.push({ at, rms, volumeDelta: baseline === null ? null : db - baseline, baselineReady: state.voiceBaseline.length >= 20 });
+        state.analysisAudio = state.analysisAudio.filter(sample => sample.at >= at - 120);
+        state.lastAnalysisAudioAt = now;
+      }
       if (now - state.lastWaveAt > 70) { drawAudioWave(data); state.lastWaveAt = now; }
       if (now - (state.lastPitchAt || 0) > 850) {
         const pitch = estimatePitch(data, state.audioContext.sampleRate);
         state.currentPitch = pitch;
-        state.audioSamples.push({ at: elapsed(), rms, pitch }); state.audioSamples = state.audioSamples.slice(-600);
+        state.audioSamples.push({ at: elapsed(), rms, pitch });
         state.lastPitchAt = now;
       }
       updateMetrics();
@@ -611,12 +619,14 @@
     const recognition = new Recognition();
     state.speech = recognition;
     recognition.lang = $("#coach-language").value; recognition.continuous = true; recognition.interimResults = true; recognition.maxAlternatives = 1;
+    recognition.onspeechstart = () => { if (state.session && !state.stopping) { state.speechWindowStart = elapsed(); state.speechWindowEnd = null; } };
+    recognition.onspeechend = () => { if (state.session) state.speechWindowEnd = elapsed(); };
     recognition.onresult = (event) => {
       let interim = "";
       for (let i = event.resultIndex; i < event.results.length; i += 1) {
         const item = event.results[i]; const text = item[0]?.transcript?.trim();
         if (!text) continue;
-        if (item.isFinal) addSegment(text, "browser-asr"); else interim += text;
+        if (item.isFinal) addSegment(text, "browser-asr", item[0]?.confidence); else interim += text;
       }
       if (interim) setText("#coach-transcript", `${transcriptText()} ${interim}`.trim());
       state.speechOn = true;
@@ -625,7 +635,8 @@
       if (event.error !== "no-speech" && event.error !== "aborted") setText("#coach-speech-support", `语音识别状态：${event.error}；可手动输入。`);
     };
     recognition.onend = () => {
-      if (state.session && state.speechOn) { try { recognition.start(); } catch { /* Restart may be rejected while already transitioning. */ } }
+      state.speechWindowStart = null; state.speechWindowEnd = null;
+      if (state.session && state.speechOn && !state.stopping) { try { recognition.start(); } catch { /* Restart may be rejected while already transitioning. */ } }
     };
     try {
       recognition.start();
@@ -635,22 +646,34 @@
     }
   }
 
-  function addSegment(text, source = "manual") {
+  function addSegment(text, source = "manual", asrConfidence = null) {
     const clean = String(text || "").trim();
     if (!clean || !state.session || state.stopping) return;
-    const at = elapsed();
-    const metrics = snapshotMetrics();
-    const segment = { at: Number(at.toFixed(1)), text: clean, source, voice: metrics, visual: currentVisualCue() };
-    state.session.segments.push(segment);
+    const at = elapsed(), metrics = snapshotMetrics();
+    const start = state.speechWindowStart === null ? null : Math.max(state.lastSegmentEnd, state.speechWindowStart);
+    const end = Math.min(at, state.speechWindowEnd ?? at);
+    const timed = source === "browser-asr" && start !== null && end > start && at - end < 3;
+    const segment = { at: Number(at.toFixed(2)), text: clean, source, voice: metrics, visual: currentVisualCue(),
+      time_span: timed ? [Number(start.toFixed(2)), Number(end.toFixed(2))] : null,
+      timingQuality: timed ? "browser-estimate" : source === "manual" ? "manual" : "unknown",
+      asrConfidence: Number.isFinite(asrConfidence) && asrConfidence > 0 ? asrConfidence : null,
+      pointMatch: TalkEvalFit.matchPoint(state.points, clean) };
+    const fit = TalkEvalFit.forLive(state.session, segment, state.visualWindow, state.analysisAudio);
+    segment.contextFitIndex = state.session.contextFits.length;
+    state.session.segments.push(segment); state.session.contextFits.push(fit);
+    if (source === "browser-asr") { state.lastSegmentEnd = end; state.speechWindowStart = state.speechWindowEnd === null ? end : null; state.speechWindowEnd = null; }
     state.lastUtteranceAt = at; state.lastSpeechAt = at;
     const scores = pointScores();
     scores.forEach(({ point }) => {
       const segmentScore = scorePoint(point, clean);
-      if (segmentScore >= 0.12) point.evidence.push({ at: segment.at, text: clean, score: Number(segmentScore.toFixed(3)), visual: segment.visual, voice: metrics });
+      if (segmentScore >= 0.12) point.evidence.push({ at: segment.at, text: clean, score: Number(segmentScore.toFixed(3)), visual: segment.visual, voice: metrics, contextStatus: fit.status });
     });
-    state.session.timeline.push({ at: segment.at, type: "speech", text: clean, activePoint: scores.find(({ score }) => score < 0.34)?.point?.id || null, scores: scores.map(({ point, score }) => ({ id: point.id, score: Number(score.toFixed(3)) })), voice: metrics, visual: segment.visual });
+    state.session.timeline.push({ at: segment.at, type: "speech", text: clean, activePoint: segment.pointMatch.pointId, scores: scores.map(({ point, score }) => ({ id: point.id, score: Number(score.toFixed(3)) })), voice: metrics, visual: segment.visual });
+    $("#coach-context-fit").innerHTML = TalkEvalFit.card(fit, { compact: true, seekAttribute: null });
+    setText("#visual-point-note", segment.pointMatch.reliable ? `当前语句对应：${segment.pointMatch.pointText}` : "当前语句与提纲的对应尚不明确，暂不作适配判断。");
     updateTranscript(); renderPoints(); updateMetrics();
   }
+
   function updateTranscript() {
     const segments = state.session?.segments || [];
     const last = segments.slice(-5).map((item) => `${stamp(item.at)} ${item.text}`).join("\n");
@@ -659,8 +682,10 @@
   }
 
   function currentVisualCue() {
-    return state.visualSummary.length ? state.visualSummary[state.visualSummary.length - 1] : { face: "未检测", gesture: "未检测" };
+    const sample = state.visualWindow[state.visualWindow.length - 1];
+    return sample ? { at: sample.timestamp, face: sample.faceText, gesture: sample.gestureText } : { face: "未检测", gesture: "未检测" };
   }
+
   function setVisualStatus(text, cue = null) {
     setText("#visual-status", text);
     if (cue) setText("#visual-now", cue);
@@ -689,47 +714,63 @@
 
   function runVisionLoop() {
     if (state.visualRaf) cancelAnimationFrame(state.visualRaf);
-    const video = $("#coach-video"); const canvas = $("#coach-overlay"); const context = canvas.getContext("2d");
+    const video = $("#coach-video"), canvas = $("#coach-overlay"), context = canvas.getContext("2d");
+    const visible = point => point && point.visibility >= .5 && Number.isFinite(point.x) && Number.isFinite(point.y) && point.x >= 0 && point.x <= 1 && point.y >= 0 && point.y <= 1;
     const loop = () => {
-      if (!state.session || !state.faceTask || !state.poseTask) return;
-      if (video.readyState >= 2 && performance.now() - state.lastVisionAt >= 400) {
+      if (!state.session || state.stopping || !state.faceTask || !state.poseTask) return;
+      if (video.readyState >= 2 && performance.now() - state.lastVisionAt >= 200) {
         state.lastVisionAt = performance.now();
         try {
-          const now = performance.now();
-          const face = state.faceTask.detectForVideo(video, now);
-          const pose = state.poseTask.detectForVideo(video, now);
+          const now = performance.now(), at = elapsed();
+          const face = state.faceTask.detectForVideo(video, now), pose = state.poseTask.detectForVideo(video, now);
           const categories = face.faceBlendshapes?.[0]?.categories || [];
-          const get = (name) => categories.find((item) => item.categoryName === name)?.score || 0;
-          const smile = Math.max(get("mouthSmileLeft"), get("mouthSmileRight"));
-          const brow = Math.max(get("browInnerUp"), get("browOuterUpLeft"), get("browOuterUpRight"));
-          const jaw = get("jawOpen");
-          const faceCue = smile > 0.48 ? "检测到嘴角上提动作" : brow > 0.52 ? "检测到眉部上提动作" : jaw > 0.58 ? "检测到张口幅度较大" : face.faceLandmarks?.length ? "检测到面部，当前动作幅度较小" : "未检测到清晰人脸";
-          const landmarks = pose.landmarks?.[0] || [];
-          const left = landmarks[15]; const right = landmarks[16];
-          let movement = 0;
-          if (left && right && left.visibility > .25 && right.visibility > .25) {
-            const prev = state.previousWrists;
-            if (prev) movement = Math.max(Math.hypot(left.x - prev.left.x, left.y - prev.left.y), Math.hypot(right.x - prev.right.x, right.y - prev.right.y));
-            state.previousWrists = { left: { x: left.x, y: left.y }, right: { x: right.x, y: right.y } };
+          const coefficients = Object.fromEntries(categories.map(item => [item.categoryName, Number(item.score.toFixed(4))]));
+          const get = name => coefficients[name] ?? 0;
+          const smile = (get("mouthSmileLeft") + get("mouthSmileRight")) / 2;
+          const brow = Math.max(get("browInnerUp"), get("browOuterUpLeft"), get("browOuterUpRight")), jaw = get("jawOpen");
+          const faceVisible = Boolean(face.faceLandmarks?.length);
+          const faceCue = !faceVisible ? "未检测到清晰人脸" : smile > .5 ? "观察到嘴角上提" : brow > .52 ? "观察到眉部上提" : jaw > .58 ? "观察到张口动作" : "面部可见，动作变化较小";
+          const landmarks = pose.landmarks?.[0] || [], ls = landmarks[11], rs = landmarks[12];
+          // Measure in body coordinates and reset on occlusion, large scale changes or sampling gaps.
+          const aspect = (video.videoWidth || 640) / (video.videoHeight || 360);
+          const shoulderWidth = visible(ls) && visible(rs) ? Math.hypot((ls.x - rs.x) * aspect, ls.y - rs.y) : 0;
+          const center = shoulderWidth >= .08 ? { x: (ls.x + rs.x) / 2, y: (ls.y + rs.y) / 2 } : null;
+          const previous = state.previousWrists, dt = previous ? at - previous.at : 0;
+          const comparable = center && previous && dt > 0 && dt <= .8 && shoulderWidth / previous.width > .7 && shoulderWidth / previous.width < 1.4;
+          const hands = {}, positions = {};
+          for (const [side, index] of [["left", 15], ["right", 16]]) {
+            const wrist = landmarks[index];
+            if (!visible(wrist)) { hands[side] = { visible: false, movement: "not_comparable" }; positions[side] = null; continue; }
+            const position = center ? { x: (wrist.x - center.x) * aspect / shoulderWidth, y: (wrist.y - center.y) / shoulderWidth } : null;
+            positions[side] = position;
+            const speed = comparable && position && previous[side] ? Math.hypot(position.x - previous[side].x, position.y - previous[side].y) / dt : null;
+            hands[side] = { visible: true, visibility: Number(wrist.visibility.toFixed(3)), movement: speed === null ? "not_comparable" : speed >= TalkEvalFit.CONFIG.motionSpeed ? "clear_motion" : "small_motion", speed_body_per_second: speed === null ? null : Number(speed.toFixed(4)) };
           }
-          const gestureCue = movement > .035 ? "观察到手腕位置明显变化" : left && right ? "手腕位置相对稳定" : "手部未完整进入画面";
-          const activePoint = pointScores().find(({ score }) => score < .34)?.point;
-          const cue = { at: Number(elapsed().toFixed(1)), face: faceCue, gesture: gestureCue, smile: Number(smile.toFixed(2)), brow: Number(brow.toFixed(2)), jaw: Number(jaw.toFixed(2)), wristMovement: Number(movement.toFixed(3)), pointId: activePoint?.id || null };
-          state.visualSummary.push(cue); state.visualSummary = state.visualSummary.slice(-300);
-          setVisualStatus("视觉观察中", `${faceCue}；${gestureCue}。这是动作线索，是否适合当前重点需要结合语境复核。`);
-          if (state.session && Math.round(elapsed()) % 5 === 0) {
-            const previous = state.session.timeline[state.session.timeline.length - 1];
-            if (!previous || previous.type !== "visual" || elapsed() - previous.at > 4) state.session.timeline.push({ at: Number(elapsed().toFixed(1)), type: "visual", pointId: cue.pointId, visual: cue });
+          state.previousWrists = center ? { at, width: shoulderWidth, ...positions } : null;
+          const validHands = Object.values(hands).filter(hand => hand.movement !== "not_comparable");
+          const gestureCue = validHands.some(hand => hand.movement === "clear_motion") ? "观察到相对身体的手部变化" : validHands.length ? "可见手部变化较小" : "手部或肩部遮挡，等待连续可比较画面";
+          const sample = { timestamp: Number(at.toFixed(3)), face: { visible: faceVisible, view: "full_frame", blendshape_scores: coefficients }, pose: { hands }, faceText: faceCue, gestureText: gestureCue };
+          state.visualWindow.push(sample); state.visualWindow = state.visualWindow.filter(item => item.timestamp >= at - 120);
+          if (at - state.lastVisualArchiveAt >= 1) {
+            // Retain all returned coefficients as a compact vector; names are stored once per session.
+            const names = state.session.visualSampling.coefficient_names || Object.keys(coefficients);
+            if (names.length) state.session.visualSampling.coefficient_names = names;
+            state.visualSummary.push({ timestamp: sample.timestamp, face: { visible: faceVisible, blendshape_values: names.map(name => coefficients[name] ?? null) }, pose: sample.pose });
+            state.lastVisualArchiveAt = at;
+          }
+          setVisualStatus("观察中 · 逐句复核", `${faceCue}；${gestureCue}。`);
+          if (Math.round(at) % 5 === 0) {
+            const lastVisual = [...state.session.timeline].reverse().find(item => item.type === "visual");
+            if (!lastVisual || at - lastVisual.at > 4) state.session.timeline.push({ at: sample.timestamp, type: "visual", visual: currentVisualCue() });
           }
           canvas.width = video.videoWidth || 640; canvas.height = video.videoHeight || 360;
-          context.clearRect(0, 0, canvas.width, canvas.height);
-          context.fillStyle = "rgba(91,210,192,.85)";
+          context.clearRect(0, 0, canvas.width, canvas.height); context.fillStyle = "rgba(91,210,192,.85)";
           landmarks.forEach((point, index) => {
-            if ([11, 12, 13, 14, 15, 16, 23, 24].includes(index) && point.visibility > .3) {
+            if ([11, 12, 13, 14, 15, 16, 23, 24].includes(index) && visible(point)) {
               context.beginPath(); context.arc(point.x * canvas.width, point.y * canvas.height, index === 15 || index === 16 ? 7 : 4, 0, Math.PI * 2); context.fill();
             }
           });
-        } catch (error) { setVisualStatus("视觉分析暂不可用", error.message); }
+        } catch (error) { state.previousWrists = null; setVisualStatus("视觉分析暂不可用", error.message); }
       }
       state.visualRaf = requestAnimationFrame(loop);
     };
@@ -819,10 +860,14 @@
     if (!$("#coach-consent").checked || !state.points.length || state.session || state.pendingDraft || state.actionBusy) return;
     state.points = state.points.map((point) => ({ ...point, evidence: [], maxScore: 0, applause: [] }));
     state.audioSamples = []; state.voiceBaseline = []; state.visualSummary = []; state.previousWrists = null;
+    state.visualWindow = []; state.analysisAudio = []; state.lastVisualArchiveAt = -1;
+    state.speechWindowStart = null; state.speechWindowEnd = null; state.lastSegmentEnd = 0; state.lastAnalysisAudioAt = 0;
     state.lastUtteranceAt = 0; state.currentVolume = null; state.currentPitch = null;
+    $("#coach-context-fit").innerHTML = '<p class="fit-empty">等待本场第一段语句与画面证据。</p>';
+    setText("#visual-point-note", "结合当前语句、表达目标与可见画面复核。");
     const topic = $("#coach-topic").value.trim() || "未命名演讲";
     const sessionId = `live-${Date.now()}`;
-    state.session = { id: sessionId, topic, caseId: state.selectedCase, speakerId: getSpeakerId(), startedAt: Date.now(), endedAt: null, segments: [], timeline: [], slides: [], points: [], metrics: {}, report: "" };
+    state.session = { id: sessionId, topic, caseId: state.selectedCase, speakerId: getSpeakerId(), startedAt: Date.now(), endedAt: null, segments: [], timeline: [], slides: [], points: [], metrics: {}, report: "", expressionGoal: $("#coach-expression-goal").value, contextFits: [], contextFitVersion: TalkEvalFit.VERSION, visualSampling: { analysis_target_interval_seconds: .2, archive_target_interval_seconds: 1, retention: "whole_session_compact_samples_and_all_segment_verdicts", timing: "browser_estimate" } };
     state.reportSession = null;
     updateStartAvailability();
     $("#coach-manual-text").disabled = true; $("#coach-add-text").disabled = true; $("#share-screen").disabled = true;
@@ -833,6 +878,7 @@
     try {
       state.cameraStream = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 960 }, height: { ideal: 540 } }, audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: false } });
       $("#coach-video").srcObject = state.cameraStream;
+      state.session.startedAt = Date.now();
       startVideoRecording(state.cameraStream, sessionId);
       $("#coach-camera-placeholder").hidden = true;
       setText("#coach-camera-mode", "正在录制 · 结束后选择是否保存");
@@ -882,7 +928,8 @@
       ...scores.map((point, index) => `  ${index + 1}. ${point.score >= .34 ? "候选覆盖" : point.score >= .15 ? "部分线索" : "需复核/补充"}（${Math.round(point.score * 100)}%）：${point.text}${point.evidence?.length ? `；证据：${point.evidence.slice(-3).map((entry) => `“${entry.text}”`).join("、")}${point.evidence[point.evidence.length - 1].visual ? `；相邻动作线索：${point.evidence[point.evidence.length - 1].visual.face}，${point.evidence[point.evidence.length - 1].visual.gesture}` : ""}${Number.isFinite(point.evidence[point.evidence.length - 1].voice?.volumeDelta) ? `；该句响度相对基线 ${point.evidence[point.evidence.length - 1].voice.volumeDelta.toFixed(1)} dB` : ""}` : "；未记录到对应转写证据"}`),
       "",
       `二、声音节奏：估算语速约 ${pace} 字/分钟；采集的音高大致 ${pitchRange}；音量 RMS 范围 ${volumeRange}。观点卡片会附上对应句子的相对响度和句间隔，供检查重点是否通过声音突出。声音强弱与音高为浏览器实时音频抽样，不等同于专业声学测量；停顿以转写片段间隔粗略估计。`,
-      `三、表情与动作：累计 ${visual.length} 条视觉动作观察。${visual.length ? `最近观察为“${visual[visual.length - 1].face}；${visual[visual.length - 1].gesture}”。` : "本场没有可用视觉观察。"}模型记录面部动作类别与手腕位移，不判断表情/动作是否得当；请对照对应观点人工回看。`,
+      `三、表情与动作语境适配：表达目标为“${TalkEvalFit.GOALS[session.expressionGoal] || "随内容观察"}”。保留 ${visual.length} 条全场精简视觉抽样与 ${(session.contextFits || []).length} 条逐句复核结果。以下为规则候选，需结合录像复核；缺失画面和不可靠时间对应不强行打分。`,
+      ...(session.contextFits || []).map(fit => `  ${TalkEvalFit.summaryText(fit)}`),
       `四、PPT 配合：读取到 ${slides.length} 次 OCR 抽样，约检测到 ${slides.filter((slide) => slide.changed).length} 次页面变化。${slides.length ? slides.filter((slide) => slide.changed).map((slide) => `第${slide.pageNo}页约在 ${stamp(slide.at)} 切换（与下一待讲重点词汇重合 ${slide.lexicalFit === null ? "未比较" : `${Math.round(slide.lexicalFit * 100)}%`}）`).join("；") : "本场未共享投影。"}抽帧间隔约 12 秒，因此切换时刻只是近似位置；文字重合不能判断图表含义、切换是否恰当或页面是否真正支持观点。`,
       `五、观众反应：现场观察标记 ${observed} 次；模拟标记 ${demo} 次。两类均为演讲者手动记录，并非自动掌声识别。`,
       "",
@@ -933,13 +980,13 @@
     state.session.points = state.points.map(point => ({ id: point.id, text: point.text, score: scorePoint(point, transcriptText()), evidence: point.evidence, applause: point.applause }));
     state.session.audio = state.audioSamples; state.session.visual = state.visualSummary;
     const summary = makeReport(state.session);
-    const draft = { ...state.session, audio: [], report: summary.text,
+    const draft = { ...state.session, report: summary.text,
       videoSaved: Boolean(recordingResult?.localReady), videoChunks: recordingResult?.chunks || state.recordingChunkCount,
       videoError: videoError || state.recordingLocalError, cloudVideoReady: false, cloudStored: false, cloudUploadAttempted: false,
       metrics: { pace: summary.pace, pitchRange: summary.pitchRange, volumeRange: summary.volumeRange } };
     state.pendingDraft = draft;
     state.session = null; state.audioSamples = []; state.voiceBaseline = []; state.visualSummary = []; state.previousWrists = null;
-    state.stopping = false; state.analyser = null;
+    state.stopping = false; state.analyser = null; state.visualWindow = []; state.analysisAudio = [];
     drawAudioWave(); setText("#coach-camera-mode", "摄像头已关闭"); setText("#coach-wave-state", "本场采集已结束");
     setText("#coach-status", "录制结束 · 待选择保存"); $("#coach-led").classList.remove("active");
     $("#coach-report").hidden = false; $("#coach-report-text").value = summary.text;
@@ -1053,8 +1100,11 @@
     const timeline = session.timeline || [];
     $("#coach-report-overview").innerHTML = `<div><span>本场时长</span><strong>${stamp(seconds)}</strong></div><div><span>较多词汇线索</span><strong>${points.filter(point => point.score >= .34).length}<small> / ${points.length} 个观点</small></strong></div><div><span>记录表达</span><strong>${(session.segments || []).length}<small> 句</small></strong></div><div><span>PPT 文字抽样</span><strong>${(session.slides || []).length}<small> 次</small></strong></div>`;
     const content = points.map((point, index) => `<article class="replay-point"><b>${index + 1}. ${esc(point.text)}</b><span>${point.score >= .34 ? "候选覆盖" : point.score >= .15 ? "部分线索" : "需复核"} · ${Math.round(point.score * 100)}%</span><p>${(point.evidence || []).slice(-3).map((entry) => `${stamp(entry.at)}「${esc(entry.text)}」`).join("；") || "无转写证据"}</p></article>`).join("");
+    const fits = session.contextFits || [];
+    const fitSummary = Object.entries(TalkEvalFit.LABELS).map(([key, label]) => `<span class="fit-badge ${key}">${label} ${fits.filter(fit => fit.status === key).length}</span>`).join("");
+    const fitReview = `<section class="session-fit-review"><div class="coach-panel-head"><div><p class="eyebrow">EXPRESSION IN CONTEXT</p><h3>表情与动作，服务于这句话了吗？</h3></div></div><div class="fit-summary-strip">${fitSummary}</div><p class="quiet-copy">${fits.length ? `共 ${fits.length} 条语句；下方显示最近 ${Math.min(30, fits.length)} 条，完整结果保存在导出的本场 JSON 与文字报告中。` : "这条旧记录没有语境适配证据，新录制将逐句保留。"}</p><div class="session-fit-list">${fits.slice(-30).map(fit => TalkEvalFit.card(fit, { compact: true, seekAttribute: "data-session-fit-seek" })).join("")}</div></section>`;
     const events = timeline.slice(-60).map((item) => `<div class="replay-event"><time>${stamp(item.at)}</time><span>${item.type === "speech" ? `语音：${esc(item.text)}` : item.type === "slide" ? `PPT OCR：${esc(item.text || "无文字")}` : item.type === "reaction" ? `${item.source === "demo" ? "模拟" : "现场观察"}反应：${esc(item.pointText || "观点")}` : `视觉：${esc(item.visual?.face || "")}；${esc(item.visual?.gesture || "")}`}</span></div>`).join("");
-    $("#coach-replay-detail").innerHTML = `<section class="recording-replay"><div class="coach-panel-head"><div><p class="eyebrow">SESSION VIDEO</p><h3>演讲录像</h3></div><div class="report-actions"><button id="coach-sync-session" class="secondary-button" ${state.pendingDraft?.id !== session.id && !session.cloudDeletionConfirmed && (!session.cloudStored || (session.videoSaved && !session.cloudVideoReady)) ? "" : "hidden"}>重试公开同步</button><button id="coach-download-video" class="secondary-button">下载录像</button></div></div><video id="coach-replay-video" controls playsinline preload="metadata" hidden></video><p id="coach-replay-video-note" class="quiet-copy" hidden></p></section><div class="replay-grid"><div><h3>观点证据</h3>${content || "无观点"}</div><div><h3>时间线</h3><div class="replay-events">${events || "无事件"}</div></div></div>`;
+    $("#coach-replay-detail").innerHTML = `<section class="recording-replay"><div class="coach-panel-head"><div><p class="eyebrow">SESSION VIDEO</p><h3>演讲录像</h3></div><div class="report-actions"><button id="coach-sync-session" class="secondary-button" ${state.pendingDraft?.id !== session.id && !session.cloudDeletionConfirmed && (!session.cloudStored || (session.videoSaved && !session.cloudVideoReady)) ? "" : "hidden"}>重试公开同步</button><button id="coach-download-video" class="secondary-button">下载录像</button></div></div><video id="coach-replay-video" controls playsinline preload="metadata" hidden></video><p id="coach-replay-video-note" class="quiet-copy" hidden></p></section><div class="replay-grid"><div><h3>观点证据</h3>${content || "无观点"}</div><div><h3>时间线</h3><div class="replay-events">${events || "无事件"}</div></div></div>${fitReview}`;
     const video = $("#coach-replay-video");
     const note = $("#coach-replay-video-note");
     const downloadButton = $("#coach-download-video");
@@ -1143,6 +1193,12 @@
   $("#coach-copy-report").addEventListener("click", () => navigator.clipboard?.writeText($("#coach-report-text").value).then(() => setText("#coach-cue-copy", "报告已复制。")).catch(() => {}));
   $("#coach-download-report").addEventListener("click", () => download("talkeval-live-report.txt", $("#coach-report-text").value, "text/plain;charset=utf-8"));
   $("#coach-replay-detail").addEventListener("click", (event) => {
+    const seek = event.target.closest("[data-session-fit-seek]");
+    if (seek) {
+      const video = $("#coach-replay-video"), seconds = Number(seek.dataset.sessionFitSeek);
+      if (video?.src && Number.isFinite(seconds)) { video.currentTime = seconds; video.play().catch(() => {}); video.scrollIntoView({ behavior: "smooth", block: "center" }); }
+      else setText("#coach-replay-video-note", "这条记录暂时没有可播放录像，语句与时间证据仍可查看。");
+    }
     if (event.target.closest("#coach-download-video")) downloadSessionVideo(currentReportSession()).catch((error) => setText("#coach-replay-video-note", `下载失败：${error.message}`));
     if (event.target.closest("#coach-sync-session")) {
       const button = event.target.closest("#coach-sync-session");

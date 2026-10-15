@@ -1,0 +1,1904 @@
+{
+  "schema_version": "talkeval_context_fit_v1",
+  "case_id": "speech_auto_1fbefa7db3",
+  "algorithm_version": "context-rules-2026.10.15-v1",
+  "configuration": {
+    "minSamples": 3,
+    "minCoverage": 0.6,
+    "smile": 0.5,
+    "minSmileSeconds": 1.2,
+    "maxTimingUncertainty": 2,
+    "motionSpeed": 0.65
+  },
+  "results": [
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        320.69,
+        326.03
+      ],
+      "point_id": "b01",
+      "point_text": "这个差别简直快翻倍了，这提醒我们，这并不是你一个人的选择，并不是因为你很馋、没出息，其实就是因为你正在长身体，你的大脑告诉你，你就是应该获得更多的能量",
+      "text": "简直快翻倍了 对吧 它这并不是你一个人的选择 并不是因为你很残",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": true
+      },
+      "quality": {
+        "observations": 6,
+        "face_samples": 4,
+        "comparable_hand_samples": 4,
+        "coverage": 1,
+        "face_coverage": 0.661,
+        "hand_coverage": 0.625,
+        "sampling_interval_seconds": 1,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-325",
+            "kind": "motion",
+            "start": 325,
+            "end": 325,
+            "peak": 325,
+            "count": 1,
+            "magnitude": 0.048,
+            "duration": 0
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-325",
+          "kind": "motion",
+          "start": 325,
+          "end": 325,
+          "peak": 325,
+          "count": 1,
+          "magnitude": 0.048,
+          "duration": 0
+        }
+      ],
+      "voice_windows": [
+        {
+          "span": [
+            320.69,
+            322.13
+          ],
+          "reliable": true,
+          "emphasis": true,
+          "basis": "句级响度高于本场基线（≥0.6σ）"
+        }
+      ],
+      "slide": {
+        "beat_id": "b01",
+        "target_meaning": "这个差别简直快翻倍了，这提醒我们，这并不是你一个人的选择，并不是因为你很馋、没出息，其实就是因为你正在长身体，你的大脑告诉你，你就是应该获得更多的能量",
+        "required_claims": [
+          "这个差别简直快翻倍了，这提醒我们，这并不是你一个人的选择，并不是因为你很馋、没出息，其实就是因为你正在长身体，你的大脑告诉你，你就是应该获得更多的能量"
+        ],
+        "time_span": [
+          320.69,
+          326.03
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0.0129,
+        "lexical_overlap_score": 0.0129,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "这个差别简直快翻倍了，这提醒我们，这并不是你一个人的选择，并不是因为你很馋、没出息，其实就是因为你正在长身体，你的大脑告诉你，你就是应该获得更多的能量",
+        "best_frame_timestamp": 323.36,
+        "best_frame_text": "X!人",
+        "best_frame_confidence": 0.748,
+        "frames": [
+          {
+            "timestamp": 318.69,
+            "text_lines": [
+              {
+                "text": "大人喜欢的甜度",
+                "confidence": 1,
+                "x": 0.657,
+                "y": 0.272
+              },
+              {
+                "text": "孩子喜欢的甜度",
+                "confidence": 1,
+                "x": 0.332,
+                "y": 0.273
+              },
+              {
+                "text": "12勺",
+                "confidence": 0.999,
+                "x": 0.372,
+                "y": 0.385
+              },
+              {
+                "text": "VS.",
+                "confidence": 0.994,
+                "x": 0.498,
+                "y": 0.417
+              },
+              {
+                "text": "Mennella et al., 2014, PMC4654709",
+                "confidence": 0.998,
+                "x": 0.678,
+                "y": 0.651
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.906,
+                "x": 0.752,
+                "y": 0.674
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.907,
+                "x": 0.181,
+                "y": 0.732
+              },
+              {
+                "text": "腾讯SSV",
+                "confidence": 1,
+                "x": 0.891,
+                "y": 0.76
+              }
+            ],
+            "extracted_text": "大人喜欢的甜度 · 孩子喜欢的甜度 · 12勺 · VS. · Mennella et al., 2014, PMC4654709 · YOUTH · !X!人 · 腾讯SSV",
+            "mean_ocr_confidence": 0.976,
+            "match_score": 0.0094,
+            "lexical_overlap_score": 0.0094,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 321.025,
+            "text_lines": [
+              {
+                "text": "大人喜欢的甜度",
+                "confidence": 1,
+                "x": 0.657,
+                "y": 0.272
+              },
+              {
+                "text": "孩子喜欢的甜度",
+                "confidence": 1,
+                "x": 0.332,
+                "y": 0.273
+              },
+              {
+                "text": "12勺",
+                "confidence": 0.999,
+                "x": 0.372,
+                "y": 0.385
+              },
+              {
+                "text": "VS.",
+                "confidence": 0.994,
+                "x": 0.498,
+                "y": 0.417
+              },
+              {
+                "text": "Mennella et al., 2014, PMC4654709",
+                "confidence": 0.998,
+                "x": 0.678,
+                "y": 0.651
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.917,
+                "x": 0.752,
+                "y": 0.674
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.874,
+                "x": 0.181,
+                "y": 0.732
+              },
+              {
+                "text": "腾讯SSV",
+                "confidence": 1,
+                "x": 0.891,
+                "y": 0.76
+              }
+            ],
+            "extracted_text": "大人喜欢的甜度 · 孩子喜欢的甜度 · 12勺 · VS. · Mennella et al., 2014, PMC4654709 · YOUTH · !X!人 · 腾讯SSV",
+            "mean_ocr_confidence": 0.973,
+            "match_score": 0.0094,
+            "lexical_overlap_score": 0.0094,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 323.36,
+            "text_lines": [
+              {
+                "text": "X!人",
+                "confidence": 0.748,
+                "x": 0.242,
+                "y": 0.721
+              }
+            ],
+            "extracted_text": "X!人",
+            "mean_ocr_confidence": 0.748,
+            "match_score": 0.0129,
+            "lexical_overlap_score": 0.0129,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 325.695,
+            "text_lines": [
+              {
+                "text": "X!人",
+                "confidence": 0.856,
+                "x": 0.244,
+                "y": 0.718
+              }
+            ],
+            "extracted_text": "X!人",
+            "mean_ocr_confidence": 0.856,
+            "match_score": 0.0129,
+            "lexical_overlap_score": 0.0129,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 328.03,
+            "text_lines": [
+              {
+                "text": "TX!人",
+                "confidence": 0.746,
+                "x": 0.242,
+                "y": 0.72
+              }
+            ],
+            "extracted_text": "TX!人",
+            "mean_ocr_confidence": 0.746,
+            "match_score": 0.0087,
+            "lexical_overlap_score": 0.0087,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "大人喜欢的甜度 · 孩子喜欢的甜度 · 12勺 · VS. · Mennella et al., 2014, PMC4654709 · YOUTH · !X!人 · 腾讯SSV\n大人喜欢的甜度 · 孩子喜欢的甜度 · 12勺 · VS. · Mennella et al., 2014, PMC4654709 · YOUTH · !X!人 · 腾讯SSV\nX!人\nX!人\nTX!人",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        508.16,
+        513.66
+      ],
+      "point_id": "b02",
+      "point_text": "因为我们无论是对糖，还是对脂肪，当你反复刺激之后，大脑会慢慢地上瘾，以后你会需要更大剂量、更高的甜度，才能感觉到舒服，所以大家一定要注意",
+      "text": "因为我们无论是对糖还是对脂肪 当你反复刺激之后 其实大脑里它会慢慢地上瘾",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 5,
+        "face_samples": 5,
+        "comparable_hand_samples": 5,
+        "coverage": 0.909,
+        "face_coverage": 0.909,
+        "hand_coverage": 0.909,
+        "sampling_interval_seconds": 1,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-509",
+            "kind": "motion",
+            "start": 509,
+            "end": 509,
+            "peak": 509,
+            "count": 1,
+            "magnitude": 0.128,
+            "duration": 0
+          },
+          {
+            "id": "motion-512",
+            "kind": "motion",
+            "start": 512,
+            "end": 513,
+            "peak": 513,
+            "count": 2,
+            "magnitude": 0.226,
+            "duration": 1
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-509",
+          "kind": "motion",
+          "start": 509,
+          "end": 509,
+          "peak": 509,
+          "count": 1,
+          "magnitude": 0.128,
+          "duration": 0
+        },
+        {
+          "id": "motion-512",
+          "kind": "motion",
+          "start": 512,
+          "end": 513,
+          "peak": 513,
+          "count": 2,
+          "magnitude": 0.226,
+          "duration": 1
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b02",
+        "target_meaning": "因为我们无论是对糖，还是对脂肪，当你反复刺激之后，大脑会慢慢地上瘾，以后你会需要更大剂量、更高的甜度，才能感觉到舒服，所以大家一定要注意",
+        "required_claims": [
+          "因为我们无论是对糖，还是对脂肪，当你反复刺激之后，大脑会慢慢地上瘾，以后你会需要更大剂量、更高的甜度，才能感觉到舒服，所以大家一定要注意"
+        ],
+        "time_span": [
+          508.16,
+          513.66
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0,
+        "lexical_overlap_score": 0,
+        "concept_coverage": null,
+        "matched_concepts": [],
+        "matched_target": null,
+        "best_frame_timestamp": 506.16,
+        "best_frame_text": "",
+        "best_frame_confidence": null,
+        "frames": [
+          {
+            "timestamp": 506.16,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 508.535,
+            "text_lines": [
+              {
+                "text": "马",
+                "confidence": 0.774,
+                "x": 0.793,
+                "y": 0.084
+              }
+            ],
+            "extracted_text": "马",
+            "mean_ocr_confidence": 0.774,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 510.91,
+            "text_lines": [
+              {
+                "text": "arn",
+                "confidence": 0.736,
+                "x": 0.573,
+                "y": 0.72
+              }
+            ],
+            "extracted_text": "arn",
+            "mean_ocr_confidence": 0.736,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 513.285,
+            "text_lines": [
+              {
+                "text": "马",
+                "confidence": 0.949,
+                "x": 0.793,
+                "y": 0.083
+              }
+            ],
+            "extracted_text": "马",
+            "mean_ocr_confidence": 0.949,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 515.66,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "马\narn\n马",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        558.68,
+        565.16
+      ],
+      "point_id": "b03",
+      "point_text": "大家也可以回想一下，是不是你去超市，看到那些包装颜色非常鲜艳，上面画了流心巧克力、各种水果、卡通人物的食品，还没拆包装，就会流口水",
+      "text": "所以大家也可以回想一下 是不是你去了超市里 看到的那些包装颜色非常鲜艳",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": true
+      },
+      "quality": {
+        "observations": 7,
+        "face_samples": 1,
+        "comparable_hand_samples": 1,
+        "coverage": 1,
+        "face_coverage": 0.102,
+        "hand_coverage": 0.102,
+        "sampling_interval_seconds": 1,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-565",
+          "kind": "motion",
+          "start": 565,
+          "end": 565,
+          "peak": 565,
+          "count": 1,
+          "magnitude": 0.146,
+          "duration": 0
+        }
+      ],
+      "voice_windows": [
+        {
+          "span": [
+            558.68,
+            560.12
+          ],
+          "reliable": true,
+          "emphasis": true,
+          "basis": "句级响度高于本场基线（≥0.6σ）"
+        }
+      ],
+      "slide": {
+        "beat_id": "b03",
+        "target_meaning": "大家也可以回想一下，是不是你去超市，看到那些包装颜色非常鲜艳，上面画了流心巧克力、各种水果、卡通人物的食品，还没拆包装，就会流口水",
+        "required_claims": [
+          "大家也可以回想一下，是不是你去超市，看到那些包装颜色非常鲜艳，上面画了流心巧克力、各种水果、卡通人物的食品，还没拆包装，就会流口水"
+        ],
+        "time_span": [
+          558.68,
+          565.16
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0.0338,
+        "lexical_overlap_score": 0.0338,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "大家也可以回想一下，是不是你去超市，看到那些包装颜色非常鲜艳，上面画了流心巧克力、各种水果、卡通人物的食品，还没拆包装，就会流口水",
+        "best_frame_timestamp": 560.872,
+        "best_frame_text": "什么样的零食包装会让看 · 一眼就觉得“肯定很好吃” · YOUTH · !X!人 · 腾讯SSV",
+        "best_frame_confidence": 0.946,
+        "frames": [
+          {
+            "timestamp": 556.68,
+            "text_lines": [
+              {
+                "text": "Robinson et al., 2007, Stanford/Packard",
+                "confidence": 0.995,
+                "x": 0.683,
+                "y": 0.603
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.821,
+                "x": 0.753,
+                "y": 0.674
+              },
+              {
+                "text": "舞",
+                "confidence": 0.538,
+                "x": 0.777,
+                "y": 0.708
+              },
+              {
+                "text": "IXI人",
+                "confidence": 0.769,
+                "x": 0.183,
+                "y": 0.732
+              },
+              {
+                "text": "腾讯SSV",
+                "confidence": 0.999,
+                "x": 0.891,
+                "y": 0.76
+              }
+            ],
+            "extracted_text": "Robinson et al., 2007, Stanford/Packard · YOUTH · 舞 · IXI人 · 腾讯SSV",
+            "mean_ocr_confidence": 0.824,
+            "match_score": 0.0019,
+            "lexical_overlap_score": 0.0019,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 558.776,
+            "text_lines": [
+              {
+                "text": "Robinson et al., 2007, Stanford/Packard",
+                "confidence": 0.995,
+                "x": 0.683,
+                "y": 0.603
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.951,
+                "x": 0.753,
+                "y": 0.676
+              },
+              {
+                "text": "AXI人",
+                "confidence": 0.77,
+                "x": 0.184,
+                "y": 0.733
+              },
+              {
+                "text": "腾讯SSV",
+                "confidence": 0.999,
+                "x": 0.891,
+                "y": 0.76
+              }
+            ],
+            "extracted_text": "Robinson et al., 2007, Stanford/Packard · YOUTH · AXI人 · 腾讯SSV",
+            "mean_ocr_confidence": 0.929,
+            "match_score": 0.0019,
+            "lexical_overlap_score": 0.0019,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 560.872,
+            "text_lines": [
+              {
+                "text": "什么样的零食包装会让看",
+                "confidence": 1,
+                "x": 0.483,
+                "y": 0.361
+              },
+              {
+                "text": "一眼就觉得“肯定很好吃”",
+                "confidence": 0.999,
+                "x": 0.464,
+                "y": 0.45
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.899,
+                "x": 0.754,
+                "y": 0.674
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.833,
+                "x": 0.183,
+                "y": 0.733
+              },
+              {
+                "text": "腾讯SSV",
+                "confidence": 1,
+                "x": 0.891,
+                "y": 0.76
+              }
+            ],
+            "extracted_text": "什么样的零食包装会让看 · 一眼就觉得“肯定很好吃” · YOUTH · !X!人 · 腾讯SSV",
+            "mean_ocr_confidence": 0.946,
+            "match_score": 0.0338,
+            "lexical_overlap_score": 0.0338,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 562.968,
+            "text_lines": [
+              {
+                "text": "什么样的零食包装会让看",
+                "confidence": 1,
+                "x": 0.483,
+                "y": 0.361
+              },
+              {
+                "text": "一眼就觉得“肯定很好吃”",
+                "confidence": 0.999,
+                "x": 0.466,
+                "y": 0.45
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.936,
+                "x": 0.754,
+                "y": 0.674
+              },
+              {
+                "text": "IX!人",
+                "confidence": 0.838,
+                "x": 0.182,
+                "y": 0.731
+              },
+              {
+                "text": "腾讯SSV",
+                "confidence": 1,
+                "x": 0.891,
+                "y": 0.76
+              }
+            ],
+            "extracted_text": "什么样的零食包装会让看 · 一眼就觉得“肯定很好吃” · YOUTH · IX!人 · 腾讯SSV",
+            "mean_ocr_confidence": 0.955,
+            "match_score": 0.0332,
+            "lexical_overlap_score": 0.0332,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 565.064,
+            "text_lines": [
+              {
+                "text": "什么样的零食包装会让看",
+                "confidence": 1,
+                "x": 0.483,
+                "y": 0.361
+              },
+              {
+                "text": "一眼就觉得“肯定很好吃”",
+                "confidence": 0.999,
+                "x": 0.463,
+                "y": 0.45
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.96,
+                "x": 0.754,
+                "y": 0.674
+              },
+              {
+                "text": "IX!人",
+                "confidence": 0.799,
+                "x": 0.182,
+                "y": 0.733
+              },
+              {
+                "text": "腾讯SSV",
+                "confidence": 1,
+                "x": 0.891,
+                "y": 0.76
+              }
+            ],
+            "extracted_text": "什么样的零食包装会让看 · 一眼就觉得“肯定很好吃” · YOUTH · IX!人 · 腾讯SSV",
+            "mean_ocr_confidence": 0.952,
+            "match_score": 0.0332,
+            "lexical_overlap_score": 0.0332,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 567.16,
+            "text_lines": [
+              {
+                "text": "什么样的零食包装会让看",
+                "confidence": 1,
+                "x": 0.483,
+                "y": 0.361
+              },
+              {
+                "text": "一眼就觉得“肯定很好吃”",
+                "confidence": 0.999,
+                "x": 0.463,
+                "y": 0.45
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.96,
+                "x": 0.754,
+                "y": 0.674
+              },
+              {
+                "text": "IX!人",
+                "confidence": 0.812,
+                "x": 0.182,
+                "y": 0.733
+              },
+              {
+                "text": "腾讯SSV",
+                "confidence": 1,
+                "x": 0.891,
+                "y": 0.76
+              }
+            ],
+            "extracted_text": "什么样的零食包装会让看 · 一眼就觉得“肯定很好吃” · YOUTH · IX!人 · 腾讯SSV",
+            "mean_ocr_confidence": 0.954,
+            "match_score": 0.0332,
+            "lexical_overlap_score": 0.0332,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "Robinson et al., 2007, Stanford/Packard · YOUTH · 舞 · IXI人 · 腾讯SSV\nRobinson et al., 2007, Stanford/Packard · YOUTH · AXI人 · 腾讯SSV\n什么样的零食包装会让看 · 一眼就觉得“肯定很好吃” · YOUTH · !X!人 · 腾讯SSV\n什么样的零食包装会让看 · 一眼就觉得“肯定很好吃” · YOUTH · IX!人 · 腾讯SSV\n什么样的零食包装会让看 · 一眼就觉得“肯定很好吃” · YOUTH · IX!人 · 腾讯SSV\n什么样的零食包装会让看 · 一眼就觉得“肯定很好吃” · YOUTH · IX!人 · 腾讯SSV",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        928.8,
+        936.28
+      ],
+      "point_id": "b04",
+      "point_text": "我们常常吃到的酸奶中，每100克大约会加7%左右的糖，再加上本身酸奶中就自然有一些乳糖之类的成分，所以你看配料表的话，经常会看到，它的营养成分表中，碳水化合物会占到12%左右",
+      "text": "每100克大约会加7%左右的糖 再加上本身酸奶中 就自然有一些乳糖之类的成分",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 8,
+        "face_samples": 1,
+        "comparable_hand_samples": 3,
+        "coverage": 1,
+        "face_coverage": 0.094,
+        "hand_coverage": 0.361,
+        "sampling_interval_seconds": 1,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-930",
+          "kind": "motion",
+          "start": 930,
+          "end": 931,
+          "peak": 931,
+          "count": 2,
+          "magnitude": 0.075,
+          "duration": 1
+        }
+      ],
+      "voice_windows": [
+        {
+          "span": [
+            931.82,
+            933.86
+          ],
+          "reliable": true,
+          "emphasis": true,
+          "basis": "句级响度高于本场基线（≥0.6σ）"
+        }
+      ],
+      "slide": {
+        "beat_id": "b04",
+        "target_meaning": "我们常常吃到的酸奶中，每100克大约会加7%左右的糖，再加上本身酸奶中就自然有一些乳糖之类的成分，所以你看配料表的话，经常会看到，它的营养成分表中，碳水化合物会占到12%左右",
+        "required_claims": [
+          "我们常常吃到的酸奶中，每100克大约会加7%左右的糖，再加上本身酸奶中就自然有一些乳糖之类的成分，所以你看配料表的话，经常会看到，它的营养成分表中，碳水化合物会占到12%左右"
+        ],
+        "time_span": [
+          928.8,
+          936.28
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0.0737,
+        "lexical_overlap_score": 0.0737,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "我们常常吃到的酸奶中，每100克大约会加7%左右的糖，再加上本身酸奶中就自然有一些乳糖之类的成分，所以你看配料表的话，经常会看到，它的营养成分表中，碳水化合物会占到12%左右",
+        "best_frame_timestamp": 935.984,
+        "best_frame_text": "营养成分表 · 配料表 · PLAIN YOGURT · 生牛乳(添加量≥90%)、 · 原味酸奶 · 项目 · 每100克NRV% · 砂糖(添加量≥7.5%)动物 · 双歧杆菌乳亚种、啫酸乳杆 · 生牛乳发酵7种益生菌 · 能量 · 391千焦 · 5% · 菌、德氏乳杆菌保加利亚亚 · 种、唾液链球菌嗜热亚种、 · 0产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥ · 蛋白质 · 3.0克 · 5% · 乳酸乳球菌乳亚种、乳脂乳 · 93%白砂糖、唾液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植 · 脂肪 · 3.4克 · 6% · 球菌、乳酸乳球菌乳亚种( · 杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌 · 双乙酰型)、鼠李糖乳酪杆 · 碳水化合物12.6克 · 4% · 菌、植物乳植杆菌、干酪乳 · 长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21 · 酪杆菌、长双歧杆菌长亚种 · 46毫克 · 钠 · 2% · 天贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮○产品标准号： · 、短双歧杆菌、罗伊氏粘液 · 钙 · 98毫克 · 12% · GB193020出品商：币渠十氨显长畏妆引始 宝出总就员会 · 乳杆菌 · 100g酸奶≈7g糖 · 看糖排在第几一一越靠后越好",
+        "best_frame_confidence": 0.989,
+        "frames": [
+          {
+            "timestamp": 926.8,
+            "text_lines": [
+              {
+                "text": "7g糖",
+                "confidence": 1,
+                "x": 0.122,
+                "y": 0.458
+              }
+            ],
+            "extracted_text": "7g糖",
+            "mean_ocr_confidence": 1,
+            "match_score": 0.0229,
+            "lexical_overlap_score": 0.0229,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 929.096,
+            "text_lines": [
+              {
+                "text": "7g糖",
+                "confidence": 1,
+                "x": 0.124,
+                "y": 0.458
+              }
+            ],
+            "extracted_text": "7g糖",
+            "mean_ocr_confidence": 1,
+            "match_score": 0.0229,
+            "lexical_overlap_score": 0.0229,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 931.392,
+            "text_lines": [
+              {
+                "text": "PLAIN YOGURT",
+                "confidence": 1,
+                "x": 0.289,
+                "y": 0.267
+              },
+              {
+                "text": "原味酸奶",
+                "confidence": 1,
+                "x": 0.289,
+                "y": 0.3
+              },
+              {
+                "text": "生牛乳发酵7种益生菌",
+                "confidence": 1,
+                "x": 0.365,
+                "y": 0.34
+              },
+              {
+                "text": "产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥",
+                "confidence": 0.995,
+                "x": 0.366,
+                "y": 0.373
+              },
+              {
+                "text": "93%日砂糖、睡液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植",
+                "confidence": 0.988,
+                "x": 0.366,
+                "y": 0.397
+              },
+              {
+                "text": "杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌",
+                "confidence": 0.988,
+                "x": 0.366,
+                "y": 0.422
+              },
+              {
+                "text": "长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21",
+                "confidence": 0.998,
+                "x": 0.366,
+                "y": 0.445
+              },
+              {
+                "text": "天贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮0产品标准号：",
+                "confidence": 0.928,
+                "x": 0.366,
+                "y": 0.471
+              },
+              {
+                "text": "GB193020出品商：历质弄卜氨总长要社别始个 实出点疏员会",
+                "confidence": 0.72,
+                "x": 0.365,
+                "y": 0.493
+              },
+              {
+                "text": "100g酸奶≈7g糖",
+                "confidence": 1,
+                "x": 0.337,
+                "y": 0.601
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.936,
+                "x": 0.753,
+                "y": 0.674
+              },
+              {
+                "text": "舞",
+                "confidence": 0.518,
+                "x": 0.777,
+                "y": 0.708
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.86,
+                "x": 0.181,
+                "y": 0.731
+              },
+              {
+                "text": "腾讯SSV",
+                "confidence": 1,
+                "x": 0.891,
+                "y": 0.76
+              }
+            ],
+            "extracted_text": "PLAIN YOGURT · 原味酸奶 · 生牛乳发酵7种益生菌 · 产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥ · 93%日砂糖、睡液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植 · 杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌 · 长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21 · 天贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮0产品标准号： · GB193020出品商：历质弄卜氨总长要社别始个 实出点疏员会 · 100g酸奶≈7g糖 · YOUTH · 舞 · !X!人 · 腾讯SSV",
+            "mean_ocr_confidence": 0.924,
+            "match_score": 0.04,
+            "lexical_overlap_score": 0.04,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 933.688,
+            "text_lines": [
+              {
+                "text": "配料表",
+                "confidence": 1,
+                "x": 0.593,
+                "y": 0.195
+              },
+              {
+                "text": "营养成分表",
+                "confidence": 1,
+                "x": 0.842,
+                "y": 0.195
+              },
+              {
+                "text": "PLAIN YOGURT",
+                "confidence": 0.98,
+                "x": 0.143,
+                "y": 0.21
+              },
+              {
+                "text": "生牛乳(添加量≥90%)、",
+                "confidence": 0.998,
+                "x": 0.613,
+                "y": 0.26
+              },
+              {
+                "text": "原味酸奶",
+                "confidence": 1,
+                "x": 0.144,
+                "y": 0.265
+              },
+              {
+                "text": "项目",
+                "confidence": 1,
+                "x": 0.764,
+                "y": 0.274
+              },
+              {
+                "text": "每100克NRV%",
+                "confidence": 1,
+                "x": 0.882,
+                "y": 0.274
+              },
+              {
+                "text": "砂糖(添加量≥7.5%)动物",
+                "confidence": 0.996,
+                "x": 0.612,
+                "y": 0.292
+              },
+              {
+                "text": "双歧杆菌乳亚种、啫酸乳杆",
+                "confidence": 0.996,
+                "x": 0.613,
+                "y": 0.325
+              },
+              {
+                "text": "生牛乳发酵7种益生菌",
+                "confidence": 1,
+                "x": 0.275,
+                "y": 0.337
+              },
+              {
+                "text": "能量",
+                "confidence": 1,
+                "x": 0.762,
+                "y": 0.345
+              },
+              {
+                "text": "391千焦",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.345
+              },
+              {
+                "text": "5%",
+                "confidence": 0.999,
+                "x": 0.929,
+                "y": 0.345
+              },
+              {
+                "text": "菌、德氏乳杆菌保加利亚亚",
+                "confidence": 1,
+                "x": 0.613,
+                "y": 0.358
+              },
+              {
+                "text": "种、唾液链球菌嗜热亚种、",
+                "confidence": 0.999,
+                "x": 0.609,
+                "y": 0.39
+              },
+              {
+                "text": "0产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥",
+                "confidence": 0.99,
+                "x": 0.278,
+                "y": 0.393
+              },
+              {
+                "text": "蛋白质",
+                "confidence": 1,
+                "x": 0.762,
+                "y": 0.396
+              },
+              {
+                "text": "3.0克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.396
+              },
+              {
+                "text": "5%",
+                "confidence": 0.996,
+                "x": 0.929,
+                "y": 0.396
+              },
+              {
+                "text": "乳酸乳球菌乳亚种、乳脂乳",
+                "confidence": 1,
+                "x": 0.613,
+                "y": 0.422
+              },
+              {
+                "text": "93%白砂糖、唾液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植",
+                "confidence": 0.984,
+                "x": 0.277,
+                "y": 0.437
+              },
+              {
+                "text": "脂肪",
+                "confidence": 0.999,
+                "x": 0.761,
+                "y": 0.447
+              },
+              {
+                "text": "3.4克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.447
+              },
+              {
+                "text": "6%",
+                "confidence": 0.997,
+                "x": 0.929,
+                "y": 0.449
+              },
+              {
+                "text": "球菌、乳酸乳球菌乳亚种(",
+                "confidence": 0.999,
+                "x": 0.608,
+                "y": 0.453
+              },
+              {
+                "text": "杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌",
+                "confidence": 0.999,
+                "x": 0.277,
+                "y": 0.479
+              },
+              {
+                "text": "双乙酰型)、鼠李糖乳酪杆",
+                "confidence": 0.989,
+                "x": 0.607,
+                "y": 0.485
+              },
+              {
+                "text": "碳水化合物12.6克",
+                "confidence": 1,
+                "x": 0.793,
+                "y": 0.498
+              },
+              {
+                "text": "4%",
+                "confidence": 1,
+                "x": 0.929,
+                "y": 0.499
+              },
+              {
+                "text": "菌、植物乳植杆菌、干酪乳",
+                "confidence": 0.998,
+                "x": 0.613,
+                "y": 0.517
+              },
+              {
+                "text": "长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21",
+                "confidence": 1,
+                "x": 0.276,
+                "y": 0.521
+              },
+              {
+                "text": "酪杆菌、长双歧杆菌长亚种",
+                "confidence": 0.994,
+                "x": 0.612,
+                "y": 0.55
+              },
+              {
+                "text": "46毫克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.551
+              },
+              {
+                "text": "钠",
+                "confidence": 0.998,
+                "x": 0.762,
+                "y": 0.552
+              },
+              {
+                "text": "2%",
+                "confidence": 0.998,
+                "x": 0.929,
+                "y": 0.552
+              },
+              {
+                "text": "天贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮○产品标准号：",
+                "confidence": 0.957,
+                "x": 0.275,
+                "y": 0.563
+              },
+              {
+                "text": "、短双歧杆菌、罗伊氏粘液",
+                "confidence": 1,
+                "x": 0.613,
+                "y": 0.583
+              },
+              {
+                "text": "钙",
+                "confidence": 1,
+                "x": 0.764,
+                "y": 0.603
+              },
+              {
+                "text": "98毫克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.603
+              },
+              {
+                "text": "12%",
+                "confidence": 1,
+                "x": 0.929,
+                "y": 0.603
+              },
+              {
+                "text": "GB193020出品商：币渠十氨总长畏壮引门始 宝出总就景点",
+                "confidence": 0.699,
+                "x": 0.276,
+                "y": 0.606
+              },
+              {
+                "text": "乳杆菌",
+                "confidence": 0.999,
+                "x": 0.549,
+                "y": 0.615
+              },
+              {
+                "text": "100g酸奶≈7g糖",
+                "confidence": 1,
+                "x": 0.225,
+                "y": 0.785
+              },
+              {
+                "text": "看糖排在第几一一越靠后越好",
+                "confidence": 0.957,
+                "x": 0.764,
+                "y": 0.785
+              }
+            ],
+            "extracted_text": "配料表 · 营养成分表 · PLAIN YOGURT · 生牛乳(添加量≥90%)、 · 原味酸奶 · 项目 · 每100克NRV% · 砂糖(添加量≥7.5%)动物 · 双歧杆菌乳亚种、啫酸乳杆 · 生牛乳发酵7种益生菌 · 能量 · 391千焦 · 5% · 菌、德氏乳杆菌保加利亚亚 · 种、唾液链球菌嗜热亚种、 · 0产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥ · 蛋白质 · 3.0克 · 5% · 乳酸乳球菌乳亚种、乳脂乳 · 93%白砂糖、唾液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植 · 脂肪 · 3.4克 · 6% · 球菌、乳酸乳球菌乳亚种( · 杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌 · 双乙酰型)、鼠李糖乳酪杆 · 碳水化合物12.6克 · 4% · 菌、植物乳植杆菌、干酪乳 · 长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21 · 酪杆菌、长双歧杆菌长亚种 · 46毫克 · 钠 · 2% · 天贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮○产品标准号： · 、短双歧杆菌、罗伊氏粘液 · 钙 · 98毫克 · 12% · GB193020出品商：币渠十氨总长畏壮引门始 宝出总就景点 · 乳杆菌 · 100g酸奶≈7g糖 · 看糖排在第几一一越靠后越好",
+            "mean_ocr_confidence": 0.989,
+            "match_score": 0.072,
+            "lexical_overlap_score": 0.072,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 935.984,
+            "text_lines": [
+              {
+                "text": "营养成分表",
+                "confidence": 1,
+                "x": 0.842,
+                "y": 0.195
+              },
+              {
+                "text": "配料表",
+                "confidence": 1,
+                "x": 0.593,
+                "y": 0.196
+              },
+              {
+                "text": "PLAIN YOGURT",
+                "confidence": 0.98,
+                "x": 0.143,
+                "y": 0.21
+              },
+              {
+                "text": "生牛乳(添加量≥90%)、",
+                "confidence": 0.999,
+                "x": 0.613,
+                "y": 0.26
+              },
+              {
+                "text": "原味酸奶",
+                "confidence": 1,
+                "x": 0.143,
+                "y": 0.264
+              },
+              {
+                "text": "项目",
+                "confidence": 1,
+                "x": 0.764,
+                "y": 0.274
+              },
+              {
+                "text": "每100克NRV%",
+                "confidence": 1,
+                "x": 0.882,
+                "y": 0.274
+              },
+              {
+                "text": "砂糖(添加量≥7.5%)动物",
+                "confidence": 0.997,
+                "x": 0.613,
+                "y": 0.292
+              },
+              {
+                "text": "双歧杆菌乳亚种、啫酸乳杆",
+                "confidence": 0.992,
+                "x": 0.612,
+                "y": 0.325
+              },
+              {
+                "text": "生牛乳发酵7种益生菌",
+                "confidence": 1,
+                "x": 0.275,
+                "y": 0.337
+              },
+              {
+                "text": "能量",
+                "confidence": 1,
+                "x": 0.762,
+                "y": 0.345
+              },
+              {
+                "text": "391千焦",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.345
+              },
+              {
+                "text": "5%",
+                "confidence": 0.999,
+                "x": 0.929,
+                "y": 0.345
+              },
+              {
+                "text": "菌、德氏乳杆菌保加利亚亚",
+                "confidence": 1,
+                "x": 0.613,
+                "y": 0.358
+              },
+              {
+                "text": "种、唾液链球菌嗜热亚种、",
+                "confidence": 0.999,
+                "x": 0.609,
+                "y": 0.39
+              },
+              {
+                "text": "0产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥",
+                "confidence": 0.99,
+                "x": 0.278,
+                "y": 0.393
+              },
+              {
+                "text": "蛋白质",
+                "confidence": 1,
+                "x": 0.762,
+                "y": 0.396
+              },
+              {
+                "text": "3.0克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.396
+              },
+              {
+                "text": "5%",
+                "confidence": 0.996,
+                "x": 0.929,
+                "y": 0.396
+              },
+              {
+                "text": "乳酸乳球菌乳亚种、乳脂乳",
+                "confidence": 1,
+                "x": 0.613,
+                "y": 0.422
+              },
+              {
+                "text": "93%白砂糖、唾液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植",
+                "confidence": 0.983,
+                "x": 0.277,
+                "y": 0.437
+              },
+              {
+                "text": "脂肪",
+                "confidence": 0.999,
+                "x": 0.761,
+                "y": 0.447
+              },
+              {
+                "text": "3.4克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.447
+              },
+              {
+                "text": "6%",
+                "confidence": 0.997,
+                "x": 0.929,
+                "y": 0.449
+              },
+              {
+                "text": "球菌、乳酸乳球菌乳亚种(",
+                "confidence": 0.999,
+                "x": 0.608,
+                "y": 0.453
+              },
+              {
+                "text": "杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌",
+                "confidence": 0.999,
+                "x": 0.277,
+                "y": 0.478
+              },
+              {
+                "text": "双乙酰型)、鼠李糖乳酪杆",
+                "confidence": 0.99,
+                "x": 0.608,
+                "y": 0.487
+              },
+              {
+                "text": "碳水化合物12.6克",
+                "confidence": 1,
+                "x": 0.793,
+                "y": 0.498
+              },
+              {
+                "text": "4%",
+                "confidence": 1,
+                "x": 0.929,
+                "y": 0.499
+              },
+              {
+                "text": "菌、植物乳植杆菌、干酪乳",
+                "confidence": 0.998,
+                "x": 0.613,
+                "y": 0.517
+              },
+              {
+                "text": "长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21",
+                "confidence": 0.999,
+                "x": 0.276,
+                "y": 0.521
+              },
+              {
+                "text": "酪杆菌、长双歧杆菌长亚种",
+                "confidence": 0.993,
+                "x": 0.612,
+                "y": 0.55
+              },
+              {
+                "text": "46毫克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.551
+              },
+              {
+                "text": "钠",
+                "confidence": 0.998,
+                "x": 0.762,
+                "y": 0.552
+              },
+              {
+                "text": "2%",
+                "confidence": 0.998,
+                "x": 0.929,
+                "y": 0.552
+              },
+              {
+                "text": "天贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮○产品标准号：",
+                "confidence": 0.96,
+                "x": 0.275,
+                "y": 0.562
+              },
+              {
+                "text": "、短双歧杆菌、罗伊氏粘液",
+                "confidence": 1,
+                "x": 0.613,
+                "y": 0.583
+              },
+              {
+                "text": "钙",
+                "confidence": 1,
+                "x": 0.764,
+                "y": 0.603
+              },
+              {
+                "text": "98毫克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.603
+              },
+              {
+                "text": "12%",
+                "confidence": 1,
+                "x": 0.929,
+                "y": 0.604
+              },
+              {
+                "text": "GB193020出品商：币渠十氨显长畏妆引始 宝出总就员会",
+                "confidence": 0.697,
+                "x": 0.276,
+                "y": 0.606
+              },
+              {
+                "text": "乳杆菌",
+                "confidence": 0.999,
+                "x": 0.549,
+                "y": 0.615
+              },
+              {
+                "text": "100g酸奶≈7g糖",
+                "confidence": 1,
+                "x": 0.225,
+                "y": 0.785
+              },
+              {
+                "text": "看糖排在第几一一越靠后越好",
+                "confidence": 0.957,
+                "x": 0.764,
+                "y": 0.785
+              }
+            ],
+            "extracted_text": "营养成分表 · 配料表 · PLAIN YOGURT · 生牛乳(添加量≥90%)、 · 原味酸奶 · 项目 · 每100克NRV% · 砂糖(添加量≥7.5%)动物 · 双歧杆菌乳亚种、啫酸乳杆 · 生牛乳发酵7种益生菌 · 能量 · 391千焦 · 5% · 菌、德氏乳杆菌保加利亚亚 · 种、唾液链球菌嗜热亚种、 · 0产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥ · 蛋白质 · 3.0克 · 5% · 乳酸乳球菌乳亚种、乳脂乳 · 93%白砂糖、唾液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植 · 脂肪 · 3.4克 · 6% · 球菌、乳酸乳球菌乳亚种( · 杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌 · 双乙酰型)、鼠李糖乳酪杆 · 碳水化合物12.6克 · 4% · 菌、植物乳植杆菌、干酪乳 · 长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21 · 酪杆菌、长双歧杆菌长亚种 · 46毫克 · 钠 · 2% · 天贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮○产品标准号： · 、短双歧杆菌、罗伊氏粘液 · 钙 · 98毫克 · 12% · GB193020出品商：币渠十氨显长畏妆引始 宝出总就员会 · 乳杆菌 · 100g酸奶≈7g糖 · 看糖排在第几一一越靠后越好",
+            "mean_ocr_confidence": 0.989,
+            "match_score": 0.0737,
+            "lexical_overlap_score": 0.0737,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 938.28,
+            "text_lines": [
+              {
+                "text": "营养成分表",
+                "confidence": 1,
+                "x": 0.842,
+                "y": 0.195
+              },
+              {
+                "text": "配料表",
+                "confidence": 1,
+                "x": 0.593,
+                "y": 0.196
+              },
+              {
+                "text": "PLAIN YOGURT",
+                "confidence": 0.98,
+                "x": 0.143,
+                "y": 0.21
+              },
+              {
+                "text": "生牛乳(添加量≥90%)、",
+                "confidence": 0.998,
+                "x": 0.613,
+                "y": 0.26
+              },
+              {
+                "text": "原味酸奶",
+                "confidence": 1,
+                "x": 0.143,
+                "y": 0.264
+              },
+              {
+                "text": "项目",
+                "confidence": 1,
+                "x": 0.765,
+                "y": 0.274
+              },
+              {
+                "text": "每100克NRV%",
+                "confidence": 1,
+                "x": 0.882,
+                "y": 0.274
+              },
+              {
+                "text": "砂糖(添加量≥7.5%)动物",
+                "confidence": 0.996,
+                "x": 0.612,
+                "y": 0.292
+              },
+              {
+                "text": "双歧杆菌乳亚种、啫酸乳杆",
+                "confidence": 0.996,
+                "x": 0.613,
+                "y": 0.325
+              },
+              {
+                "text": "生牛乳发酵7种益生菌",
+                "confidence": 1,
+                "x": 0.275,
+                "y": 0.337
+              },
+              {
+                "text": "能量",
+                "confidence": 1,
+                "x": 0.762,
+                "y": 0.345
+              },
+              {
+                "text": "391千焦",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.345
+              },
+              {
+                "text": "5%",
+                "confidence": 0.999,
+                "x": 0.929,
+                "y": 0.345
+              },
+              {
+                "text": "菌、德氏乳杆菌保加利亚亚",
+                "confidence": 1,
+                "x": 0.613,
+                "y": 0.358
+              },
+              {
+                "text": "种、唾液链球菌嗜热亚种、",
+                "confidence": 0.999,
+                "x": 0.609,
+                "y": 0.39
+              },
+              {
+                "text": "0产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥",
+                "confidence": 0.991,
+                "x": 0.278,
+                "y": 0.393
+              },
+              {
+                "text": "蛋白质",
+                "confidence": 1,
+                "x": 0.762,
+                "y": 0.396
+              },
+              {
+                "text": "3.0克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.396
+              },
+              {
+                "text": "5%",
+                "confidence": 0.996,
+                "x": 0.929,
+                "y": 0.396
+              },
+              {
+                "text": "乳酸乳球菌乳亚种、乳脂乳",
+                "confidence": 1,
+                "x": 0.613,
+                "y": 0.422
+              },
+              {
+                "text": "93%白砂糖唾液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植",
+                "confidence": 0.996,
+                "x": 0.277,
+                "y": 0.437
+              },
+              {
+                "text": "3.4克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.447
+              },
+              {
+                "text": "脂肪",
+                "confidence": 0.999,
+                "x": 0.761,
+                "y": 0.448
+              },
+              {
+                "text": "6%",
+                "confidence": 0.997,
+                "x": 0.929,
+                "y": 0.449
+              },
+              {
+                "text": "球菌、乳酸乳球菌乳亚种(",
+                "confidence": 0.999,
+                "x": 0.608,
+                "y": 0.453
+              },
+              {
+                "text": "杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌",
+                "confidence": 0.999,
+                "x": 0.277,
+                "y": 0.478
+              },
+              {
+                "text": "双乙酰型)、鼠李糖乳酪杆",
+                "confidence": 0.984,
+                "x": 0.608,
+                "y": 0.487
+              },
+              {
+                "text": "碳水化合物12.6克",
+                "confidence": 1,
+                "x": 0.793,
+                "y": 0.498
+              },
+              {
+                "text": "4%",
+                "confidence": 1,
+                "x": 0.929,
+                "y": 0.499
+              },
+              {
+                "text": "菌、植物乳植杆菌、干酪乳",
+                "confidence": 0.998,
+                "x": 0.613,
+                "y": 0.519
+              },
+              {
+                "text": "长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21",
+                "confidence": 1,
+                "x": 0.276,
+                "y": 0.521
+              },
+              {
+                "text": "酪杆菌、长双歧杆菌长亚种",
+                "confidence": 0.993,
+                "x": 0.612,
+                "y": 0.55
+              },
+              {
+                "text": "46毫克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.551
+              },
+              {
+                "text": "钠",
+                "confidence": 0.998,
+                "x": 0.762,
+                "y": 0.552
+              },
+              {
+                "text": "2%",
+                "confidence": 0.998,
+                "x": 0.929,
+                "y": 0.552
+              },
+              {
+                "text": "天○贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮○产品标准号：",
+                "confidence": 0.933,
+                "x": 0.275,
+                "y": 0.562
+              },
+              {
+                "text": "、短双歧杆菌、罗伊氏粘液",
+                "confidence": 1,
+                "x": 0.613,
+                "y": 0.583
+              },
+              {
+                "text": "钙",
+                "confidence": 1,
+                "x": 0.764,
+                "y": 0.603
+              },
+              {
+                "text": "98毫克",
+                "confidence": 1,
+                "x": 0.845,
+                "y": 0.603
+              },
+              {
+                "text": "12%",
+                "confidence": 1,
+                "x": 0.929,
+                "y": 0.604
+              },
+              {
+                "text": "GB193020出品商：币渠十氨总长畏壮引门始 宝出总就景点",
+                "confidence": 0.7,
+                "x": 0.276,
+                "y": 0.606
+              },
+              {
+                "text": "乳杆菌",
+                "confidence": 0.999,
+                "x": 0.549,
+                "y": 0.615
+              },
+              {
+                "text": "100g酸奶≈7g糖",
+                "confidence": 1,
+                "x": 0.225,
+                "y": 0.785
+              },
+              {
+                "text": "看糖排在第几一一越靠后越好",
+                "confidence": 0.96,
+                "x": 0.764,
+                "y": 0.785
+              }
+            ],
+            "extracted_text": "营养成分表 · 配料表 · PLAIN YOGURT · 生牛乳(添加量≥90%)、 · 原味酸奶 · 项目 · 每100克NRV% · 砂糖(添加量≥7.5%)动物 · 双歧杆菌乳亚种、啫酸乳杆 · 生牛乳发酵7种益生菌 · 能量 · 391千焦 · 5% · 菌、德氏乳杆菌保加利亚亚 · 种、唾液链球菌嗜热亚种、 · 0产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥ · 蛋白质 · 3.0克 · 5% · 乳酸乳球菌乳亚种、乳脂乳 · 93%白砂糖唾液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植 · 3.4克 · 脂肪 · 6% · 球菌、乳酸乳球菌乳亚种( · 杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌 · 双乙酰型)、鼠李糖乳酪杆 · 碳水化合物12.6克 · 4% · 菌、植物乳植杆菌、干酪乳 · 长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21 · 酪杆菌、长双歧杆菌长亚种 · 46毫克 · 钠 · 2% · 天○贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮○产品标准号： · 、短双歧杆菌、罗伊氏粘液 · 钙 · 98毫克 · 12% · GB193020出品商：币渠十氨总长畏壮引门始 宝出总就景点 · 乳杆菌 · 100g酸奶≈7g糖 · 看糖排在第几一一越靠后越好",
+            "mean_ocr_confidence": 0.989,
+            "match_score": 0.072,
+            "lexical_overlap_score": 0.072,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "7g糖\n7g糖\nPLAIN YOGURT · 原味酸奶 · 生牛乳发酵7种益生菌 · 产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥ · 93%日砂糖、睡液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植 · 杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌 · 长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21 · 天贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮0产品标准号： · GB193020出品商：历质弄卜氨总长要社别始个 实出点疏员会 · 100g酸奶≈7g糖 · YOUTH · 舞 · !X!人 · 腾讯SSV\n配料表 · 营养成分表 · PLAIN YOGURT · 生牛乳(添加量≥90%)、 · 原味酸奶 · 项目 · 每100克NRV% · 砂糖(添加量≥7.5%)动物 · 双歧杆菌乳亚种、啫酸乳杆 · 生牛乳发酵7种益生菌 · 能量 · 391千焦 · 5% · 菌、德氏乳杆菌保加利亚亚 · 种、唾液链球菌嗜热亚种、 · 0产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥ · 蛋白质 · 3.0克 · 5% · 乳酸乳球菌乳亚种、乳脂乳 · 93%白砂糖、唾液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植 · 脂肪 · 3.4克 · 6% · 球菌、乳酸乳球菌乳亚种( · 杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌 · 双乙酰型)、鼠李糖乳酪杆 · 碳水化合物12.6克 · 4% · 菌、植物乳植杆菌、干酪乳 · 长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21 · 酪杆菌、长双歧杆菌长亚种 · 46毫克 · 钠 · 2% · 天贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮○产品标准号： · 、短双歧杆菌、罗伊氏粘液 · 钙 · 98毫克 · 12% · GB193020出品商：币渠十氨总长畏壮引门始 宝出总就景点 · 乳杆菌 · 100g酸奶≈7g糖 · 看糖排在第几一一越靠后越好\n营养成分表 · 配料表 · PLAIN YOGURT · 生牛乳(添加量≥90%)、 · 原味酸奶 · 项目 · 每100克NRV% · 砂糖(添加量≥7.5%)动物 · 双歧杆菌乳亚种、啫酸乳杆 · 生牛乳发酵7种益生菌 · 能量 · 391千焦 · 5% · 菌、德氏乳杆菌保加利亚亚 · 种、唾液链球菌嗜热亚种、 · 0产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥ · 蛋白质 · 3.0克 · 5% · 乳酸乳球菌乳亚种、乳脂乳 · 93%白砂糖、唾液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植 · 脂肪 · 3.4克 · 6% · 球菌、乳酸乳球菌乳亚种( · 杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌 · 双乙酰型)、鼠李糖乳酪杆 · 碳水化合物12.6克 · 4% · 菌、植物乳植杆菌、干酪乳 · 长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21 · 酪杆菌、长双歧杆菌长亚种 · 46毫克 · 钠 · 2% · 天贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮○产品标准号： · 、短双歧杆菌、罗伊氏粘液 · 钙 · 98毫克 · 12% · GB193020出品商：币渠十氨显长畏妆引始 宝出总就员会 · 乳杆菌 · 100g酸奶≈7g糖 · 看糖排在第几一一越靠后越好\n营养成分表 · 配料表 · PLAIN YOGURT · 生牛乳(添加量≥90%)、 · 原味酸奶 · 项目 · 每100克NRV% · 砂糖(添加量≥7.5%)动物 · 双歧杆菌乳亚种、啫酸乳杆 · 生牛乳发酵7种益生菌 · 能量 · 391千焦 · 5% · 菌、德氏乳杆菌保加利亚亚 · 种、唾液链球菌嗜热亚种、 · 0产品名称：原味酸奶产品类型：风味发酵乳配料表：生牛乳≥ · 蛋白质 · 3.0克 · 5% · 乳酸乳球菌乳亚种、乳脂乳 · 93%白砂糖唾液链球菌嗜热亚种、德氏乳杆菌保加利亚亚种、植物乳植 · 3.4克 · 脂肪 · 6% · 球菌、乳酸乳球菌乳亚种( · 杆菌、两歧双歧杆菌、动物双歧杆菌乳亚种、鼠李糖乳酪杆菌、长双歧杆菌 · 双乙酰型)、鼠李糖乳酪杆 · 碳水化合物12.6克 · 4% · 菌、植物乳植杆菌、干酪乳 · 长亚种、嗜酸乳杆菌、干酪乳酪杆菌生产日期：见瓶盖保质期：21 · 酪杆菌、长双歧杆菌长亚种 · 46毫克 · 钠 · 2% · 天○贮存条件：请于2℃-6℃冷藏○食用方法：即开即饮○产品标准号： · 、短双歧杆菌、罗伊氏粘液 · 钙 · 98毫克 · 12% · GB193020出品商：币渠十氨总长畏壮引门始 宝出总就景点 · 乳杆菌 · 100g酸奶≈7g糖 · 看糖排在第几一一越靠后越好",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    }
+  ],
+  "interpretation": "Rule candidates for human review; no calibrated accuracy claim."
+}

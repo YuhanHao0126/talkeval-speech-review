@@ -1,0 +1,606 @@
+{
+  "schema_version": "talkeval_context_fit_v1",
+  "case_id": "speech_auto_c2c143e546",
+  "algorithm_version": "context-rules-2026.10.15-v1",
+  "configuration": {
+    "minSamples": 3,
+    "minCoverage": 0.6,
+    "smile": 0.5,
+    "minSmileSeconds": 1.2,
+    "maxTimingUncertainty": 2,
+    "motionSpeed": 0.65
+  },
+  "results": [
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        16.19,
+        19.01
+      ],
+      "point_id": "b01",
+      "point_text": "很高兴今天能够来到这里和大家分享一些",
+      "text": "很高兴今天能够来到这里和大家分享一些",
+      "context": {
+        "goal": "warm",
+        "source": "转写词汇线索",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 2,
+        "face_samples": 0,
+        "comparable_hand_samples": 1,
+        "coverage": 0.709,
+        "face_coverage": 0,
+        "hand_coverage": 0.355,
+        "sampling_interval_seconds": 1.001,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-17.017",
+          "kind": "motion",
+          "start": 17.017,
+          "end": 17.017,
+          "peak": 17.017,
+          "count": 1,
+          "magnitude": 0.186,
+          "duration": 0
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b01",
+        "target_meaning": "很高兴今天能够来到这里和大家分享一些",
+        "required_claims": [
+          "很高兴今天能够来到这里和大家分享一些"
+        ],
+        "time_span": [
+          16.19,
+          19.01
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0,
+        "lexical_overlap_score": 0,
+        "concept_coverage": null,
+        "matched_concepts": [],
+        "matched_target": null,
+        "best_frame_timestamp": 14.19,
+        "best_frame_text": "向日葵女士傅园慧 · IX!人 · 蔡崇信公益基金会 · JOE TSAI FOUNDATION",
+        "best_frame_confidence": 0.954,
+        "frames": [
+          {
+            "timestamp": 14.19,
+            "text_lines": [
+              {
+                "text": "向日葵女士傅园慧",
+                "confidence": 1,
+                "x": 0.342,
+                "y": 0.18
+              },
+              {
+                "text": "IX!人",
+                "confidence": 0.818,
+                "x": 0.148,
+                "y": 0.787
+              },
+              {
+                "text": "蔡崇信公益基金会",
+                "confidence": 0.998,
+                "x": 0.903,
+                "y": 0.8
+              },
+              {
+                "text": "JOE TSAI FOUNDATION",
+                "confidence": 0.999,
+                "x": 0.903,
+                "y": 0.824
+              }
+            ],
+            "extracted_text": "向日葵女士傅园慧 · IX!人 · 蔡崇信公益基金会 · JOE TSAI FOUNDATION",
+            "mean_ocr_confidence": 0.954,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 16.463,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 18.737,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 21.01,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "向日葵女士傅园慧 · IX!人 · 蔡崇信公益基金会 · JOE TSAI FOUNDATION",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        1132.69,
+        1134.75
+      ],
+      "point_id": "b02",
+      "point_text": "所以后面我再拓得了很高的成就之后",
+      "text": "所以后面我再拓得了很高的成就之后",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 2,
+        "face_samples": 2,
+        "comparable_hand_samples": 2,
+        "coverage": 0.943,
+        "face_coverage": 0.943,
+        "hand_coverage": 0.943,
+        "sampling_interval_seconds": 1.001,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-1133.132",
+          "kind": "motion",
+          "start": 1133.132,
+          "end": 1134.133,
+          "peak": 1133.132,
+          "count": 2,
+          "magnitude": 0.276,
+          "duration": 1.001
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b02",
+        "target_meaning": "所以后面我再拓得了很高的成就之后",
+        "required_claims": [
+          "所以后面我再拓得了很高的成就之后"
+        ],
+        "time_span": [
+          1132.69,
+          1134.75
+        ],
+        "verdict": "no_readable_text",
+        "label": "未读到足够清晰的页面文字",
+        "match_score": 0,
+        "lexical_overlap_score": 0,
+        "concept_coverage": null,
+        "matched_concepts": [],
+        "matched_target": null,
+        "best_frame_timestamp": 1130.69,
+        "best_frame_text": "",
+        "best_frame_confidence": null,
+        "frames": [
+          {
+            "timestamp": 1130.69,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1132.71,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1134.73,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1136.75,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "",
+        "review_hint": "OCR 没有提取到可用文字；可能是图表页、画面遮挡或没有 PPT，暂不能据此判断是否配合观点。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        1361.08,
+        1361.9
+      ],
+      "point_id": "b03",
+      "point_text": "只有100米一样用",
+      "text": "只有100米一样用",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 1,
+        "face_samples": 1,
+        "comparable_hand_samples": 1,
+        "coverage": 0.951,
+        "face_coverage": 0.951,
+        "hand_coverage": 0.951,
+        "sampling_interval_seconds": 1,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b03",
+        "target_meaning": "只有100米一样用",
+        "required_claims": [
+          "只有100米一样用"
+        ],
+        "time_span": [
+          1361.08,
+          1361.9
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0,
+        "lexical_overlap_score": 0,
+        "concept_coverage": null,
+        "matched_concepts": [],
+        "matched_target": null,
+        "best_frame_timestamp": 1359.08,
+        "best_frame_text": "向日葵女士傅园慧 · IX!X · 蔡崇信公益基金会 · JOE TSAI FOUNDATION",
+        "best_frame_confidence": 0.926,
+        "frames": [
+          {
+            "timestamp": 1359.08,
+            "text_lines": [
+              {
+                "text": "向日葵女士傅园慧",
+                "confidence": 1,
+                "x": 0.343,
+                "y": 0.18
+              },
+              {
+                "text": "IX!X",
+                "confidence": 0.708,
+                "x": 0.162,
+                "y": 0.783
+              },
+              {
+                "text": "蔡崇信公益基金会",
+                "confidence": 0.998,
+                "x": 0.903,
+                "y": 0.8
+              },
+              {
+                "text": "JOE TSAI FOUNDATION",
+                "confidence": 0.999,
+                "x": 0.902,
+                "y": 0.824
+              }
+            ],
+            "extracted_text": "向日葵女士傅园慧 · IX!X · 蔡崇信公益基金会 · JOE TSAI FOUNDATION",
+            "mean_ocr_confidence": 0.926,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1361.49,
+            "text_lines": [
+              {
+                "text": "向日葵女士傅园慧",
+                "confidence": 1,
+                "x": 0.343,
+                "y": 0.18
+              },
+              {
+                "text": "IX!人",
+                "confidence": 0.802,
+                "x": 0.162,
+                "y": 0.783
+              },
+              {
+                "text": "蔡崇信公益基金会",
+                "confidence": 0.999,
+                "x": 0.903,
+                "y": 0.8
+              },
+              {
+                "text": "JOE TSAI FOUNDATION",
+                "confidence": 0.983,
+                "x": 0.903,
+                "y": 0.824
+              }
+            ],
+            "extracted_text": "向日葵女士傅园慧 · IX!人 · 蔡崇信公益基金会 · JOE TSAI FOUNDATION",
+            "mean_ocr_confidence": 0.946,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1363.9,
+            "text_lines": [
+              {
+                "text": "向日葵女士傅园慧",
+                "confidence": 1,
+                "x": 0.343,
+                "y": 0.18
+              },
+              {
+                "text": "IX!人",
+                "confidence": 0.724,
+                "x": 0.162,
+                "y": 0.785
+              },
+              {
+                "text": "蔡崇信公益基金会",
+                "confidence": 0.998,
+                "x": 0.903,
+                "y": 0.8
+              },
+              {
+                "text": "JOE TSAI FOUNDATION",
+                "confidence": 0.987,
+                "x": 0.903,
+                "y": 0.824
+              }
+            ],
+            "extracted_text": "向日葵女士傅园慧 · IX!人 · 蔡崇信公益基金会 · JOE TSAI FOUNDATION",
+            "mean_ocr_confidence": 0.927,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "向日葵女士傅园慧 · IX!X · 蔡崇信公益基金会 · JOE TSAI FOUNDATION\n向日葵女士傅园慧 · IX!人 · 蔡崇信公益基金会 · JOE TSAI FOUNDATION\n向日葵女士傅园慧 · IX!人 · 蔡崇信公益基金会 · JOE TSAI FOUNDATION",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        1367.7,
+        1369.1
+      ],
+      "point_id": "b04",
+      "point_text": "100我本来就不是那么的强",
+      "text": "100我本来就不是那么的强",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": true
+      },
+      "quality": {
+        "observations": 1,
+        "face_samples": 1,
+        "comparable_hand_samples": 1,
+        "coverage": 0.714,
+        "face_coverage": 0.714,
+        "hand_coverage": 0.714,
+        "sampling_interval_seconds": 1,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-1368.367",
+          "kind": "motion",
+          "start": 1368.367,
+          "end": 1368.367,
+          "peak": 1368.367,
+          "count": 1,
+          "magnitude": 0.083,
+          "duration": 0
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b04",
+        "target_meaning": "100我本来就不是那么的强",
+        "required_claims": [
+          "100我本来就不是那么的强"
+        ],
+        "time_span": [
+          1367.7,
+          1369.1
+        ],
+        "verdict": "no_readable_text",
+        "label": "未读到足够清晰的页面文字",
+        "match_score": 0,
+        "lexical_overlap_score": 0,
+        "concept_coverage": null,
+        "matched_concepts": [],
+        "matched_target": null,
+        "best_frame_timestamp": 1365.7,
+        "best_frame_text": "",
+        "best_frame_confidence": null,
+        "frames": [
+          {
+            "timestamp": 1365.7,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1368.4,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1371.1,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "",
+        "review_hint": "OCR 没有提取到可用文字；可能是图表页、画面遮挡或没有 PPT，暂不能据此判断是否配合观点。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    }
+  ],
+  "interpretation": "Rule candidates for human review; no calibrated accuracy claim."
+}

@@ -1,0 +1,1092 @@
+{
+  "schema_version": "talkeval_context_fit_v1",
+  "case_id": "speech_003_college_students",
+  "algorithm_version": "context-rules-2026.10.15-v1",
+  "configuration": {
+    "minSamples": 3,
+    "minCoverage": 0.6,
+    "smile": 0.5,
+    "minSmileSeconds": 1.2,
+    "maxTimingUncertainty": 2,
+    "motionSpeed": 0.65
+  },
+  "results": [
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "supportive",
+      "label": "可能支持表达",
+      "time_span": [
+        382.98,
+        394.86
+      ],
+      "point_id": "b01",
+      "point_text": "因此，与其一直牢牢地记住和回顾那些失败，我们更应该常常想起自己过去的成功经历，那些自己觉得做得还不错的事情",
+      "text": "所以和一直牢牢的记住和回顾那些失败相比 我们更应该常常想起的是我过去的成功经验 那些我觉得自己做的还很不错的事情",
+      "context": {
+        "goal": "emphasize",
+        "source": "转写词汇线索",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 6,
+        "face_samples": 6,
+        "comparable_hand_samples": 6,
+        "coverage": 0.965,
+        "face_coverage": 0.965,
+        "hand_coverage": 0.965,
+        "sampling_interval_seconds": 2.002,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "supportive",
+        "label": "可能支持表达",
+        "reason": "强调语境中，手部变化与较强声音出现在同一语句时段，可能帮助突出重点。",
+        "suggestion": "回看动作峰值与关键词是否一致；本结果只确认时段共现。",
+        "evidence": [
+          {
+            "id": "motion-384.384",
+            "kind": "motion",
+            "start": 384.384,
+            "end": 384.384,
+            "peak": 384.384,
+            "count": 1,
+            "magnitude": 0.057,
+            "duration": 0
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-384.384",
+          "kind": "motion",
+          "start": 384.384,
+          "end": 384.384,
+          "peak": 384.384,
+          "count": 1,
+          "magnitude": 0.057,
+          "duration": 0
+        },
+        {
+          "id": "motion-394.394",
+          "kind": "motion",
+          "start": 394.394,
+          "end": 394.394,
+          "peak": 394.394,
+          "count": 1,
+          "magnitude": 0.048,
+          "duration": 0
+        }
+      ],
+      "voice_windows": [
+        {
+          "span": [
+            382.98,
+            387.68
+          ],
+          "reliable": true,
+          "emphasis": true,
+          "basis": "句级响度高于本场基线（≥0.6σ）"
+        }
+      ],
+      "slide": {
+        "beat_id": "b01",
+        "target_meaning": "因此，与其一直牢牢地记住和回顾那些失败，我们更应该常常想起自己过去的成功经历，那些自己觉得做得还不错的事情",
+        "required_claims": [
+          "因此，与其一直牢牢地记住和回顾那些失败，我们更应该常常想起自己过去的成功经历，那些自己觉得做得还不错的事情"
+        ],
+        "time_span": [
+          382.98,
+          394.86
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0,
+        "lexical_overlap_score": 0,
+        "concept_coverage": null,
+        "matched_concepts": [],
+        "matched_target": null,
+        "best_frame_timestamp": 380.98,
+        "best_frame_text": "",
+        "best_frame_confidence": null,
+        "frames": [
+          {
+            "timestamp": 380.98,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 383.627,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 386.273,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 388.92,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 391.567,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 394.213,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 396.86,
+            "text_lines": [
+              {
+                "text": "困于未来",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.345
+              },
+              {
+                "text": "困于比较",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.43
+              }
+            ],
+            "extracted_text": "困于未来 · 困于比较",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "困于未来 · 困于比较",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        400.32,
+        408.64
+      ],
+      "point_id": "b02",
+      "point_text": "他们会抱着对美好未来的憧憬，放弃当下的生活，把一切都交给不确定性，投身于保研、考公、进大厂的浪潮，这并不是因为他们真的想要这样的生活，而是别人都告诉他们这样的未来是对的、是好的",
+      "text": "他们会抱着对美好未来的愿景 放弃当下的生活 投入保言 考功 进大厂的浪潮",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 5,
+        "face_samples": 0,
+        "comparable_hand_samples": 0,
+        "coverage": 0.999,
+        "face_coverage": 0,
+        "hand_coverage": 0,
+        "sampling_interval_seconds": 2.002,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [],
+      "voice_windows": [
+        {
+          "span": [
+            400.32,
+            402.88
+          ],
+          "reliable": true,
+          "emphasis": true,
+          "basis": "句级响度高于本场基线（≥0.6σ）"
+        }
+      ],
+      "slide": {
+        "beat_id": "b02",
+        "target_meaning": "他们会抱着对美好未来的憧憬，放弃当下的生活，把一切都交给不确定性，投身于保研、考公、进大厂的浪潮，这并不是因为他们真的想要这样的生活，而是别人都告诉他们这样的未来是对的、是好的",
+        "required_claims": [
+          "他们会抱着对美好未来的憧憬，放弃当下的生活，把一切都交给不确定性，投身于保研、考公、进大厂的浪潮，这并不是因为他们真的想要这样的生活，而是别人都告诉他们这样的未来是对的、是好的"
+        ],
+        "time_span": [
+          400.32,
+          408.64
+        ],
+        "verdict": "partial_text_overlap",
+        "label": "有部分文字线索关联",
+        "match_score": 0.2535,
+        "lexical_overlap_score": 0.0518,
+        "concept_coverage": 0.5,
+        "matched_concepts": [
+          "未来与比较"
+        ],
+        "matched_target": "他们会抱着对美好未来的憧憬，放弃当下的生活，把一切都交给不确定性，投身于保研、考公、进大厂的浪潮，这并不是因为他们真的想要这样的生活，而是别人都告诉他们这样的未来是对的、是好的",
+        "best_frame_timestamp": 398.32,
+        "best_frame_text": "困于未来 · 困于比较",
+        "best_frame_confidence": 0.998,
+        "frames": [
+          {
+            "timestamp": 398.32,
+            "text_lines": [
+              {
+                "text": "困于未来",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.345
+              },
+              {
+                "text": "困于比较",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.43
+              }
+            ],
+            "extracted_text": "困于未来 · 困于比较",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.2535,
+            "lexical_overlap_score": 0.0518,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "未来与比较"
+            ],
+            "matched_concepts": [
+              "未来与比较"
+            ]
+          },
+          {
+            "timestamp": 400.373,
+            "text_lines": [
+              {
+                "text": "困于未来",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.345
+              },
+              {
+                "text": "困于比较",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.43
+              }
+            ],
+            "extracted_text": "困于未来 · 困于比较",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.2535,
+            "lexical_overlap_score": 0.0518,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "未来与比较"
+            ],
+            "matched_concepts": [
+              "未来与比较"
+            ]
+          },
+          {
+            "timestamp": 402.427,
+            "text_lines": [
+              {
+                "text": "困于未来",
+                "confidence": 0.997,
+                "x": 0.496,
+                "y": 0.345
+              },
+              {
+                "text": "困于比较",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.43
+              }
+            ],
+            "extracted_text": "困于未来 · 困于比较",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.2535,
+            "lexical_overlap_score": 0.0518,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "未来与比较"
+            ],
+            "matched_concepts": [
+              "未来与比较"
+            ]
+          },
+          {
+            "timestamp": 404.48,
+            "text_lines": [
+              {
+                "text": "困于未来",
+                "confidence": 0.999,
+                "x": 0.496,
+                "y": 0.345
+              },
+              {
+                "text": "困于比较",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.43
+              }
+            ],
+            "extracted_text": "困于未来 · 困于比较",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.2535,
+            "lexical_overlap_score": 0.0518,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "未来与比较"
+            ],
+            "matched_concepts": [
+              "未来与比较"
+            ]
+          },
+          {
+            "timestamp": 406.533,
+            "text_lines": [
+              {
+                "text": "困于未来",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.345
+              },
+              {
+                "text": "困于比较",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.43
+              }
+            ],
+            "extracted_text": "困于未来 · 困于比较",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.2535,
+            "lexical_overlap_score": 0.0518,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "未来与比较"
+            ],
+            "matched_concepts": [
+              "未来与比较"
+            ]
+          },
+          {
+            "timestamp": 408.587,
+            "text_lines": [
+              {
+                "text": "困于未来",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.345
+              },
+              {
+                "text": "困于比较",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.43
+              }
+            ],
+            "extracted_text": "困于未来 · 困于比较",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.2535,
+            "lexical_overlap_score": 0.0518,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "未来与比较"
+            ],
+            "matched_concepts": [
+              "未来与比较"
+            ]
+          },
+          {
+            "timestamp": 410.64,
+            "text_lines": [
+              {
+                "text": "困于未来",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.345
+              },
+              {
+                "text": "困于比较",
+                "confidence": 0.998,
+                "x": 0.496,
+                "y": 0.43
+              }
+            ],
+            "extracted_text": "困于未来 · 困于比较",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.2535,
+            "lexical_overlap_score": 0.0518,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "未来与比较"
+            ],
+            "matched_concepts": [
+              "未来与比较"
+            ]
+          }
+        ],
+        "extracted_text": "困于未来 · 困于比较\n困于未来 · 困于比较\n困于未来 · 困于比较\n困于未来 · 困于比较\n困于未来 · 困于比较\n困于未来 · 困于比较\n困于未来 · 困于比较",
+        "review_hint": "页面只出现部分相关词句；需人工核对页面是在解释、举例还是仅作背景。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        893.13,
+        906.57
+      ],
+      "point_id": "b03",
+      "point_text": "所以大学生很习惯于将那些消极的情绪打包成一团，他们无法准确表达自己是悲伤、担忧、不满还是委屈，只是试图将那些不好的东西统统丢进垃圾桶",
+      "text": "所以大学生很习惯于将那些消极的情绪打包成一团 他们无法说出自己是悲伤 担忧 不满还是委屈 只是诗途将那些不好的东西统统丢进垃圾桶",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 6,
+        "face_samples": 0,
+        "comparable_hand_samples": 6,
+        "coverage": 0.893,
+        "face_coverage": 0,
+        "hand_coverage": 0.893,
+        "sampling_interval_seconds": 2.002,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "这一段手部变化较小；说明性表达不必依赖频繁动作。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b03",
+        "target_meaning": "所以大学生很习惯于将那些消极的情绪打包成一团，他们无法准确表达自己是悲伤、担忧、不满还是委屈，只是试图将那些不好的东西统统丢进垃圾桶",
+        "required_claims": [
+          "所以大学生很习惯于将那些消极的情绪打包成一团，他们无法准确表达自己是悲伤、担忧、不满还是委屈，只是试图将那些不好的东西统统丢进垃圾桶"
+        ],
+        "time_span": [
+          893.13,
+          906.57
+        ],
+        "verdict": "clear_text_overlap",
+        "label": "文字线索关联较明显",
+        "match_score": 0.6126,
+        "lexical_overlap_score": 0.7046,
+        "concept_coverage": 0.5,
+        "matched_concepts": [
+          "学生与青年"
+        ],
+        "matched_target": "所以大学生很习惯于将那些消极的情绪打包成一团，他们无法准确表达自己是悲伤、担忧、不满还是委屈，只是试图将那些不好的东西统统丢进垃圾桶",
+        "best_frame_timestamp": 894.037,
+        "best_frame_text": "大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。",
+        "best_frame_confidence": 0.999,
+        "frames": [
+          {
+            "timestamp": 891.13,
+            "text_lines": [
+              {
+                "text": "我们为什么要为自己的真实情感感到抱歉呢？",
+                "confidence": 0.981,
+                "x": 0.49,
+                "y": 0.235
+              },
+              {
+                "text": "66",
+                "confidence": 0.826,
+                "x": 0.473,
+                "y": 0.372
+              },
+              {
+                "text": "“你要外向，乐观开朗积极向上。",
+                "confidence": 0.998,
+                "x": 0.338,
+                "y": 0.382
+              },
+              {
+                "text": "“男孩子要勇敢，哭能解决什么问题。",
+                "confidence": 0.999,
+                "x": 0.631,
+                "y": 0.452
+              },
+              {
+                "text": "“你那么敏感脆弱，没人愿意和你做朋友。",
+                "confidence": 0.999,
+                "x": 0.472,
+                "y": 0.557
+              },
+              {
+                "text": "“女孩子就是情绪化。",
+                "confidence": 1,
+                "x": 0.339,
+                "y": 0.661
+              }
+            ],
+            "extracted_text": "我们为什么要为自己的真实情感感到抱歉呢？ · 66 · “你要外向，乐观开朗积极向上。 · “男孩子要勇敢，哭能解决什么问题。 · “你那么敏感脆弱，没人愿意和你做朋友。 · “女孩子就是情绪化。",
+            "mean_ocr_confidence": 0.967,
+            "match_score": 0.0255,
+            "lexical_overlap_score": 0.0255,
+            "concept_coverage": 0,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 894.037,
+            "text_lines": [
+              {
+                "text": "大学生们习惯于将消极情绪打包成一团，他们无法说",
+                "confidence": 1,
+                "x": 0.493,
+                "y": 0.358
+              },
+              {
+                "text": "出自己是悲伤、担忧、不满还是委屈，只是试图将那",
+                "confidence": 0.999,
+                "x": 0.494,
+                "y": 0.432
+              },
+              {
+                "text": "些“不好”的东西丢进垃圾桶。",
+                "confidence": 0.998,
+                "x": 0.367,
+                "y": 0.507
+              }
+            ],
+            "extracted_text": "大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。",
+            "mean_ocr_confidence": 0.999,
+            "match_score": 0.6126,
+            "lexical_overlap_score": 0.7046,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 896.943,
+            "text_lines": [
+              {
+                "text": "大学生们习惯于将消极情绪打包成一团，他们无法说",
+                "confidence": 1,
+                "x": 0.493,
+                "y": 0.358
+              },
+              {
+                "text": "出自己是悲伤、担忧、不满还是委屈，只是试图将那",
+                "confidence": 0.998,
+                "x": 0.494,
+                "y": 0.432
+              },
+              {
+                "text": "些“不好”的东西丢进垃圾桶。",
+                "confidence": 0.998,
+                "x": 0.367,
+                "y": 0.506
+              }
+            ],
+            "extracted_text": "大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。",
+            "mean_ocr_confidence": 0.999,
+            "match_score": 0.6126,
+            "lexical_overlap_score": 0.7046,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 899.85,
+            "text_lines": [
+              {
+                "text": "大学生们习惯于将消极情绪打包成一团，他们无法说",
+                "confidence": 1,
+                "x": 0.493,
+                "y": 0.358
+              },
+              {
+                "text": "出自己是悲伤、担忧、不满还是委屈，只是试图将那",
+                "confidence": 0.998,
+                "x": 0.495,
+                "y": 0.432
+              },
+              {
+                "text": "些“不好”的东西丢进垃圾桶。",
+                "confidence": 0.998,
+                "x": 0.367,
+                "y": 0.506
+              }
+            ],
+            "extracted_text": "大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。",
+            "mean_ocr_confidence": 0.999,
+            "match_score": 0.6126,
+            "lexical_overlap_score": 0.7046,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 902.757,
+            "text_lines": [
+              {
+                "text": "大学生们习惯于将消极情绪打包成一团，他们无法说",
+                "confidence": 1,
+                "x": 0.493,
+                "y": 0.358
+              },
+              {
+                "text": "出自己是悲伤、担忧、不满还是委屈，只是试图将那",
+                "confidence": 0.997,
+                "x": 0.495,
+                "y": 0.432
+              },
+              {
+                "text": "些“不好”的东西丢进垃圾桶。",
+                "confidence": 0.997,
+                "x": 0.367,
+                "y": 0.506
+              }
+            ],
+            "extracted_text": "大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.6126,
+            "lexical_overlap_score": 0.7046,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 905.663,
+            "text_lines": [
+              {
+                "text": "大学生们习惯于将消极情绪打包成一团，他们无法说",
+                "confidence": 1,
+                "x": 0.493,
+                "y": 0.358
+              },
+              {
+                "text": "出自己是悲伤、担忧、不满还是委屈，只是试图将那",
+                "confidence": 0.996,
+                "x": 0.495,
+                "y": 0.432
+              },
+              {
+                "text": "些“不好”的东西丢进垃圾桶。",
+                "confidence": 0.997,
+                "x": 0.367,
+                "y": 0.506
+              }
+            ],
+            "extracted_text": "大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。",
+            "mean_ocr_confidence": 0.998,
+            "match_score": 0.6126,
+            "lexical_overlap_score": 0.7046,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 908.57,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "我们为什么要为自己的真实情感感到抱歉呢？ · 66 · “你要外向，乐观开朗积极向上。 · “男孩子要勇敢，哭能解决什么问题。 · “你那么敏感脆弱，没人愿意和你做朋友。 · “女孩子就是情绪化。\n大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。\n大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。\n大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。\n大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。\n大学生们习惯于将消极情绪打包成一团，他们无法说 · 出自己是悲伤、担忧、不满还是委屈，只是试图将那 · 些“不好”的东西丢进垃圾桶。",
+        "review_hint": "页面文字与观点存在较明显的词句重合；请结合图表、图片和该页完整语境确认是否真正支撑观点。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        1093.08,
+        1101.26
+      ],
+      "point_id": "b04",
+      "point_text": "我想告诉大家的是，年轻人之所以会有情绪问题，并不是因为他们不上进、不要强，并不是因为他们真的躺平了，而是因为他们对自己的要求从未降低，他们的进取心也从未降低，他们总是希望自己可以做得更好",
+      "text": "而是因为他们对自己的要求从来都没有降低 他们的进取心也没有降低 他们总是希望自己可以做得更好",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 5,
+        "face_samples": 0,
+        "comparable_hand_samples": 2,
+        "coverage": 0.999,
+        "face_coverage": 0,
+        "hand_coverage": 0.368,
+        "sampling_interval_seconds": 2.002,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b04",
+        "target_meaning": "我想告诉大家的是，年轻人之所以会有情绪问题，并不是因为他们不上进、不要强，并不是因为他们真的躺平了，而是因为他们对自己的要求从未降低，他们的进取心也从未降低，他们总是希望自己可以做得更好",
+        "required_claims": [
+          "我想告诉大家的是，年轻人之所以会有情绪问题，并不是因为他们不上进、不要强，并不是因为他们真的躺平了，而是因为他们对自己的要求从未降低，他们的进取心也从未降低，他们总是希望自己可以做得更好"
+        ],
+        "time_span": [
+          1093.08,
+          1101.26
+        ],
+        "verdict": "clear_text_overlap",
+        "label": "文字线索关联较明显",
+        "match_score": 0.5076,
+        "lexical_overlap_score": 0.5138,
+        "concept_coverage": 0.5,
+        "matched_concepts": [
+          "学生与青年"
+        ],
+        "matched_target": "我想告诉大家的是，年轻人之所以会有情绪问题，并不是因为他们不上进、不要强，并不是因为他们真的躺平了，而是因为他们对自己的要求从未降低，他们的进取心也从未降低，他们总是希望自己可以做得更好",
+        "best_frame_timestamp": 1097.17,
+        "best_frame_text": "年轻人会有情绪问题，正是因为他们对自己的要求没 · 有降低，他们的进取心也没有降低。",
+        "best_frame_confidence": 0.999,
+        "frames": [
+          {
+            "timestamp": 1091.08,
+            "text_lines": [
+              {
+                "text": "年轻人",
+                "confidence": 0.999,
+                "x": 0.952,
+                "y": 0.14
+              },
+              {
+                "text": "有降低",
+                "confidence": 0.979,
+                "x": 0.952,
+                "y": 0.26
+              }
+            ],
+            "extracted_text": "年轻人 · 有降低",
+            "mean_ocr_confidence": 0.989,
+            "match_score": 0.3357,
+            "lexical_overlap_score": 0.2014,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 1093.11,
+            "text_lines": [
+              {
+                "text": "年轻人",
+                "confidence": 0.999,
+                "x": 0.952,
+                "y": 0.14
+              },
+              {
+                "text": "有降低",
+                "confidence": 0.983,
+                "x": 0.952,
+                "y": 0.26
+              }
+            ],
+            "extracted_text": "年轻人 · 有降低",
+            "mean_ocr_confidence": 0.991,
+            "match_score": 0.3357,
+            "lexical_overlap_score": 0.2014,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 1095.14,
+            "text_lines": [
+              {
+                "text": "年轻人",
+                "confidence": 0.999,
+                "x": 0.952,
+                "y": 0.14
+              },
+              {
+                "text": "有降低",
+                "confidence": 0.985,
+                "x": 0.952,
+                "y": 0.26
+              }
+            ],
+            "extracted_text": "年轻人 · 有降低",
+            "mean_ocr_confidence": 0.992,
+            "match_score": 0.3357,
+            "lexical_overlap_score": 0.2014,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 1097.17,
+            "text_lines": [
+              {
+                "text": "年轻人会有情绪问题，正是因为他们对自己的要求没",
+                "confidence": 0.998,
+                "x": 0.494,
+                "y": 0.353
+              },
+              {
+                "text": "有降低，他们的进取心也没有降低。",
+                "confidence": 1,
+                "x": 0.394,
+                "y": 0.428
+              }
+            ],
+            "extracted_text": "年轻人会有情绪问题，正是因为他们对自己的要求没 · 有降低，他们的进取心也没有降低。",
+            "mean_ocr_confidence": 0.999,
+            "match_score": 0.5076,
+            "lexical_overlap_score": 0.5138,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 1099.2,
+            "text_lines": [
+              {
+                "text": "年轻人会有情绪问题，正是因为他们对自己的要求没",
+                "confidence": 0.998,
+                "x": 0.494,
+                "y": 0.353
+              },
+              {
+                "text": "有降低，他们的进取心也没有降低。",
+                "confidence": 1,
+                "x": 0.394,
+                "y": 0.428
+              }
+            ],
+            "extracted_text": "年轻人会有情绪问题，正是因为他们对自己的要求没 · 有降低，他们的进取心也没有降低。",
+            "mean_ocr_confidence": 0.999,
+            "match_score": 0.5076,
+            "lexical_overlap_score": 0.5138,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 1101.23,
+            "text_lines": [
+              {
+                "text": "年轻人会有情绪问题，正是因为他们对自己的要求没",
+                "confidence": 0.998,
+                "x": 0.494,
+                "y": 0.353
+              },
+              {
+                "text": "有降低，他们的进取心也没有降低。",
+                "confidence": 1,
+                "x": 0.394,
+                "y": 0.428
+              }
+            ],
+            "extracted_text": "年轻人会有情绪问题，正是因为他们对自己的要求没 · 有降低，他们的进取心也没有降低。",
+            "mean_ocr_confidence": 0.999,
+            "match_score": 0.5076,
+            "lexical_overlap_score": 0.5138,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          },
+          {
+            "timestamp": 1103.26,
+            "text_lines": [
+              {
+                "text": "年轻人会有情绪问题，正是因为他们对自己的要求没",
+                "confidence": 0.998,
+                "x": 0.494,
+                "y": 0.353
+              },
+              {
+                "text": "有降低，他们的进取心也没有降低。",
+                "confidence": 1,
+                "x": 0.394,
+                "y": 0.428
+              }
+            ],
+            "extracted_text": "年轻人会有情绪问题，正是因为他们对自己的要求没 · 有降低，他们的进取心也没有降低。",
+            "mean_ocr_confidence": 0.999,
+            "match_score": 0.5076,
+            "lexical_overlap_score": 0.5138,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "学生与青年"
+            ],
+            "matched_concepts": [
+              "学生与青年"
+            ]
+          }
+        ],
+        "extracted_text": "年轻人 · 有降低\n年轻人 · 有降低\n年轻人 · 有降低\n年轻人会有情绪问题，正是因为他们对自己的要求没 · 有降低，他们的进取心也没有降低。\n年轻人会有情绪问题，正是因为他们对自己的要求没 · 有降低，他们的进取心也没有降低。\n年轻人会有情绪问题，正是因为他们对自己的要求没 · 有降低，他们的进取心也没有降低。\n年轻人会有情绪问题，正是因为他们对自己的要求没 · 有降低，他们的进取心也没有降低。",
+        "review_hint": "页面文字与观点存在较明显的词句重合；请结合图表、图片和该页完整语境确认是否真正支撑观点。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    }
+  ],
+  "interpretation": "Rule candidates for human review; no calibrated accuracy claim."
+}

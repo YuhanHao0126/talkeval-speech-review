@@ -205,7 +205,7 @@ function annotationForm(caseId, decision) {
     const options = config.options.map(([value, label]) => `<option value="${value}" ${labels[field] === value ? "selected" : ""}>${label}</option>`).join("");
     return `<label>${config.label}<select aria-label="${esc(config.label)}" data-annotation-field="${field}" data-case-id="${esc(caseId)}" data-beat-id="${esc(decision.beat_id)}"><option value="">待人工复核</option>${options}</select></label>`;
   }).join("");
-  return `<details class="annotation-details"><summary>人工复核 · 训练标注</summary><div class="annotation-form">${selects}<label class="annotation-note">复核备注<textarea rows="2" maxlength="600" data-annotation-field="note" data-case-id="${esc(caseId)}" data-beat-id="${esc(decision.beat_id)}" placeholder="记录这段表达为何清楚、如何强调，或动作起到什么作用">${esc(labels.note || "")}</textarea></label><small>标签由人工填写；机器视觉只描述动作信号，不代替“是否得当、起到什么作用”的判断。</small></div></details>`;
+  return `<details class="annotation-details"><summary>人工复核 · 训练标注</summary><div class="annotation-form">${selects}<label class="annotation-note">复核备注<textarea rows="2" maxlength="600" data-annotation-field="note" data-case-id="${esc(caseId)}" data-beat-id="${esc(decision.beat_id)}" placeholder="记录这段表达为何清楚、如何强调，或动作起到什么作用">${esc(labels.note || "")}</textarea></label><small>标签由人工填写；语境适配候选与人工标签分别保留，便于后续校准算法。</small></div></details>`;
 }
 
 function voiceEvidence(data, decision) {
@@ -515,7 +515,7 @@ function exportCaseAnnotations(data) {
       source: { script_type: data.metadata?.script_type || null, usage_permission: data.metadata?.usage_permission || "to_review", permission_evidence: data.metadata?.permission_evidence || null, training_eligible: data.metadata?.usage_permission === "training" && Boolean(data.metadata?.permission_verified || String(data.metadata?.permission_evidence || "").trim()), video_file: data.metadata?.video_file || null },
       beat: { beat_id: decision.beat_id, target_meaning: beat.target_meaning || null, required_claims: beat.required_claims || [] },
       evidence: { time_span: decision.actual_time_span || null, observed_ids: decision.evidence_ids || decision.matched_observed_ids || [], transcript: (decision.evidence_ids || []).map((id) => units.get(id)?.text).filter(Boolean).join(" ") },
-      model_output: { verdict: decision.verdict, semantic_similarity: decision.semantic_similarity, claim_coverage: decision.claim_coverage, confidence: decision.confidence, delivery_findings: decision.delivery_findings || [], presentation_coordination: presentationCoordination(data, decision), ppt_content_match: compactSlideMatch(data, decision) },
+      model_output: { verdict: decision.verdict, semantic_similarity: decision.semantic_similarity, claim_coverage: decision.claim_coverage, confidence: decision.confidence, delivery_findings: decision.delivery_findings || [], presentation_coordination: presentationCoordination(data, decision), ppt_content_match: compactSlideMatch(data, decision), context_fit: caseFit(data, decision) },
       human_annotation: { labels, review_complete: Object.keys(annotationFields).every((field) => Boolean(labels[field])), reviewed_at: annotation.reviewed_at },
     }];
   });
@@ -531,6 +531,14 @@ function exportCaseAnnotations(data) {
   link.click();
   URL.revokeObjectURL(url);
   document.querySelector("#annotation-status").textContent = `已导出 ${records.length} 条人工复核`;
+}
+
+const fitCache = new WeakMap();
+function caseFit(data, decision) {
+  let cache = fitCache.get(data);
+  if (!cache) { cache = new Map(); fitCache.set(data, cache); }
+  if (!cache.has(decision.beat_id)) cache.set(decision.beat_id, TalkEvalFit.forCase(data, decision));
+  return cache.get(decision.beat_id);
 }
 
 function renderDetail(data) {
@@ -553,14 +561,16 @@ function renderDetail(data) {
     const beat = (data.intent_map?.beats || []).find(b => b.beat_id === decision.beat_id) || {};
     const note = noteById.get(decision.beat_id);
     const span = decision.actual_time_span;
+    const fit = caseFit(data, decision);
     const evidence = (decision.evidence_ids || []).map(id => (data.expression_map?.units || []).find(u => u.observed_id === id)).filter(Boolean);
     return `<article class="decision-card visual-decision-card" data-beat-index="${index}" data-beat-id="${esc(decision.beat_id)}" tabindex="0" aria-label="观点 ${index + 1}：${esc(beat.target_meaning || "目标观点")}">
       <div class="decision-meta"><span class="beat-id">POINT ${String(index+1).padStart(2,"0")}</span><span class="badge badge-${verdictClass(decision.verdict)}"><i></i>${esc(verdictText[decision.verdict] || decision.verdict)}</span></div>
       <div class="point-visual-main">${note?.frame_url ? `<button type="button" class="point-frame" data-start="${note.time}" aria-label="回看观点 ${index+1} 的视频证据"><img src="${esc(note.frame_url)}" alt="观点 ${index+1} 对应的真实演讲画面" loading="lazy" /><span class="frame-play">▷</span><span class="frame-time">${time(note.time)}</span></button>` : ""}<div class="point-visual-copy"><div class="decision-heading"><h3>${esc(note?.note_title || beat.target_meaning || "目标观点")}</h3></div><p class="point-note">${esc(note?.note_summary || decision.reason || "回看视频核对表达证据")}</p></div></div>
       ${note ? `<div class="point-keyword"><span>✎</span>${esc(note.keywords)}<button type="button" data-preview-image="${esc(note.frame_url)}" data-preview-caption="${esc(note.note_title)} · 视频关键帧 ${time(note.time)}">放大画面 ↗</button></div>` : ""}
+      <div class="point-fit-preview"><span class="fit-badge ${fit.status}">${esc(fit.label)}</span><p>动作：${esc(fit.gesture.reason)}</p><p>表情：${esc(fit.expression.reason)}</p></div>
       <details class="decision-details"><summary><span>完整观点与多模态证据</span><span class="details-chevron">⌄</span></summary><div class="decision-detail-body"><div class="original-point"><b>原始核心观点</b><p>${esc(beat.target_meaning || "目标观点")}</p></div><p class="decision-reason">${esc(decision.reason || "暂无判定理由")}</p><div class="metrics">${metric("语义相似度",decision.semantic_similarity)}${metric("命题覆盖",decision.claim_coverage)}${metric("置信度",decision.confidence)}</div><div class="evidence-box"><div class="evidence-heading"><span>转写证据</span>${span ? `<button class="decision-time" type="button" data-start="${span[0]}">▷ ${time(span[0])} – ${time(span[1])}</button>` : '<span class="decision-time">未定位</span>'}</div><p class="evidence-text">${esc(evidence.map(u=>u.text).join(" ") || "未找到可引用的实际转写")}</p></div>
       ${note?.ppt_url ? `<section class="ppt-proof"><div><strong>画面 / PPT 文字线索</strong><button type="button" class="decision-time" data-start="${note.ppt_time}">▷ ${time(note.ppt_time)}</button></div><button class="ppt-proof-image" type="button" data-preview-image="${esc(note.ppt_url)}" data-preview-caption="画面 / PPT 候选帧 · ${time(note.ppt_time)}"><img src="${esc(note.ppt_url)}" alt="观点附近包含画面文字线索的真实截图" loading="lazy" /><span>放大查看 ↗</span></button><small>原视频抽帧 · ${esc(note.ppt_label)}，结合原片复核</small></section>` : ""}
-      ${coordinationEvidence(data,decision)}${voiceEvidence(data,decision)}${visualBeatEvidence(data,decision)}${annotationForm(data.case_id,decision)}</div></details>
+      ${TalkEvalFit.card(fit)}${coordinationEvidence(data,decision)}${voiceEvidence(data,decision)}${visualBeatEvidence(data,decision)}${annotationForm(data.case_id,decision)}</div></details>
     </article>`;
   }).join("");
   const chapterStrip = visual.beats?.length ? `<div class="chapter-strip">${visual.beats.map((note,i) => `<button type="button" data-start="${note.time}" title="${esc(note.note_title)}"><span class="chapter-image"><img src="${esc(note.frame_url)}" alt="" loading="lazy" /><i>${time(note.time)}</i></span><span><b>${String(i+1).padStart(2,"0")}</b>${esc(note.note_title)}</span></button>`).join("")}</div>` : "";
@@ -571,7 +581,7 @@ function renderDetail(data) {
     return `<div class="visual-panel-tools"><span>${notebook ? "✎ 观点整理 · 真实视频截图" : "四个分支，看见整场表达结构"}</span><div><button type="button" data-preview-image="${esc(src)}" data-preview-caption="${esc(title)} · ${notebook ? "图解笔记" : "观点导图"}">放大 ↗</button><a href="${esc(src)}" download="${esc(data.case_id)}-${kind}.svg">下载${notebook ? "笔记" : "导图"} ↓</a></div></div><div class="${notebook ? "notebook-sheet" : "point-map"}"><img src="${esc(src)}" alt="${esc(title)}的${notebook ? "图解笔记" : "四个观点思维导图"}" loading="lazy" /><div class="visual-hotspots">${(visual.beats || []).map((note,i) => `<button type="button" class="visual-hotspot ${notebook ? "note" : "branch"}-${i}" data-start="${note.time}" aria-label="回看图解中的观点 ${i+1}：${esc(note.note_title)}" title="回看：${esc(note.note_title)}"></button>`).join("")}</div></div>`;
   };
   const transcript = (data.expression_map?.units || []).map(unit => `<button type="button" class="transcript-row" data-start="${Number(unit.time_span?.[0] || 0)}" data-transcript-id="${esc(unit.observed_id)}"><span>${time(unit.time_span?.[0])}</span><p>${esc(unit.text)}</p></button>`).join("");
-  const signals = `<section class="signal-summary"><div class="signal-summary-heading"><strong>当前画面与表达信号</strong><span>随播放同步更新</span></div><div class="playback-signal-grid"><div><b>声音与节奏</b><span id="case-voice-now">等待定位</span></div><div><b>表情可观察特征</b><span id="case-visual-face">等待定位</span></div><div><b>动作与手势</b><span id="case-visual-gesture">等待定位</span></div></div><div class="evidence-dimensions"><div><b>内容</b><span>重点进度与必要命题覆盖</span></div><div><b>语音</b><span>语速、停顿、响度与音高</span></div><div class="${data.visual_observations?.observations?.length ? "" : "unavailable"}"><b>视觉模型</b><span>${esc(visualPermissionMessage(data))}</span></div></div><p>表情与姿态只描述可见动作，表达效果请结合原视频复核。</p></section>`;
+  const signals = `<section class="signal-summary"><div class="signal-summary-heading"><strong>当前画面与表达信号</strong><span>随播放同步更新</span></div><div class="playback-signal-grid"><div><b>声音与节奏</b><span id="case-voice-now">等待定位</span></div><div><b>表情可观察特征</b><span id="case-visual-face">等待定位</span></div><div><b>动作与手势</b><span id="case-visual-gesture">等待定位</span></div></div><div class="evidence-dimensions"><div><b>内容</b><span>重点进度与必要命题覆盖</span></div><div><b>语音</b><span>语速、停顿、响度与音高</span></div><div class="${data.visual_observations?.observations?.length ? "" : "unavailable"}"><b>视觉模型</b><span>${esc(visualPermissionMessage(data))}</span></div></div><p>可见动作与语境适配分别展示；适配结果为带证据的规则候选，可在观点卡片中复核。</p></section>`;
   document.querySelector("#detail-column").innerHTML = `
     <section class="detail-header" id="detail-header"><div class="detail-title-row"><div class="speech-title"><p class="eyebrow">案例回放 <span>/</span> SPEECH ${String(state.cases.findIndex(c=>c.case_id === data.case_id)+1).padStart(2,"0")}</p><h2>${esc(title)}</h2><p class="detail-subtitle"><span>◷ ${time(caseDuration(data))}</span><span>${decisions.length} 个核心观点</span><span>${provisional ? "重点待人工确认" : "核心观点已确认"}</span></p></div><a class="report-link" href="${esc(data.report_url || "#")}" target="_blank" rel="noreferrer">查看报告 ↗</a></div>${detailSummary}</section>
     <div class="case-review-grid">
@@ -580,13 +590,20 @@ function renderDetail(data) {
           <div class="timeline-panel"><div class="timeline-header"><h3>表达时间轴</h3><span class="timeline-legend"><i></i>已定位表达 <i></i>当前观点</span></div>${renderTimeline(data)}</div>${chapterStrip}
         </section>
         <section class="playback-focus panel"><div class="focus-top"><span class="live-led"></span><span id="case-play-state">回放准备就绪</span><span id="case-point-progress">重点 — / ${decisions.length}</span><span id="case-play-time">00:00</span></div><h3 id="case-current-title">选择一个观点开始回看</h3><p id="case-current-copy">播放后同步显示当前观点及其离线判定。</p><div class="focus-footer"><span id="case-current-verdict">等待播放</span><span id="case-current-coverage">—</span></div><details class="coaching-hint"><summary>表达复盘建议</summary><span id="case-current-hint">播放或选择观点后显示建议</span></details></section>
+        <section class="case-context-panel panel"><div class="coach-panel-head"><div><p class="eyebrow">EXPRESSION IN CONTEXT</p><h3>此刻的表情与动作</h3></div><span class="mini-badge">语境适配初筛</span></div><div id="case-context-fit">${TalkEvalFit.card(null)}</div></section>
         <section class="insight-panel panel"><div class="insight-tabs" role="tablist" aria-label="回放辅助信息"><button type="button" id="tab-notes" role="tab" aria-selected="true" aria-controls="panel-notes" data-insight-tab="notes">图解笔记</button><button type="button" id="tab-map" role="tab" aria-selected="false" aria-controls="panel-map" data-insight-tab="map">观点导图</button><button type="button" id="tab-transcript" role="tab" aria-selected="false" aria-controls="panel-transcript" data-insight-tab="transcript">同步转写 <span>${data.expression_map?.units?.length || 0}</span></button><button type="button" id="tab-signals" role="tab" aria-selected="false" aria-controls="panel-signals" data-insight-tab="signals">声音与画面</button><button type="button" id="tab-overview" role="tab" aria-selected="false" aria-controls="panel-overview" data-insight-tab="overview">全片概览</button></div><div role="tabpanel" id="panel-notes" aria-labelledby="tab-notes" data-insight-panel="notes">${imagePanel("notes")}</div><div role="tabpanel" id="panel-map" aria-labelledby="tab-map" data-insight-panel="map" hidden>${imagePanel("map")}</div><div role="tabpanel" id="panel-transcript" hidden aria-labelledby="tab-transcript" data-insight-panel="transcript"><div class="transcript-caption">点击任意语句，回到视频中的那一刻。<span>时间 / 转写内容</span></div><div class="transcript-list">${transcript || '<p class="loading-card">暂无转写内容</p>'}</div></div><div role="tabpanel" id="panel-signals" aria-labelledby="tab-signals" data-insight-panel="signals" hidden>${signals}</div><div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" data-insight-panel="overview" hidden>${fullVideoOverview(data)}</div></section>
         <details class="provenance-panel panel"><summary>分析来源与数据说明<span>⌄</span></summary><div class="detail-badges">${badges}</div><p>${esc(sourceReviewDetail(metadata))}${metadata.can_evaluate_original_intent === false ? "。本案例使用参考材料或演讲后转写稿生成代理重点，不代表演讲者原始意图。" : ""}</p><details class="raw-panel"><summary>查看原始 JSON</summary><pre>${esc(JSON.stringify(data.alignment,null,2))}</pre></details></details>
       </section>
-      <section class="case-analysis-column"><section class="decisions-panel panel"><div class="panel-heading"><div><p class="eyebrow">CORE POINTS</p><h3>重点传达到位了吗？</h3></div><span class="case-count">${decisions.length}</span></div><div class="review-tools"><span>逐条回看 · 核对表达证据</span><button class="outline-button" id="export-annotations" type="button">↓ 导出标注</button></div><div class="review-note"><span>i</span><p>机器判定为初筛结果，点击画面回看；展开卡片核对完整证据与人工标注。</p></div><div class="decision-list">${cards || '<p class="loading-card">没有判定结果</p>'}</div><div class="review-bottom"><span id="annotation-status">已有人工标注 ${reviewed}/${decisions.length}</span><span>保存于当前浏览器</span></div></section></section>
+      <section class="case-analysis-column"><section class="decisions-panel panel"><div class="panel-heading"><div><p class="eyebrow">CORE POINTS</p><h3>重点传达到位了吗？</h3></div><span class="case-count">${decisions.length}</span></div><div class="review-tools"><span>逐条回看 · 核对表达证据</span><button class="outline-button" id="export-context-fit" type="button">↓ 语境复核</button><button class="outline-button" id="export-annotations" type="button">↓ 导出标注</button></div><div class="review-note"><span>i</span><p>机器判定为初筛结果，点击画面回看；展开卡片核对完整证据与人工标注。</p></div><div class="decision-list">${cards || '<p class="loading-card">没有判定结果</p>'}</div><div class="review-bottom"><span id="annotation-status">已有人工标注 ${reviewed}/${decisions.length}</span><span>保存于当前浏览器</span></div></section></section>
     </div>`;
   state.transcriptRows = new Map([...document.querySelectorAll(".transcript-row")].map(row => [row.dataset.transcriptId, row]));
   state.activeTranscriptRow = null;
+  document.querySelector("#detail-column").onclick = event => {
+    const seek = event.target.closest("[data-fit-seek]");
+    if (!seek) return;
+    event.preventDefault();
+    selectVideoTime(seek.dataset.fitSeek); updateCasePlayback(data, Number(seek.dataset.fitSeek));
+  };
   document.querySelectorAll("[data-preview-image]").forEach(button => button.addEventListener("click", () => {
     const dialog = document.querySelector("#evidence-lightbox");
     document.querySelector("#lightbox-image").src = button.dataset.previewImage;
@@ -626,6 +643,12 @@ function renderDetail(data) {
     document.querySelector("#annotation-status").textContent = `已有人工标注 ${count}/${decisions.length}`;
     document.querySelector("#detail-header .detail-summary div:last-child strong").innerHTML = `${count}<small> / ${decisions.length}</small>`;
   }));
+  document.querySelector("#export-context-fit").addEventListener("click", () => {
+    const payload = { schema_version: "talkeval_context_fit_v1", case_id: data.case_id, algorithm_version: TalkEvalFit.VERSION, configuration: TalkEvalFit.CONFIG, results: decisions.map(decision => caseFit(data, decision)), interpretation: "规则候选，待人工复核；未经过标注集校准" };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" }));
+    const link = document.createElement("a"); link.href = url; link.download = `${data.case_id}-context-fit.json`; link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
   document.querySelector("#export-annotations").addEventListener("click", () => exportCaseAnnotations(data));
   const caseVideo = document.querySelector("#case-video");
   if (caseVideo) {
@@ -722,6 +745,12 @@ function updateCasePlayback(data, seconds) {
     }
   }
   updateLiveVisualEvidence(data, current);
+  const fitNode = document.querySelector("#case-context-fit");
+  const fitKey = currentDecision?.beat_id || "none";
+  if (fitNode && fitNode.dataset.beatId !== fitKey) {
+    fitNode.dataset.beatId = fitKey;
+    fitNode.innerHTML = currentDecision ? TalkEvalFit.card(caseFit(data, currentDecision), { compact: true }) : '<div class="fit-empty"><span class="fit-empty-icon" aria-hidden="true">◌</span><b>等待对应观点的表达片段</b><p>点击上方关键帧或右侧观点回看。只有语句与画面时间对应时，才给出适配候选。</p></div>';
+  }
   const transcriptUnit = (data.expression_map?.units || []).find(unit => unit.time_span && current >= unit.time_span[0] && current < unit.time_span[1]);
   const transcriptRow = transcriptUnit ? state.transcriptRows?.get(transcriptUnit.observed_id) : null;
   if (transcriptRow !== state.activeTranscriptRow) {

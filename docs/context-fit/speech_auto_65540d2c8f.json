@@ -1,0 +1,1184 @@
+{
+  "schema_version": "talkeval_context_fit_v1",
+  "case_id": "speech_auto_65540d2c8f",
+  "algorithm_version": "context-rules-2026.10.15-v1",
+  "configuration": {
+    "minSamples": 3,
+    "minCoverage": 0.6,
+    "smile": 0.5,
+    "minSmileSeconds": 1.2,
+    "maxTimingUncertainty": 2,
+    "motionSpeed": 0.65
+  },
+  "results": [
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        344.37,
+        350.91
+      ],
+      "point_id": "b01",
+      "point_text": "而且他的这个研究第一次证明了，即使最恶性的癌症也可以用一种化学药品来治疗，在此之前是几乎没有用药物来治疗癌症的，只有手术或者放疗，所以这是一个颠覆性的研究",
+      "text": "即使最恶性的癌症 也可以用一种化学药品来治疗 在此之前是没有任何的药物",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 6,
+        "face_samples": 1,
+        "comparable_hand_samples": 0,
+        "coverage": 0.917,
+        "face_coverage": 0.153,
+        "hand_coverage": 0,
+        "sampling_interval_seconds": 1,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b01",
+        "target_meaning": "而且他的这个研究第一次证明了，即使最恶性的癌症也可以用一种化学药品来治疗，在此之前是几乎没有用药物来治疗癌症的，只有手术或者放疗，所以这是一个颠覆性的研究",
+        "required_claims": [
+          "而且他的这个研究第一次证明了，即使最恶性的癌症也可以用一种化学药品来治疗，在此之前是几乎没有用药物来治疗癌症的，只有手术或者放疗，所以这是一个颠覆性的研究"
+        ],
+        "time_span": [
+          344.37,
+          350.91
+        ],
+        "verdict": "clear_text_overlap",
+        "label": "文字线索关联较明显",
+        "match_score": 0.3798,
+        "lexical_overlap_score": 0.3798,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "而且他的这个研究第一次证明了，即使最恶性的癌症也可以用一种化学药品来治疗，在此之前是几乎没有用药物来治疗癌症的，只有手术或者放疗，所以这是一个颠覆性的研究",
+        "best_frame_timestamp": 346.586,
+        "best_frame_text": "“即使最恶性的癌症，也可以用一种化学药品治疗！ · IXIA · YOUTH · IXI人",
+        "best_frame_confidence": 0.933,
+        "frames": [
+          {
+            "timestamp": 342.37,
+            "text_lines": [
+              {
+                "text": "“即使最恶性的癌症，也可以用一种化学药品治疗！",
+                "confidence": 0.996,
+                "x": 0.485,
+                "y": 0.347
+              },
+              {
+                "text": "YIXI",
+                "confidence": 0.996,
+                "x": 0.806,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 1,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "牌",
+                "confidence": 0.653,
+                "x": 0.853,
+                "y": 0.689
+              },
+              {
+                "text": "IXI人",
+                "confidence": 0.819,
+                "x": 0.141,
+                "y": 0.747
+              }
+            ],
+            "extracted_text": "“即使最恶性的癌症，也可以用一种化学药品治疗！ · YIXI · YOUTH · 牌 · IXI人",
+            "mean_ocr_confidence": 0.893,
+            "match_score": 0.3688,
+            "lexical_overlap_score": 0.3688,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 344.478,
+            "text_lines": [
+              {
+                "text": "“即使最恶性的癌症，也可以用一种化学药品治疗！",
+                "confidence": 0.995,
+                "x": 0.485,
+                "y": 0.347
+              },
+              {
+                "text": "YIXI",
+                "confidence": 0.997,
+                "x": 0.806,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.999,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "牌",
+                "confidence": 0.64,
+                "x": 0.853,
+                "y": 0.689
+              },
+              {
+                "text": "IXI人",
+                "confidence": 0.79,
+                "x": 0.14,
+                "y": 0.747
+              }
+            ],
+            "extracted_text": "“即使最恶性的癌症，也可以用一种化学药品治疗！ · YIXI · YOUTH · 牌 · IXI人",
+            "mean_ocr_confidence": 0.884,
+            "match_score": 0.3688,
+            "lexical_overlap_score": 0.3688,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 346.586,
+            "text_lines": [
+              {
+                "text": "“即使最恶性的癌症，也可以用一种化学药品治疗！",
+                "confidence": 0.981,
+                "x": 0.486,
+                "y": 0.347
+              },
+              {
+                "text": "IXIA",
+                "confidence": 0.913,
+                "x": 0.807,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 1,
+                "x": 0.814,
+                "y": 0.64
+              },
+              {
+                "text": "IXI人",
+                "confidence": 0.837,
+                "x": 0.141,
+                "y": 0.747
+              }
+            ],
+            "extracted_text": "“即使最恶性的癌症，也可以用一种化学药品治疗！ · IXIA · YOUTH · IXI人",
+            "mean_ocr_confidence": 0.933,
+            "match_score": 0.3798,
+            "lexical_overlap_score": 0.3798,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 348.694,
+            "text_lines": [
+              {
+                "text": "“即使最恶性的癌症，也可以用一种化学药品治疗！",
+                "confidence": 0.997,
+                "x": 0.487,
+                "y": 0.347
+              },
+              {
+                "text": "YIXI",
+                "confidence": 0.997,
+                "x": 0.806,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 1,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "牌",
+                "confidence": 0.524,
+                "x": 0.853,
+                "y": 0.688
+              },
+              {
+                "text": "IXI人",
+                "confidence": 0.727,
+                "x": 0.141,
+                "y": 0.748
+              }
+            ],
+            "extracted_text": "“即使最恶性的癌症，也可以用一种化学药品治疗！ · YIXI · YOUTH · 牌 · IXI人",
+            "mean_ocr_confidence": 0.849,
+            "match_score": 0.3688,
+            "lexical_overlap_score": 0.3688,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 350.802,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 352.91,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "“即使最恶性的癌症，也可以用一种化学药品治疗！ · YIXI · YOUTH · 牌 · IXI人\n“即使最恶性的癌症，也可以用一种化学药品治疗！ · YIXI · YOUTH · 牌 · IXI人\n“即使最恶性的癌症，也可以用一种化学药品治疗！ · IXIA · YOUTH · IXI人\n“即使最恶性的癌症，也可以用一种化学药品治疗！ · YIXI · YOUTH · 牌 · IXI人",
+        "review_hint": "页面文字与观点存在较明显的词句重合；请结合图表、图片和该页完整语境确认是否真正支撑观点。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        875.33,
+        880.99
+      ],
+      "point_id": "b02",
+      "point_text": "拉尔夫·斯坦曼作为一个顶尖的免疫学家和生物学家，他当然知道胰腺癌的凶险，所以他压根儿就没有想过坐等标准的治疗来获得几个月的存活期",
+      "text": "他压根就没有想过要 只等着标准的治疗 来给他几个月的存活期",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 5,
+        "face_samples": 5,
+        "comparable_hand_samples": 5,
+        "coverage": 0.883,
+        "face_coverage": 0.883,
+        "hand_coverage": 0.883,
+        "sampling_interval_seconds": 1,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "有可见手部变化，但现有证据尚不能确定其说明或强调功能。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": [
+          {
+            "id": "motion-876",
+            "kind": "motion",
+            "start": 876,
+            "end": 876,
+            "peak": 876,
+            "count": 1,
+            "magnitude": 0.064,
+            "duration": 0
+          },
+          {
+            "id": "motion-878",
+            "kind": "motion",
+            "start": 878,
+            "end": 880,
+            "peak": 879,
+            "count": 3,
+            "magnitude": 0.182,
+            "duration": 2
+          }
+        ]
+      },
+      "expression": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "面部可见，但当前语境没有足够证据要求某种特定表情。",
+        "suggestion": "结合完整语句回看；张口可能来自发音，不能单独作为表达效果。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-876",
+          "kind": "motion",
+          "start": 876,
+          "end": 876,
+          "peak": 876,
+          "count": 1,
+          "magnitude": 0.064,
+          "duration": 0
+        },
+        {
+          "id": "motion-878",
+          "kind": "motion",
+          "start": 878,
+          "end": 880,
+          "peak": 879,
+          "count": 3,
+          "magnitude": 0.182,
+          "duration": 2
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b02",
+        "target_meaning": "拉尔夫·斯坦曼作为一个顶尖的免疫学家和生物学家，他当然知道胰腺癌的凶险，所以他压根儿就没有想过坐等标准的治疗来获得几个月的存活期",
+        "required_claims": [
+          "拉尔夫·斯坦曼作为一个顶尖的免疫学家和生物学家，他当然知道胰腺癌的凶险，所以他压根儿就没有想过坐等标准的治疗来获得几个月的存活期"
+        ],
+        "time_span": [
+          875.33,
+          880.99
+        ],
+        "verdict": "no_readable_text",
+        "label": "未读到足够清晰的页面文字",
+        "match_score": 0,
+        "lexical_overlap_score": 0,
+        "concept_coverage": null,
+        "matched_concepts": [],
+        "matched_target": null,
+        "best_frame_timestamp": 873.33,
+        "best_frame_text": "",
+        "best_frame_confidence": null,
+        "frames": [
+          {
+            "timestamp": 873.33,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 875.745,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 878.16,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 880.575,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 882.99,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "",
+        "review_hint": "OCR 没有提取到可用文字；可能是图表页、画面遮挡或没有 PPT，暂不能据此判断是否配合观点。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        974.12,
+        978.88
+      ],
+      "point_id": "b03",
+      "point_text": "虽然斯坦曼没有等待标准的治疗，但是他除了尝试自己的新型癌症疗法以外，还尝试了另外7个科学家好朋友的7种创新疗法，所以他试了至少8种创新疗法",
+      "text": "他没有等待标准的治疗 但是他除了尝试自己的癌症疫苗以外",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 4,
+        "face_samples": 0,
+        "comparable_hand_samples": 2,
+        "coverage": 0.84,
+        "face_coverage": 0,
+        "hand_coverage": 0.42,
+        "sampling_interval_seconds": 1,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [],
+      "voice_windows": [
+        {
+          "span": [
+            974.12,
+            976.06
+          ],
+          "reliable": true,
+          "emphasis": true,
+          "basis": "句级响度高于本场基线（≥0.6σ）"
+        }
+      ],
+      "slide": {
+        "beat_id": "b03",
+        "target_meaning": "虽然斯坦曼没有等待标准的治疗，但是他除了尝试自己的新型癌症疗法以外，还尝试了另外7个科学家好朋友的7种创新疗法，所以他试了至少8种创新疗法",
+        "required_claims": [
+          "虽然斯坦曼没有等待标准的治疗，但是他除了尝试自己的新型癌症疗法以外，还尝试了另外7个科学家好朋友的7种创新疗法，所以他试了至少8种创新疗法"
+        ],
+        "time_span": [
+          974.12,
+          978.88
+        ],
+        "verdict": "partial_text_overlap",
+        "label": "有部分文字线索关联",
+        "match_score": 0.1679,
+        "lexical_overlap_score": 0.1679,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "虽然斯坦曼没有等待标准的治疗，但是他除了尝试自己的新型癌症疗法以外，还尝试了另外7个科学家好朋友的7种创新疗法，所以他试了至少8种创新疗法",
+        "best_frame_timestamp": 972.12,
+        "best_frame_text": "1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3. 活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YIXI · YOUTH · !X!人",
+        "best_frame_confidence": 0.987,
+        "frames": [
+          {
+            "timestamp": 972.12,
+            "text_lines": [
+              {
+                "text": "1. 2007年，诊断晚期胰腺癌（癌王）",
+                "confidence": 0.971,
+                "x": 0.584,
+                "y": 0.228
+              },
+              {
+                "text": "2. 自己当小白鼠，尝试新型癌症疗法",
+                "confidence": 0.986,
+                "x": 0.585,
+                "y": 0.285
+              },
+              {
+                "text": "3. 活了4年半，生活质量很高，远超预期",
+                "confidence": 0.986,
+                "x": 0.598,
+                "y": 0.344
+              },
+              {
+                "text": "故意隐藏的信息",
+                "confidence": 1,
+                "x": 0.501,
+                "y": 0.459
+              },
+              {
+                "text": "4. 除了自己的癌症疗法，他还尝试了至少7种",
+                "confidence": 0.984,
+                "x": 0.616,
+                "y": 0.516
+              },
+              {
+                "text": "其它新疗法",
+                "confidence": 1,
+                "x": 0.486,
+                "y": 0.564
+              },
+              {
+                "text": "YIXI",
+                "confidence": 0.981,
+                "x": 0.807,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.999,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.973,
+                "x": 0.14,
+                "y": 0.749
+              }
+            ],
+            "extracted_text": "1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3. 活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YIXI · YOUTH · !X!人",
+            "mean_ocr_confidence": 0.987,
+            "match_score": 0.1679,
+            "lexical_overlap_score": 0.1679,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 974.31,
+            "text_lines": [
+              {
+                "text": "1. 2007年，诊断晚期胰腺癌（癌王）",
+                "confidence": 0.969,
+                "x": 0.584,
+                "y": 0.228
+              },
+              {
+                "text": "2. 自己当小白鼠，尝试新型癌症疗法",
+                "confidence": 0.985,
+                "x": 0.585,
+                "y": 0.285
+              },
+              {
+                "text": "3.活了4年半，生活质量很高，远超预期",
+                "confidence": 0.999,
+                "x": 0.598,
+                "y": 0.344
+              },
+              {
+                "text": "故意隐藏的信息",
+                "confidence": 1,
+                "x": 0.501,
+                "y": 0.458
+              },
+              {
+                "text": "4. 除了自己的癌症疗法，他还尝试了至少7种",
+                "confidence": 0.986,
+                "x": 0.616,
+                "y": 0.516
+              },
+              {
+                "text": "其它新疗法",
+                "confidence": 1,
+                "x": 0.486,
+                "y": 0.564
+              },
+              {
+                "text": "YIXI",
+                "confidence": 0.996,
+                "x": 0.807,
+                "y": 0.623
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.788,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.976,
+                "x": 0.14,
+                "y": 0.748
+              }
+            ],
+            "extracted_text": "1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3.活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YIXI · YOUTH · !X!人",
+            "mean_ocr_confidence": 0.967,
+            "match_score": 0.1679,
+            "lexical_overlap_score": 0.1679,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 976.5,
+            "text_lines": [
+              {
+                "text": "1. 2007年，诊断晚期胰腺癌（癌王）",
+                "confidence": 0.973,
+                "x": 0.583,
+                "y": 0.226
+              },
+              {
+                "text": "2. 自己当小白鼠，尝试新型癌症疗法",
+                "confidence": 0.988,
+                "x": 0.585,
+                "y": 0.285
+              },
+              {
+                "text": "3. 活了4年半，生活质量很高，远超预期",
+                "confidence": 0.973,
+                "x": 0.598,
+                "y": 0.344
+              },
+              {
+                "text": "故意隐藏的信息",
+                "confidence": 1,
+                "x": 0.501,
+                "y": 0.458
+              },
+              {
+                "text": "4. 除了自己的癌症疗法，他还尝试了至少7种",
+                "confidence": 0.975,
+                "x": 0.616,
+                "y": 0.516
+              },
+              {
+                "text": "其它新疗法",
+                "confidence": 1,
+                "x": 0.486,
+                "y": 0.564
+              },
+              {
+                "text": "YXIX",
+                "confidence": 0.772,
+                "x": 0.807,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.999,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "舞",
+                "confidence": 0.503,
+                "x": 0.853,
+                "y": 0.69
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.972,
+                "x": 0.14,
+                "y": 0.748
+              }
+            ],
+            "extracted_text": "1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3. 活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YXIX · YOUTH · 舞 · !X!人",
+            "mean_ocr_confidence": 0.915,
+            "match_score": 0.1666,
+            "lexical_overlap_score": 0.1666,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 978.69,
+            "text_lines": [
+              {
+                "text": "1. 2007年，诊断晚期胰腺癌（癌王）",
+                "confidence": 0.973,
+                "x": 0.583,
+                "y": 0.226
+              },
+              {
+                "text": "2. 自己当小白鼠，尝试新型癌症疗法",
+                "confidence": 0.988,
+                "x": 0.585,
+                "y": 0.285
+              },
+              {
+                "text": "3. 活了4年半，生活质量很高，远超预期",
+                "confidence": 0.985,
+                "x": 0.598,
+                "y": 0.344
+              },
+              {
+                "text": "故意隐藏的信息",
+                "confidence": 1,
+                "x": 0.501,
+                "y": 0.458
+              },
+              {
+                "text": "4. 除了自己的癌症疗法，他还尝试了至少7种",
+                "confidence": 0.981,
+                "x": 0.616,
+                "y": 0.516
+              },
+              {
+                "text": "其它新疗法",
+                "confidence": 1,
+                "x": 0.487,
+                "y": 0.564
+              },
+              {
+                "text": "YIXI",
+                "confidence": 0.995,
+                "x": 0.807,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.999,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.97,
+                "x": 0.14,
+                "y": 0.748
+              }
+            ],
+            "extracted_text": "1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3. 活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YIXI · YOUTH · !X!人",
+            "mean_ocr_confidence": 0.988,
+            "match_score": 0.1679,
+            "lexical_overlap_score": 0.1679,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 980.88,
+            "text_lines": [
+              {
+                "text": "1. 2007年，诊断晚期胰腺癌（癌王）",
+                "confidence": 0.976,
+                "x": 0.583,
+                "y": 0.226
+              },
+              {
+                "text": "2. 自己当小白鼠，尝试新型癌症疗法",
+                "confidence": 0.988,
+                "x": 0.585,
+                "y": 0.285
+              },
+              {
+                "text": "3. 活了4年半，生活质量很高，远超预期",
+                "confidence": 0.984,
+                "x": 0.598,
+                "y": 0.344
+              },
+              {
+                "text": "故意隐藏的信息",
+                "confidence": 1,
+                "x": 0.501,
+                "y": 0.458
+              },
+              {
+                "text": "4. 除了自己的癌症疗法，他还尝试了至少7种",
+                "confidence": 0.982,
+                "x": 0.616,
+                "y": 0.516
+              },
+              {
+                "text": "其它新疗法",
+                "confidence": 1,
+                "x": 0.486,
+                "y": 0.564
+              },
+              {
+                "text": "YIXI",
+                "confidence": 0.995,
+                "x": 0.807,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 1,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "舞",
+                "confidence": 0.506,
+                "x": 0.853,
+                "y": 0.69
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.969,
+                "x": 0.14,
+                "y": 0.748
+              }
+            ],
+            "extracted_text": "1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3. 活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YIXI · YOUTH · 舞 · !X!人",
+            "mean_ocr_confidence": 0.94,
+            "match_score": 0.1666,
+            "lexical_overlap_score": 0.1666,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3. 活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YIXI · YOUTH · !X!人\n1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3.活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YIXI · YOUTH · !X!人\n1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3. 活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YXIX · YOUTH · 舞 · !X!人\n1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3. 活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YIXI · YOUTH · !X!人\n1. 2007年，诊断晚期胰腺癌（癌王） · 2. 自己当小白鼠，尝试新型癌症疗法 · 3. 活了4年半，生活质量很高，远超预期 · 故意隐藏的信息 · 4. 除了自己的癌症疗法，他还尝试了至少7种 · 其它新疗法 · YIXI · YOUTH · 舞 · !X!人",
+        "review_hint": "页面只出现部分相关词句；需人工核对页面是在解释、举例还是仅作背景。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        1304.64,
+        1309.88
+      ],
+      "point_id": "b04",
+      "point_text": "所以不管以前的民间老中医是怎么想到把三个东西拼在一起治疗肿瘤的，事实证明不需要那么多，砒霜就够了",
+      "text": "所以不管以前的民间的老中医 怎么想到把三个东西 拼在一起治疗肿瘤的",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 5,
+        "face_samples": 0,
+        "comparable_hand_samples": 0,
+        "coverage": 0.927,
+        "face_coverage": 0,
+        "hand_coverage": 0,
+        "sampling_interval_seconds": 1,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [],
+      "voice_windows": [
+        {
+          "span": [
+            1304.64,
+            1306.98
+          ],
+          "reliable": true,
+          "emphasis": true,
+          "basis": "句级响度高于本场基线（≥0.6σ）"
+        },
+        {
+          "span": [
+            1306.98,
+            1308.56
+          ],
+          "reliable": true,
+          "emphasis": true,
+          "basis": "句级响度高于本场基线（≥0.6σ）"
+        }
+      ],
+      "slide": {
+        "beat_id": "b04",
+        "target_meaning": "所以不管以前的民间老中医是怎么想到把三个东西拼在一起治疗肿瘤的，事实证明不需要那么多，砒霜就够了",
+        "required_claims": [
+          "所以不管以前的民间老中医是怎么想到把三个东西拼在一起治疗肿瘤的，事实证明不需要那么多，砒霜就够了"
+        ],
+        "time_span": [
+          1304.64,
+          1309.88
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0.0464,
+        "lexical_overlap_score": 0.0464,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "所以不管以前的民间老中医是怎么想到把三个东西拼在一起治疗肿瘤的，事实证明不需要那么多，砒霜就够了",
+        "best_frame_timestamp": 1302.64,
+        "best_frame_text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · IXIA · YOUTH · !X!人",
+        "best_frame_confidence": 0.927,
+        "frames": [
+          {
+            "timestamp": 1302.64,
+            "text_lines": [
+              {
+                "text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症",
+                "confidence": 0.988,
+                "x": 0.496,
+                "y": 0.188
+              },
+              {
+                "text": "张亭栋、韩太云等",
+                "confidence": 1,
+                "x": 0.34,
+                "y": 0.549
+              },
+              {
+                "text": "IXIA",
+                "confidence": 0.79,
+                "x": 0.806,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 1,
+                "x": 0.814,
+                "y": 0.64
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.859,
+                "x": 0.141,
+                "y": 0.749
+              }
+            ],
+            "extracted_text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · IXIA · YOUTH · !X!人",
+            "mean_ocr_confidence": 0.927,
+            "match_score": 0.0464,
+            "lexical_overlap_score": 0.0464,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1304.95,
+            "text_lines": [
+              {
+                "text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症",
+                "confidence": 0.988,
+                "x": 0.496,
+                "y": 0.188
+              },
+              {
+                "text": "张亭栋、韩太云等",
+                "confidence": 1,
+                "x": 0.34,
+                "y": 0.549
+              },
+              {
+                "text": "YXIXI",
+                "confidence": 0.802,
+                "x": 0.807,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.999,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.905,
+                "x": 0.14,
+                "y": 0.749
+              }
+            ],
+            "extracted_text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · YXIXI · YOUTH · !X!人",
+            "mean_ocr_confidence": 0.939,
+            "match_score": 0.0455,
+            "lexical_overlap_score": 0.0455,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1307.26,
+            "text_lines": [
+              {
+                "text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症",
+                "confidence": 0.986,
+                "x": 0.496,
+                "y": 0.188
+              },
+              {
+                "text": "张亭栋、韩太云等",
+                "confidence": 1,
+                "x": 0.34,
+                "y": 0.549
+              },
+              {
+                "text": "YIXI",
+                "confidence": 0.986,
+                "x": 0.806,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 0.795,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.975,
+                "x": 0.14,
+                "y": 0.747
+              }
+            ],
+            "extracted_text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · YIXI · YOUTH · !X!人",
+            "mean_ocr_confidence": 0.948,
+            "match_score": 0.0463,
+            "lexical_overlap_score": 0.0463,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1309.57,
+            "text_lines": [
+              {
+                "text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症",
+                "confidence": 0.985,
+                "x": 0.496,
+                "y": 0.188
+              },
+              {
+                "text": "张亭栋、韩太云等",
+                "confidence": 1,
+                "x": 0.34,
+                "y": 0.549
+              },
+              {
+                "text": "YIXI",
+                "confidence": 0.915,
+                "x": 0.806,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 1,
+                "x": 0.814,
+                "y": 0.64
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.818,
+                "x": 0.14,
+                "y": 0.747
+              }
+            ],
+            "extracted_text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · YIXI · YOUTH · !X!人",
+            "mean_ocr_confidence": 0.944,
+            "match_score": 0.0463,
+            "lexical_overlap_score": 0.0463,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1311.88,
+            "text_lines": [
+              {
+                "text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症",
+                "confidence": 0.987,
+                "x": 0.496,
+                "y": 0.188
+              },
+              {
+                "text": "张亭栋、韩太云等",
+                "confidence": 1,
+                "x": 0.34,
+                "y": 0.549
+              },
+              {
+                "text": "YIXI",
+                "confidence": 0.976,
+                "x": 0.806,
+                "y": 0.624
+              },
+              {
+                "text": "YOUTH",
+                "confidence": 1,
+                "x": 0.814,
+                "y": 0.639
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.879,
+                "x": 0.14,
+                "y": 0.747
+              }
+            ],
+            "extracted_text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · YIXI · YOUTH · !X!人",
+            "mean_ocr_confidence": 0.968,
+            "match_score": 0.0463,
+            "lexical_overlap_score": 0.0463,
+            "concept_coverage": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · IXIA · YOUTH · !X!人\n70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · YXIXI · YOUTH · !X!人\n70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · YIXI · YOUTH · !X!人\n70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · YIXI · YOUTH · !X!人\n70年代，黑龙江老中医秘方：砒霜+汞+蟾酥复方治疗癌症 · 张亭栋、韩太云等 · YIXI · YOUTH · !X!人",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    }
+  ],
+  "interpretation": "Rule candidates for human review; no calibrated accuracy claim."
+}

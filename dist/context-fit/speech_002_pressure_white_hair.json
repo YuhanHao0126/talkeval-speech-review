@@ -1,0 +1,1474 @@
+{
+  "schema_version": "talkeval_context_fit_v1",
+  "case_id": "speech_002_pressure_white_hair",
+  "algorithm_version": "context-rules-2026.10.15-v1",
+  "configuration": {
+    "minSamples": 3,
+    "minCoverage": 0.6,
+    "smile": 0.5,
+    "minSmileSeconds": 1.2,
+    "maxTimingUncertainty": 2,
+    "motionSpeed": 0.65
+  },
+  "results": [
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        125.5,
+        132.4
+      ],
+      "point_id": "b01",
+      "point_text": "除去遗传因素，环境和我们自身的一些变化都对皮肤健康有着深远的影响，比如前一天晚上有没有熬夜，睡得好不好，最近吃的东西是不是太油，心情怎么样等等",
+      "text": "比如说我们前天晚上有没有熬夜睡得好不好 然后最近吃的东西是不是太油",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": true
+      },
+      "quality": {
+        "observations": 4,
+        "face_samples": 0,
+        "comparable_hand_samples": 0,
+        "coverage": 1,
+        "face_coverage": 0,
+        "hand_coverage": 0,
+        "sampling_interval_seconds": 2,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b01",
+        "target_meaning": "除去遗传因素，环境和我们自身的一些变化都对皮肤健康有着深远的影响，比如前一天晚上有没有熬夜，睡得好不好，最近吃的东西是不是太油，心情怎么样等等",
+        "required_claims": [
+          "除去遗传因素，环境和我们自身的一些变化都对皮肤健康有着深远的影响，比如前一天晚上有没有熬夜，睡得好不好，最近吃的东西是不是太油，心情怎么样等等"
+        ],
+        "time_span": [
+          125.5,
+          132.4
+        ],
+        "verdict": "partial_text_overlap",
+        "label": "有部分文字线索关联",
+        "match_score": 0.2715,
+        "lexical_overlap_score": 0.0845,
+        "concept_coverage": 0.5,
+        "matched_concepts": [
+          "皮肤与生活习惯"
+        ],
+        "matched_target": "除去遗传因素，环境和我们自身的一些变化都对皮肤健康有着深远的影响，比如前一天晚上有没有熬夜，睡得好不好，最近吃的东西是不是太油，心情怎么样等等",
+        "best_frame_timestamp": 130.04,
+        "best_frame_text": "有哪些因素会影响皮肤健康？ · Skin · My Top · Foods · 旧!X!A",
+        "best_frame_confidence": 0.906,
+        "frames": [
+          {
+            "timestamp": 123.5,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 125.68,
+            "text_lines": [
+              {
+                "text": "有哪些因素会影响皮肤健康？",
+                "confidence": 0.999,
+                "x": 0.682,
+                "y": 0.291
+              },
+              {
+                "text": "eip",
+                "confidence": 0.694,
+                "x": 0.383,
+                "y": 0.387
+              },
+              {
+                "text": "Skin",
+                "confidence": 0.993,
+                "x": 0.708,
+                "y": 0.435
+              },
+              {
+                "text": "My Top",
+                "confidence": 0.986,
+                "x": 0.676,
+                "y": 0.442
+              },
+              {
+                "text": "Foods",
+                "confidence": 1,
+                "x": 0.688,
+                "y": 0.464
+              },
+              {
+                "text": "席",
+                "confidence": 0.996,
+                "x": 0.946,
+                "y": 0.642
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.899,
+                "y": 0.656
+              }
+            ],
+            "extracted_text": "有哪些因素会影响皮肤健康？ · eip · Skin · My Top · Foods · 席 · BUICK",
+            "mean_ocr_confidence": 0.953,
+            "match_score": 0.2647,
+            "lexical_overlap_score": 0.0722,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "皮肤与生活习惯"
+            ],
+            "matched_concepts": [
+              "皮肤与生活习惯"
+            ]
+          },
+          {
+            "timestamp": 127.86,
+            "text_lines": [
+              {
+                "text": "有哪些因素会影响皮肤健康？",
+                "confidence": 0.999,
+                "x": 0.684,
+                "y": 0.297
+              },
+              {
+                "text": "My Top Skin",
+                "confidence": 0.994,
+                "x": 0.689,
+                "y": 0.442
+              },
+              {
+                "text": "Foods",
+                "confidence": 1,
+                "x": 0.688,
+                "y": 0.467
+              },
+              {
+                "text": "YiXi",
+                "confidence": 0.957,
+                "x": 0.927,
+                "y": 0.56
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.949,
+                "y": 0.642
+              }
+            ],
+            "extracted_text": "有哪些因素会影响皮肤健康？ · My Top Skin · Foods · YiXi · 席",
+            "mean_ocr_confidence": 0.99,
+            "match_score": 0.2687,
+            "lexical_overlap_score": 0.0795,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "皮肤与生活习惯"
+            ],
+            "matched_concepts": [
+              "皮肤与生活习惯"
+            ]
+          },
+          {
+            "timestamp": 130.04,
+            "text_lines": [
+              {
+                "text": "有哪些因素会影响皮肤健康？",
+                "confidence": 0.998,
+                "x": 0.682,
+                "y": 0.302
+              },
+              {
+                "text": "Skin",
+                "confidence": 0.999,
+                "x": 0.711,
+                "y": 0.442
+              },
+              {
+                "text": "My Top",
+                "confidence": 0.975,
+                "x": 0.677,
+                "y": 0.447
+              },
+              {
+                "text": "Foods",
+                "confidence": 1,
+                "x": 0.688,
+                "y": 0.469
+              },
+              {
+                "text": "旧!X!A",
+                "confidence": 0.557,
+                "x": 0.876,
+                "y": 0.652
+              }
+            ],
+            "extracted_text": "有哪些因素会影响皮肤健康？ · Skin · My Top · Foods · 旧!X!A",
+            "mean_ocr_confidence": 0.906,
+            "match_score": 0.2715,
+            "lexical_overlap_score": 0.0845,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "皮肤与生活习惯"
+            ],
+            "matched_concepts": [
+              "皮肤与生活习惯"
+            ]
+          },
+          {
+            "timestamp": 132.22,
+            "text_lines": [
+              {
+                "text": "有哪些因素会影响皮肤健康？",
+                "confidence": 0.999,
+                "x": 0.688,
+                "y": 0.306
+              },
+              {
+                "text": "My Top Skin",
+                "confidence": 0.99,
+                "x": 0.695,
+                "y": 0.447
+              },
+              {
+                "text": "Foods",
+                "confidence": 1,
+                "x": 0.695,
+                "y": 0.472
+              },
+              {
+                "text": "YXG",
+                "confidence": 0.72,
+                "x": 0.936,
+                "y": 0.563
+              },
+              {
+                "text": "YiXi BUIC",
+                "confidence": 0.954,
+                "x": 0.896,
+                "y": 0.651
+              }
+            ],
+            "extracted_text": "有哪些因素会影响皮肤健康？ · My Top Skin · Foods · YXG · YiXi BUIC",
+            "mean_ocr_confidence": 0.933,
+            "match_score": 0.263,
+            "lexical_overlap_score": 0.069,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "皮肤与生活习惯"
+            ],
+            "matched_concepts": [
+              "皮肤与生活习惯"
+            ]
+          },
+          {
+            "timestamp": 134.4,
+            "text_lines": [
+              {
+                "text": "有哪些因素会影响皮肤健康？",
+                "confidence": 0.999,
+                "x": 0.684,
+                "y": 0.31
+              },
+              {
+                "text": "My Top Skin",
+                "confidence": 0.995,
+                "x": 0.692,
+                "y": 0.451
+              },
+              {
+                "text": "Foods",
+                "confidence": 0.999,
+                "x": 0.692,
+                "y": 0.476
+              },
+              {
+                "text": "YiXi BUICK",
+                "confidence": 0.957,
+                "x": 0.899,
+                "y": 0.652
+              }
+            ],
+            "extracted_text": "有哪些因素会影响皮肤健康？ · My Top Skin · Foods · YiXi BUICK",
+            "mean_ocr_confidence": 0.988,
+            "match_score": 0.2647,
+            "lexical_overlap_score": 0.0721,
+            "concept_coverage": 0.5,
+            "active_concepts": [
+              "皮肤与生活习惯"
+            ],
+            "matched_concepts": [
+              "皮肤与生活习惯"
+            ]
+          }
+        ],
+        "extracted_text": "有哪些因素会影响皮肤健康？ · eip · Skin · My Top · Foods · 席 · BUICK\n有哪些因素会影响皮肤健康？ · My Top Skin · Foods · YiXi · 席\n有哪些因素会影响皮肤健康？ · Skin · My Top · Foods · 旧!X!A\n有哪些因素会影响皮肤健康？ · My Top Skin · Foods · YXG · YiXi BUIC\n有哪些因素会影响皮肤健康？ · My Top Skin · Foods · YiXi BUICK",
+        "review_hint": "页面只出现部分相关词句；需人工核对页面是在解释、举例还是仅作背景。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "已排除画面变化候选附近的手部位移，避免把切镜当作动作。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        677.38,
+        682.94
+      ],
+      "point_id": "b02",
+      "point_text": "所以我们又做了一个实验，由于这些压力激素对小鼠的生存来说并不是必须的，我们用手术的方式就可以让它不再分泌这些激素，之后再给这只小鼠施加压力，看看在没有这种激素的情况下，它会不会产生白发",
+      "text": "包括这些激素 对小鼠的生存其实并不是必须的 我们可以用手术的手段",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": true
+      },
+      "quality": {
+        "observations": 3,
+        "face_samples": 2,
+        "comparable_hand_samples": 0,
+        "coverage": 1,
+        "face_coverage": 0.651,
+        "hand_coverage": 0,
+        "sampling_interval_seconds": 2,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b02",
+        "target_meaning": "所以我们又做了一个实验，由于这些压力激素对小鼠的生存来说并不是必须的，我们用手术的方式就可以让它不再分泌这些激素，之后再给这只小鼠施加压力，看看在没有这种激素的情况下，它会不会产生白发",
+        "required_claims": [
+          "所以我们又做了一个实验，由于这些压力激素对小鼠的生存来说并不是必须的，我们用手术的方式就可以让它不再分泌这些激素，之后再给这只小鼠施加压力，看看在没有这种激素的情况下，它会不会产生白发"
+        ],
+        "time_span": [
+          677.38,
+          682.94
+        ],
+        "verdict": "clear_text_overlap",
+        "label": "文字线索关联较明显",
+        "match_score": 0.4641,
+        "lexical_overlap_score": 0.0255,
+        "concept_coverage": 1,
+        "matched_concepts": [
+          "压力与心理状态",
+          "白发与压力实验"
+        ],
+        "matched_target": "所以我们又做了一个实验，由于这些压力激素对小鼠的生存来说并不是必须的，我们用手术的方式就可以让它不再分泌这些激素，之后再给这只小鼠施加压力，看看在没有这种激素的情况下，它会不会产生白发",
+        "best_frame_timestamp": 682.55,
+        "best_frame_text": "第二种可能－压力引起的肾上腺荷尔蒙 · 精神压力 · 肾上腺 · !X!人 · 席 · !X!X · BUICK · BUICK",
+        "best_frame_confidence": 0.946,
+        "frames": [
+          {
+            "timestamp": 675.38,
+            "text_lines": [
+              {
+                "text": "第二种可能－压力引起的肾上腺荷尔蒙",
+                "confidence": 0.989,
+                "x": 0.488,
+                "y": 0.193
+              },
+              {
+                "text": "精神压力",
+                "confidence": 0.999,
+                "x": 0.231,
+                "y": 0.349
+              },
+              {
+                "text": "肾上腺",
+                "confidence": 1,
+                "x": 0.475,
+                "y": 0.352
+              },
+              {
+                "text": "A",
+                "confidence": 0.897,
+                "x": 0.55,
+                "y": 0.364
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.793,
+                "x": 0.105,
+                "y": 0.697
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.911,
+                "y": 0.699
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.646,
+                "x": 0.832,
+                "y": 0.712
+              },
+              {
+                "text": "BUICK",
+                "confidence": 0.716,
+                "x": 0.864,
+                "y": 0.713
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.279,
+                "y": 0.722
+              }
+            ],
+            "extracted_text": "第二种可能－压力引起的肾上腺荷尔蒙 · 精神压力 · 肾上腺 · A · !X!X · 席 · !X!X · BUICK · BUICK",
+            "mean_ocr_confidence": 0.893,
+            "match_score": 0.4638,
+            "lexical_overlap_score": 0.0251,
+            "concept_coverage": 1,
+            "active_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ],
+            "matched_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ]
+          },
+          {
+            "timestamp": 677.77,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 680.16,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 682.55,
+            "text_lines": [
+              {
+                "text": "第二种可能－压力引起的肾上腺荷尔蒙",
+                "confidence": 0.992,
+                "x": 0.488,
+                "y": 0.193
+              },
+              {
+                "text": "精神压力",
+                "confidence": 1,
+                "x": 0.231,
+                "y": 0.349
+              },
+              {
+                "text": "肾上腺",
+                "confidence": 1,
+                "x": 0.475,
+                "y": 0.352
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.889,
+                "x": 0.107,
+                "y": 0.697
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.911,
+                "y": 0.699
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.683,
+                "x": 0.832,
+                "y": 0.712
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.864,
+                "y": 0.713
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.28,
+                "y": 0.722
+              }
+            ],
+            "extracted_text": "第二种可能－压力引起的肾上腺荷尔蒙 · 精神压力 · 肾上腺 · !X!人 · 席 · !X!X · BUICK · BUICK",
+            "mean_ocr_confidence": 0.946,
+            "match_score": 0.4641,
+            "lexical_overlap_score": 0.0255,
+            "concept_coverage": 1,
+            "active_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ],
+            "matched_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ]
+          },
+          {
+            "timestamp": 684.94,
+            "text_lines": [
+              {
+                "text": "第二种可能－压力引起的肾上腺荷尔蒙",
+                "confidence": 0.984,
+                "x": 0.488,
+                "y": 0.193
+              },
+              {
+                "text": "精神压力",
+                "confidence": 1,
+                "x": 0.231,
+                "y": 0.349
+              },
+              {
+                "text": "肾上腺",
+                "confidence": 1,
+                "x": 0.475,
+                "y": 0.352
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.942,
+                "x": 0.106,
+                "y": 0.696
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.911,
+                "y": 0.699
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.757,
+                "x": 0.831,
+                "y": 0.711
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.864,
+                "y": 0.712
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.28,
+                "y": 0.722
+              }
+            ],
+            "extracted_text": "第二种可能－压力引起的肾上腺荷尔蒙 · 精神压力 · 肾上腺 · !X!X · 席 · !X!X · BUICK · BUICK",
+            "mean_ocr_confidence": 0.96,
+            "match_score": 0.464,
+            "lexical_overlap_score": 0.0255,
+            "concept_coverage": 1,
+            "active_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ],
+            "matched_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ]
+          }
+        ],
+        "extracted_text": "第二种可能－压力引起的肾上腺荷尔蒙 · 精神压力 · 肾上腺 · A · !X!X · 席 · !X!X · BUICK · BUICK\n第二种可能－压力引起的肾上腺荷尔蒙 · 精神压力 · 肾上腺 · !X!人 · 席 · !X!X · BUICK · BUICK\n第二种可能－压力引起的肾上腺荷尔蒙 · 精神压力 · 肾上腺 · !X!X · 席 · !X!X · BUICK · BUICK",
+        "review_hint": "页面文字与观点存在较明显的词句重合；请结合图表、图片和该页完整语境确认是否真正支撑观点。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "insufficient",
+      "label": "证据不足",
+      "time_span": [
+        706.18,
+        710.5
+      ],
+      "point_id": "b03",
+      "point_text": "到目前为止我们就有点抓狂了，因为这两种其实都是以前大家认为精神压力导致白发的假说，结果我们验证了事情并不是这样的",
+      "text": "精神压力导致白发的一个假说 结果我们验证了 其实并不是这样的",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": true
+      },
+      "quality": {
+        "observations": 2,
+        "face_samples": 1,
+        "comparable_hand_samples": 2,
+        "coverage": 0.81,
+        "face_coverage": 0.347,
+        "hand_coverage": 0.81,
+        "sampling_interval_seconds": 2,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "手部出画、遮挡或连续可比较样本不足。",
+        "suggestion": "让至少一只手与肩部进入画面，再回看完整语句。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [
+        {
+          "id": "motion-708",
+          "kind": "motion",
+          "start": 708,
+          "end": 710,
+          "peak": 710,
+          "count": 2,
+          "magnitude": 0.144,
+          "duration": 2
+        }
+      ],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b03",
+        "target_meaning": "到目前为止我们就有点抓狂了，因为这两种其实都是以前大家认为精神压力导致白发的假说，结果我们验证了事情并不是这样的",
+        "required_claims": [
+          "到目前为止我们就有点抓狂了，因为这两种其实都是以前大家认为精神压力导致白发的假说，结果我们验证了事情并不是这样的"
+        ],
+        "time_span": [
+          706.18,
+          710.5
+        ],
+        "verdict": "clear_text_overlap",
+        "label": "文字线索关联较明显",
+        "match_score": 0.4621,
+        "lexical_overlap_score": 0.022,
+        "concept_coverage": 1,
+        "matched_concepts": [
+          "压力与心理状态",
+          "白发与压力实验"
+        ],
+        "matched_target": "到目前为止我们就有点抓狂了，因为这两种其实都是以前大家认为精神压力导致白发的假说，结果我们验证了事情并不是这样的",
+        "best_frame_timestamp": 704.18,
+        "best_frame_text": "第二种可能－压力引起的肾上腺荷尔蒙 · 对照 · 压力 · !X人 · 席 · !X!X · BUICK · BUICK",
+        "best_frame_confidence": 0.929,
+        "frames": [
+          {
+            "timestamp": 704.18,
+            "text_lines": [
+              {
+                "text": "第二种可能－压力引起的肾上腺荷尔蒙",
+                "confidence": 0.987,
+                "x": 0.488,
+                "y": 0.192
+              },
+              {
+                "text": "对照",
+                "confidence": 0.999,
+                "x": 0.395,
+                "y": 0.283
+              },
+              {
+                "text": "压力",
+                "confidence": 0.999,
+                "x": 0.576,
+                "y": 0.285
+              },
+              {
+                "text": "!X人",
+                "confidence": 0.724,
+                "x": 0.105,
+                "y": 0.696
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.911,
+                "y": 0.699
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.726,
+                "x": 0.832,
+                "y": 0.712
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.866,
+                "y": 0.714
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.279,
+                "y": 0.722
+              }
+            ],
+            "extracted_text": "第二种可能－压力引起的肾上腺荷尔蒙 · 对照 · 压力 · !X人 · 席 · !X!X · BUICK · BUICK",
+            "mean_ocr_confidence": 0.929,
+            "match_score": 0.4621,
+            "lexical_overlap_score": 0.022,
+            "concept_coverage": 1,
+            "active_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ],
+            "matched_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ]
+          },
+          {
+            "timestamp": 706.26,
+            "text_lines": [
+              {
+                "text": "第二种可能－压力引起的肾上腺荷尔蒙",
+                "confidence": 0.986,
+                "x": 0.488,
+                "y": 0.192
+              },
+              {
+                "text": "对照",
+                "confidence": 0.983,
+                "x": 0.395,
+                "y": 0.284
+              },
+              {
+                "text": "压力",
+                "confidence": 0.999,
+                "x": 0.576,
+                "y": 0.286
+              },
+              {
+                "text": "!X!人",
+                "confidence": 0.883,
+                "x": 0.106,
+                "y": 0.697
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.911,
+                "y": 0.699
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.812,
+                "x": 0.831,
+                "y": 0.712
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.866,
+                "y": 0.714
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.279,
+                "y": 0.722
+              }
+            ],
+            "extracted_text": "第二种可能－压力引起的肾上腺荷尔蒙 · 对照 · 压力 · !X!人 · 席 · !X!X · BUICK · BUICK",
+            "mean_ocr_confidence": 0.958,
+            "match_score": 0.4621,
+            "lexical_overlap_score": 0.022,
+            "concept_coverage": 1,
+            "active_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ],
+            "matched_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ]
+          },
+          {
+            "timestamp": 708.34,
+            "text_lines": [
+              {
+                "text": "第二种可能－压力引起的肾上腺荷尔蒙",
+                "confidence": 0.987,
+                "x": 0.488,
+                "y": 0.191
+              },
+              {
+                "text": "对照",
+                "confidence": 0.999,
+                "x": 0.395,
+                "y": 0.283
+              },
+              {
+                "text": "压力",
+                "confidence": 0.999,
+                "x": 0.576,
+                "y": 0.286
+              },
+              {
+                "text": "TX人",
+                "confidence": 0.769,
+                "x": 0.105,
+                "y": 0.695
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.911,
+                "y": 0.699
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.699,
+                "x": 0.832,
+                "y": 0.712
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.866,
+                "y": 0.714
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.279,
+                "y": 0.721
+              }
+            ],
+            "extracted_text": "第二种可能－压力引起的肾上腺荷尔蒙 · 对照 · 压力 · TX人 · 席 · !X!X · BUICK · BUICK",
+            "mean_ocr_confidence": 0.932,
+            "match_score": 0.4619,
+            "lexical_overlap_score": 0.0216,
+            "concept_coverage": 1,
+            "active_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ],
+            "matched_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ]
+          },
+          {
+            "timestamp": 710.42,
+            "text_lines": [],
+            "extracted_text": "",
+            "mean_ocr_confidence": null,
+            "match_score": 0,
+            "lexical_overlap_score": 0,
+            "active_concepts": [],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 712.5,
+            "text_lines": [
+              {
+                "text": "第二种可能－ 压力引起的肾上腺荷尔蒙",
+                "confidence": 0.958,
+                "x": 0.488,
+                "y": 0.192
+              },
+              {
+                "text": "对照",
+                "confidence": 0.998,
+                "x": 0.394,
+                "y": 0.283
+              },
+              {
+                "text": "压力",
+                "confidence": 0.999,
+                "x": 0.576,
+                "y": 0.286
+              },
+              {
+                "text": "TX人",
+                "confidence": 0.836,
+                "x": 0.105,
+                "y": 0.696
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.911,
+                "y": 0.699
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.794,
+                "x": 0.831,
+                "y": 0.711
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.865,
+                "y": 0.712
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.279,
+                "y": 0.721
+              }
+            ],
+            "extracted_text": "第二种可能－ 压力引起的肾上腺荷尔蒙 · 对照 · 压力 · TX人 · 席 · !X!X · BUICK · BUICK",
+            "mean_ocr_confidence": 0.948,
+            "match_score": 0.4619,
+            "lexical_overlap_score": 0.0216,
+            "concept_coverage": 1,
+            "active_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ],
+            "matched_concepts": [
+              "压力与心理状态",
+              "白发与压力实验"
+            ]
+          }
+        ],
+        "extracted_text": "第二种可能－压力引起的肾上腺荷尔蒙 · 对照 · 压力 · !X人 · 席 · !X!X · BUICK · BUICK\n第二种可能－压力引起的肾上腺荷尔蒙 · 对照 · 压力 · !X!人 · 席 · !X!X · BUICK · BUICK\n第二种可能－压力引起的肾上腺荷尔蒙 · 对照 · 压力 · TX人 · 席 · !X!X · BUICK · BUICK\n第二种可能－ 压力引起的肾上腺荷尔蒙 · 对照 · 压力 · TX人 · 席 · !X!X · BUICK · BUICK",
+        "review_hint": "页面文字与观点存在较明显的词句重合；请结合图表、图片和该页完整语境确认是否真正支撑观点。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    },
+    {
+      "version": "context-rules-2026.10.15-v1",
+      "method": "context_conditioned_rules",
+      "status": "neutral",
+      "label": "自然 / 中性候选",
+      "time_span": [
+        1191,
+        1198.84
+      ],
+      "point_id": "b04",
+      "point_text": "我们希望通过我们的研究，能够了解这背后具体的机制，最终能够让我们每一个人都有一头乌黑亮丽的头发",
+      "text": "能够了解这些具体的机制 最终能够让我们 每一个人都有一头乌黑亮丽的头发",
+      "context": {
+        "goal": "explain",
+        "source": "一般说明语境",
+        "explicit": false,
+        "ambiguous": false
+      },
+      "quality": {
+        "observations": 4,
+        "face_samples": 1,
+        "comparable_hand_samples": 4,
+        "coverage": 1,
+        "face_coverage": 0.255,
+        "hand_coverage": 1,
+        "sampling_interval_seconds": 2,
+        "timing_quality": "asr-segment",
+        "time_uncertainty_seconds": 1,
+        "reasons": []
+      },
+      "gesture": {
+        "status": "neutral",
+        "label": "自然 / 中性候选",
+        "reason": "这一段手部变化较小；说明性表达不必依赖频繁动作。",
+        "suggestion": "按内容需要保留动作，不必为了评分增加手势。",
+        "evidence": []
+      },
+      "expression": {
+        "status": "insufficient",
+        "label": "证据不足",
+        "reason": "清晰人脸样本不足，暂不判断与内容是否适配。",
+        "suggestion": "保持面部可见；结合原片确认这句话的语气。",
+        "evidence": []
+      },
+      "events": [],
+      "voice_windows": [],
+      "slide": {
+        "beat_id": "b04",
+        "target_meaning": "我们希望通过我们的研究，能够了解这背后具体的机制，最终能够让我们每一个人都有一头乌黑亮丽的头发",
+        "required_claims": [
+          "我们希望通过我们的研究，能够了解这背后具体的机制，最终能够让我们每一个人都有一头乌黑亮丽的头发"
+        ],
+        "time_span": [
+          1191,
+          1198.84
+        ],
+        "verdict": "little_text_overlap",
+        "label": "暂未发现明显文字关联",
+        "match_score": 0.0517,
+        "lexical_overlap_score": 0.0517,
+        "concept_coverage": 0,
+        "matched_concepts": [],
+        "matched_target": "我们希望通过我们的研究，能够了解这背后具体的机制，最终能够让我们每一个人都有一头乌黑亮丽的头发",
+        "best_frame_timestamp": 1189,
+        "best_frame_text": "关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK",
+        "best_frame_confidence": 0.99,
+        "frames": [
+          {
+            "timestamp": 1189,
+            "text_lines": [
+              {
+                "text": "关于系统性因",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.215
+              },
+              {
+                "text": "子对再生影响",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.272
+              },
+              {
+                "text": "的研究，我们",
+                "confidence": 1,
+                "x": 0.729,
+                "y": 0.323
+              },
+              {
+                "text": "才刚刚开始",
+                "confidence": 1,
+                "x": 0.709,
+                "y": 0.378
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.912,
+                "y": 0.697
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.867,
+                "y": 0.708
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.92,
+                "x": 0.832,
+                "y": 0.709
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.287,
+                "y": 0.718
+              }
+            ],
+            "extracted_text": "关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK",
+            "mean_ocr_confidence": 0.99,
+            "match_score": 0.0517,
+            "lexical_overlap_score": 0.0517,
+            "concept_coverage": 0,
+            "active_concepts": [
+              "白发与压力实验"
+            ],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1191.368,
+            "text_lines": [
+              {
+                "text": "关于系统性因",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.216
+              },
+              {
+                "text": "子对再生影响",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.272
+              },
+              {
+                "text": "的研究，我们",
+                "confidence": 1,
+                "x": 0.729,
+                "y": 0.323
+              },
+              {
+                "text": "才刚刚开始",
+                "confidence": 1,
+                "x": 0.71,
+                "y": 0.378
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.912,
+                "y": 0.697
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.867,
+                "y": 0.708
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.922,
+                "x": 0.832,
+                "y": 0.709
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.287,
+                "y": 0.718
+              }
+            ],
+            "extracted_text": "关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK",
+            "mean_ocr_confidence": 0.99,
+            "match_score": 0.0517,
+            "lexical_overlap_score": 0.0517,
+            "concept_coverage": 0,
+            "active_concepts": [
+              "白发与压力实验"
+            ],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1193.736,
+            "text_lines": [
+              {
+                "text": "关于系统性因",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.217
+              },
+              {
+                "text": "子对再生影响",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.272
+              },
+              {
+                "text": "的研究，我们",
+                "confidence": 1,
+                "x": 0.729,
+                "y": 0.323
+              },
+              {
+                "text": "才刚刚开始",
+                "confidence": 1,
+                "x": 0.711,
+                "y": 0.378
+              },
+              {
+                "text": "io",
+                "confidence": 0.571,
+                "x": 0.812,
+                "y": 0.381
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.912,
+                "y": 0.697
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.866,
+                "y": 0.708
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.824,
+                "x": 0.833,
+                "y": 0.709
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.287,
+                "y": 0.718
+              }
+            ],
+            "extracted_text": "关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · io · 席 · BUICK · !X!X · BUICK",
+            "mean_ocr_confidence": 0.933,
+            "match_score": 0.0497,
+            "lexical_overlap_score": 0.0497,
+            "concept_coverage": 0,
+            "active_concepts": [
+              "白发与压力实验"
+            ],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1196.104,
+            "text_lines": [
+              {
+                "text": "关于系统性因",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.217
+              },
+              {
+                "text": "子对再生影响",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.272
+              },
+              {
+                "text": "的研究，我们",
+                "confidence": 1,
+                "x": 0.729,
+                "y": 0.323
+              },
+              {
+                "text": "才刚刚开始",
+                "confidence": 1,
+                "x": 0.71,
+                "y": 0.378
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.912,
+                "y": 0.697
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.866,
+                "y": 0.708
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.82,
+                "x": 0.833,
+                "y": 0.709
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.287,
+                "y": 0.718
+              }
+            ],
+            "extracted_text": "关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK",
+            "mean_ocr_confidence": 0.978,
+            "match_score": 0.0517,
+            "lexical_overlap_score": 0.0517,
+            "concept_coverage": 0,
+            "active_concepts": [
+              "白发与压力实验"
+            ],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1198.472,
+            "text_lines": [
+              {
+                "text": "关于系统性因",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.215
+              },
+              {
+                "text": "子对再生影响",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.272
+              },
+              {
+                "text": "的研究，我们",
+                "confidence": 1,
+                "x": 0.729,
+                "y": 0.323
+              },
+              {
+                "text": "才刚刚开始",
+                "confidence": 1,
+                "x": 0.708,
+                "y": 0.378
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.912,
+                "y": 0.697
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.866,
+                "y": 0.708
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.827,
+                "x": 0.833,
+                "y": 0.709
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.286,
+                "y": 0.717
+              }
+            ],
+            "extracted_text": "关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK",
+            "mean_ocr_confidence": 0.978,
+            "match_score": 0.0517,
+            "lexical_overlap_score": 0.0517,
+            "concept_coverage": 0,
+            "active_concepts": [
+              "白发与压力实验"
+            ],
+            "matched_concepts": []
+          },
+          {
+            "timestamp": 1200.84,
+            "text_lines": [
+              {
+                "text": "关于系统性因",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.215
+              },
+              {
+                "text": "子对再生影响",
+                "confidence": 1,
+                "x": 0.73,
+                "y": 0.272
+              },
+              {
+                "text": "的研究，我们",
+                "confidence": 1,
+                "x": 0.729,
+                "y": 0.323
+              },
+              {
+                "text": "才刚刚开始",
+                "confidence": 1,
+                "x": 0.709,
+                "y": 0.378
+              },
+              {
+                "text": "席",
+                "confidence": 1,
+                "x": 0.912,
+                "y": 0.697
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.866,
+                "y": 0.708
+              },
+              {
+                "text": "!X!X",
+                "confidence": 0.819,
+                "x": 0.833,
+                "y": 0.709
+              },
+              {
+                "text": "BUICK",
+                "confidence": 1,
+                "x": 0.286,
+                "y": 0.717
+              }
+            ],
+            "extracted_text": "关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK",
+            "mean_ocr_confidence": 0.977,
+            "match_score": 0.0517,
+            "lexical_overlap_score": 0.0517,
+            "concept_coverage": 0,
+            "active_concepts": [
+              "白发与压力实验"
+            ],
+            "matched_concepts": []
+          }
+        ],
+        "extracted_text": "关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK\n关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK\n关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · io · 席 · BUICK · !X!X · BUICK\n关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK\n关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK\n关于系统性因 · 子对再生影响 · 的研究，我们 · 才刚刚开始 · 席 · BUICK · !X!X · BUICK",
+        "review_hint": "抽取文字与观点重合较少；图表或图片仍可能提供支持，不能单凭 OCR 判为不匹配。"
+      },
+      "limitations": [
+        "规则候选，阈值尚未用本项目标注集校准；不输出准确率或合理性百分比。",
+        "视觉抽样较稀疏，只比较语句时段共现，不能确定击拍与重音的精确同步。",
+        "旧动作数据使用画面坐标位移，尚未按肩宽和时间归一化；镜头移动仍可能影响动作候选。",
+        "部分人脸来自放大裁剪，面部系数可能受低分辨率影响。",
+        "旧数据仅保留部分面部系数；未记录的系数按缺失处理。",
+        "观点可能由事后材料提取；本结果不证明符合演讲者原始意图。"
+      ]
+    }
+  ],
+  "interpretation": "Rule candidates for human review; no calibrated accuracy claim."
+}
