@@ -1,7 +1,7 @@
 /* Context review uses the existing mint / lilac competition palette. */
 .context-fit{margin:14px 0 0;padding:18px;border:1px solid #dfe9e4;border-radius:18px;background:linear-gradient(135deg,#f7fcf9,#faf9ff);color:#263e36;overflow:hidden}
 .fit-heading,.fit-context,.context-fit footer,.fit-channel>div{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.fit-eyebrow{font:600 10px/1.4 inherit;letter-spacing:.1em;color:#6b8177}
+.fit-eyebrow{font-size:10px;font-weight:600;line-height:1.4;letter-spacing:.1em;color:#6b8177}
 .fit-badge{display:inline-flex;align-items:center;width:fit-content;gap:5px;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:650;line-height:1.4;background:#edf0ef;color:#61706b;border:1px solid transparent}
 .fit-badge:before{content:"";width:5px;height:5px;flex:none;border-radius:50%;background:currentColor}
 .fit-badge.supportive{background:#e1f4e8;color:#276f4e;border-color:#cbe5d4}.fit-badge.neutral{background:#eaeafa;color:#676394}.fit-badge.conflict{background:#fff0dc;color:#946224;border-color:#f3d7b2}.fit-badge.insufficient{background:#edf0f0;color:#667778}
@@ -19,3 +19,5 @@
 .fit-event:is(button):focus-visible,.fit-seek:focus-visible,.fit-method summary:focus-visible{outline:2px solid #4c8c6c;outline-offset:3px}
 @media(max-width:1100px){.fit-channels{grid-template-columns:1fr}.session-fit-list{grid-template-columns:1fr}}
 @media(max-width:600px){.context-fit{padding:13px}.case-context-panel{padding:15px}.fit-heading{align-items:flex-start}.fit-context{gap:6px}.fit-context span{display:block;width:100%}}
+
+.review-tools{flex-wrap:wrap}.review-tools>span{flex:1 1 100px}.context-fit blockquote{overflow-wrap:anywhere}

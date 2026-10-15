@@ -959,6 +959,10 @@
     state.replayUrl = null; state.reportSession = null;
     $("#coach-replay-detail").innerHTML = ""; $("#coach-report-text").value = "";
     $("#coach-report").hidden = true;
+    if (!state.session) {
+      $("#coach-context-fit").innerHTML = '<p class="fit-empty">等待下一场演讲的语句与画面证据。</p>';
+      setText("#visual-point-note", "本场复盘已关闭。");
+    }
   }
   async function stopSession() {
     if (!state.session || state.stopping) return;
@@ -1100,7 +1104,7 @@
     const timeline = session.timeline || [];
     $("#coach-report-overview").innerHTML = `<div><span>本场时长</span><strong>${stamp(seconds)}</strong></div><div><span>较多词汇线索</span><strong>${points.filter(point => point.score >= .34).length}<small> / ${points.length} 个观点</small></strong></div><div><span>记录表达</span><strong>${(session.segments || []).length}<small> 句</small></strong></div><div><span>PPT 文字抽样</span><strong>${(session.slides || []).length}<small> 次</small></strong></div>`;
     const content = points.map((point, index) => `<article class="replay-point"><b>${index + 1}. ${esc(point.text)}</b><span>${point.score >= .34 ? "候选覆盖" : point.score >= .15 ? "部分线索" : "需复核"} · ${Math.round(point.score * 100)}%</span><p>${(point.evidence || []).slice(-3).map((entry) => `${stamp(entry.at)}「${esc(entry.text)}」`).join("；") || "无转写证据"}</p></article>`).join("");
-    const fits = session.contextFits || [];
+    const fits = Array.isArray(session.contextFits) ? session.contextFits.filter(fit => fit && typeof fit === "object") : [];
     const fitSummary = Object.entries(TalkEvalFit.LABELS).map(([key, label]) => `<span class="fit-badge ${key}">${label} ${fits.filter(fit => fit.status === key).length}</span>`).join("");
     const fitReview = `<section class="session-fit-review"><div class="coach-panel-head"><div><p class="eyebrow">EXPRESSION IN CONTEXT</p><h3>表情与动作，服务于这句话了吗？</h3></div></div><div class="fit-summary-strip">${fitSummary}</div><p class="quiet-copy">${fits.length ? `共 ${fits.length} 条语句；下方显示最近 ${Math.min(30, fits.length)} 条，完整结果保存在导出的本场 JSON 与文字报告中。` : "这条旧记录没有语境适配证据，新录制将逐句保留。"}</p><div class="session-fit-list">${fits.slice(-30).map(fit => TalkEvalFit.card(fit, { compact: true, seekAttribute: "data-session-fit-seek" })).join("")}</div></section>`;
     const events = timeline.slice(-60).map((item) => `<div class="replay-event"><time>${stamp(item.at)}</time><span>${item.type === "speech" ? `语音：${esc(item.text)}` : item.type === "slide" ? `PPT OCR：${esc(item.text || "无文字")}` : item.type === "reaction" ? `${item.source === "demo" ? "模拟" : "现场观察"}反应：${esc(item.pointText || "观点")}` : `视觉：${esc(item.visual?.face || "")}；${esc(item.visual?.gesture || "")}`}</span></div>`).join("");
