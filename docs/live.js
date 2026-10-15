@@ -5,20 +5,20 @@
   const STORAGE_KEY = "talkeval-live-sessions-v1";
   const MEDIA_DB = "talkeval-live-recordings-v1";
   const CLOUD_API = "https://talkeval-speech-review.expelliarmus-yh05.chatgpt.site";
-  const MAX_SESSIONS = 30;
   const state = {
     cases: [], selectedCase: null, points: [], session: null, timer: null,
     cameraStream: null, screenStream: null, audioContext: null, analyser: null,
     mediaRecorder: null, recordingChunks: [], recordingChunkCount: 0,
-    recordingLocalWrites: Promise.resolve(), recordingCloudWrites: Promise.resolve(),
-    recordingLocalError: "", recordingCloudError: "", remoteSessions: [], replayUrl: null,
+    recordingLocalWrites: Promise.resolve(),
+    recordingLocalError: "", remoteSessions: [], replayUrl: null,
     speech: null, speechOn: false, lastSpeechAt: 0, lastUtteranceAt: 0,
     audioSamples: [], voiceBaseline: [], currentVolume: null, currentPitch: null,
     faceTask: null, poseTask: null, visionLoading: false, visualRaf: null,
     lastVisionAt: 0, previousWrists: null, visualSummary: [],
     ocrWorker: null, ocrLoading: null, ocrBusy: false, ocrTimer: null, lastOcrAt: 0,
     caseRequest: 0, lastWaveAt: 0, reportSession: null, stopping: false,
-    cloudState: "loading", cloudError: "", cloudRefresh: null,
+    cloudState: "loading", cloudError: "", cloudRefresh: null, historyEpoch: 0,
+    pendingDraft: null, actionBusy: false, deleteTarget: null, syncingIds: new Set(),
   };
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
   const elapsed = () => state.session ? Math.max(0, (Date.now() - state.session.startedAt) / 1000) : 0;
@@ -33,6 +33,7 @@
     const ids = new Set([...local.keys(), ...remote.keys()]);
     return [...ids].map((id) => {
       const device = local.get(id); const cloud = remote.get(id);
+      if (device?.cloudDeletionConfirmed) return device;
       if (!cloud) return device;
       if (!device) return { ...cloud, cloudStored: true };
       return {
@@ -103,7 +104,8 @@
         const request = store.openKeyCursor(IDBKeyRange.bound(`${id}:`, `${id}:\uffff`));
         request.onsuccess = () => { if (request.result) { store.delete(request.result.primaryKey); request.result.continue(); } };
         transaction.oncomplete = resolve;
-        transaction.onerror = () => reject(transaction.error || new Error("清理旧录像失败"));
+        transaction.onerror = () => reject(transaction.error || new Error("清理录像失败"));
+        transaction.onabort = () => reject(transaction.error || new Error("清理录像已中断"));
       });
     } finally { db.close(); }
   }
@@ -113,14 +115,13 @@
     const mimeType = candidates.find((type) => MediaRecorder.isTypeSupported(type));
     const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
     state.recordingChunks = []; state.recordingChunkCount = 0;
-    state.recordingLocalWrites = Promise.resolve(); state.recordingCloudWrites = Promise.resolve();
-    state.recordingLocalError = ""; state.recordingCloudError = "";
+    state.recordingLocalWrites = Promise.resolve();
+    state.recordingLocalError = "";
     recorder.addEventListener("dataavailable", (event) => {
       if (!event.data?.size) return;
       const index = state.recordingChunkCount++;
       const chunk = event.data;
       state.recordingLocalWrites = state.recordingLocalWrites.then(() => storeRecordingChunk(sessionId, index, chunk)).catch((error) => { state.recordingLocalError = error.message || "本机录像保存失败"; });
-      state.recordingCloudWrites = state.recordingCloudWrites.then(() => state.recordingCloudError ? null : uploadCloudChunk(sessionId, index, chunk)).catch((error) => { state.recordingCloudError = error.message || "云端录像上传失败"; });
     });
     recorder.start(5000);
     state.mediaRecorder = recorder;
@@ -137,14 +138,12 @@
       });
     }
     state.cameraStream?.getTracks().forEach(track => track.stop());
-    await Promise.all([state.recordingLocalWrites, state.recordingCloudWrites]);
+    await state.recordingLocalWrites;
     state.mediaRecorder = null;
     state.recordingChunks = [];
     if (!state.recordingChunkCount) throw new Error("录像文件为空");
     const localReady = !state.recordingLocalError;
-    const cloudReady = !state.recordingCloudError;
-    if (!localReady && !cloudReady) throw new Error(state.recordingLocalError || "录像无法保存");
-    return { chunks: state.recordingChunkCount, localReady, cloudReady };
+    return { chunks: state.recordingChunkCount, localReady, cloudReady: false };
   }
   async function cloudFetch(path, options = {}) {
     const controller = new AbortController();
@@ -152,7 +151,12 @@
     try {
       const response = await fetch(`${CLOUD_API}${path}`, { ...options, signal: controller.signal, mode: "cors", credentials: "omit" });
       if (!response.ok) {
-        if (response.status === 401 || response.status === 403) throw new Error("云端访问受限，请由后台所有者恢复公开历史接口权限。");
+        if (response.status === 401 || response.status === 403) {
+          const denied = new Error("云端访问受限，请由后台所有者恢复公开历史接口权限。");
+          denied.status = response.status;
+          throw denied;
+        }
+        if (options.method === "DELETE" && (response.status === 404 || response.status === 405)) throw new Error("后台尚未提供可确认的删除接口，需要项目管理员接通后再删除。");
         let message = `云端服务返回 ${response.status}`;
         try { message = (await response.json()).error || message; } catch { /* Non-JSON error response. */ }
         throw new Error(message);
@@ -169,27 +173,68 @@
   }
   async function saveCloudSession(session) {
     const publicRecord = { ...session, audio: [], videoChunks: session.videoChunks || 0 };
+    if (!session.videoSaved && !session.cloudVideoReady) {
+      publicRecord.videoId = null;
+      publicRecord.videoChunks = 0;
+    }
     const response = await cloudFetch(`/api/sessions/${encodeURIComponent(session.id)}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(publicRecord) });
     return response.json();
   }
+  function persistSession(session) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([session, ...readSessions().filter(item => item.id !== session.id)]));
+  }
   async function syncSavedSession(session) {
-    if (!session?.videoId) throw new Error("本条记录没有可上传的本机录像。");
-    const parts = await loadRecordingParts(session.videoId, session.videoChunks);
-    if (!parts.length) throw new Error("当前设备找不到本机录像。");
-    for (let index = 0; index < parts.length; index += 1) await uploadCloudChunk(session.id, index, parts[index]);
-    const updated = { ...session, videoChunks: parts.length, cloudVideoReady: true, cloudStored: true, cloudUploadError: "" };
-    const result = await saveCloudSession(updated);
-    updated.cloudVideoReady = Boolean(result.session?.cloudVideoReady);
-    if (!updated.cloudVideoReady) throw new Error("云端还没有收到全部录像分段。");
-    const local = [updated, ...readSessions().filter((item) => item.id !== updated.id)];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(local));
-    state.remoteSessions = [updated, ...state.remoteSessions.filter((item) => item.id !== updated.id)];
-    renderReplay(updated); renderSessions(); renderMemory();
-    return updated;
+    if (!session || state.pendingDraft?.id === session.id) throw new Error("请先选择保存本场演讲。");
+    if (session.cloudDeletionConfirmed) throw new Error("此记录正在删除，不能再次同步。");
+    if (state.syncingIds.has(session.id) || state.deleteTarget?.id === session.id) throw new Error("本条记录正在处理，请稍候。");
+    state.syncingIds.add(session.id);
+    state.historyEpoch += 1;
+    renderSessions();
+    const updated = { ...session };
+    const previouslyAttempted = needsCloudDelete(session);
+    let confirmedChunk = false;
+    try {
+      // Check access without uploading, so an unavailable service leaves a purely local record.
+      const availability = await (await cloudFetch("/api/sessions")).json();
+      if (!Array.isArray(availability.sessions)) throw new Error("云端历史接口尚不可用，未上传本场记录。");
+      let parts = [];
+      if (session.videoId && session.videoSaved) {
+        parts = await loadRecordingParts(session.videoId, session.videoChunks);
+        if (!parts.length || (session.videoChunks && parts.length !== session.videoChunks)) throw new Error("本机录像分段不完整，未上传。请先下载可用录像。");
+      }
+      // Persist before the first write: a network failure can hide a server-side success.
+      updated.cloudUploadAttempted = true;
+      persistSession(updated);
+      for (let index = 0; index < parts.length; index += 1) {
+        setText("#coach-save-progress", `正在同步录像 ${index + 1} / ${parts.length}…`);
+        await uploadCloudChunk(session.id, index, parts[index]);
+        confirmedChunk = true;
+      }
+      if (parts.length) updated.videoChunks = parts.length;
+      const result = await saveCloudSession(updated);
+      if (result.session?.id !== session.id) throw new Error("后台未确认这条记录已保存。");
+      updated.cloudStored = true;
+      updated.cloudVideoReady = Boolean(result.session.cloudVideoReady);
+      updated.cloudUploadError = session.videoSaved && !updated.cloudVideoReady ? "报告已保存，后台尚未确认录像完整。" : "";
+      state.remoteSessions = [updated, ...state.remoteSessions.filter(item => item.id !== updated.id)];
+      persistSession(updated);
+      if (state.reportSession?.id === updated.id) renderReplay(updated);
+      return updated;
+    } catch (error) {
+      if (!previouslyAttempted && !confirmedChunk && (error.status === 401 || error.status === 403)) updated.cloudUploadAttempted = false;
+      updated.cloudUploadError = error.message || "云端同步失败";
+      try { persistSession(updated); } catch { /* Keep the already-saved record; surface the original failure. */ }
+      if (state.reportSession?.id === updated.id) renderReplay(updated);
+      throw error;
+    } finally {
+      state.syncingIds.delete(session.id); state.historyEpoch += 1;
+      renderSessions(); renderMemory();
+    }
   }
   async function refreshCloudSessions() {
     if (state.cloudRefresh) return state.cloudRefresh;
     state.cloudRefresh = (async () => {
+    const epoch = state.historyEpoch;
     state.cloudState = "loading";
     setText("#cloud-session-status", "正在读取云端…");
     $("#coach-refresh-history").disabled = true;
@@ -197,10 +242,14 @@
       const response = await cloudFetch("/api/sessions");
       const result = await response.json();
       if (!Array.isArray(result.sessions)) throw new Error("云端返回的历史记录格式不完整，请检查后台服务。");
+      if (epoch !== state.historyEpoch) {
+        state.cloudState = state.cloudError ? "error" : "ready";
+        setText("#cloud-session-status", state.cloudError ? "云端未连接 · 记录未读出" : `公开云端 · ${state.remoteSessions.length} 场`);
+        return;
+      }
       state.remoteSessions = result.sessions;
       state.cloudState = "ready"; state.cloudError = "";
       setText("#cloud-session-status", `公开云端 · ${state.remoteSessions.length} 场`);
-      migrateLocalSessions();
     } catch (error) {
       state.cloudState = "error"; state.cloudError = error.message;
       setText("#cloud-session-status", "云端未连接 · 记录未读出");
@@ -209,30 +258,6 @@
     renderSessions(); renderMemory();
     })().finally(() => { state.cloudRefresh = null; $("#coach-refresh-history").disabled = false; });
     return state.cloudRefresh;
-  }
-  async function migrateLocalSessions() {
-    const known = new Set(state.remoteSessions.map((session) => session.id));
-    for (const local of readSessions()) {
-      if (!local.id || known.has(local.id)) continue;
-      try {
-        if (local.videoId && local.videoSaved && local.videoChunks > 0) {
-          await syncSavedSession(local);
-        } else {
-          const reportOnly = { ...local, audio: [], videoId: null, videoChunks: 0, videoSaved: false, cloudVideoReady: false };
-          const result = await saveCloudSession(reportOnly);
-          const stored = result.session || reportOnly;
-          state.remoteSessions = [stored, ...state.remoteSessions].slice(0, 100);
-          const updated = { ...local, cloudStored: true, cloudVideoReady: false, cloudUploadError: "" };
-          localStorage.setItem(STORAGE_KEY, JSON.stringify([updated, ...readSessions().filter((item) => item.id !== updated.id)]));
-        }
-        known.add(local.id);
-      } catch (error) {
-        console.warn("本机历史同步暂未完成：", error.message);
-        break;
-      }
-    }
-    setText("#cloud-session-status", `公开云端 · ${state.remoteSessions.length} 场`);
-    renderSessions(); renderMemory();
   }
   const setText = (id, text) => { const node = $(id); if (node) node.textContent = text; };
 
@@ -313,7 +338,7 @@
   }
 
   async function chooseCase(caseId) {
-    if (state.session) return;
+    if (state.session || state.pendingDraft || state.actionBusy) return;
     const requestId = ++state.caseRequest;
     if (caseId === "custom") {
       $("#coach-topic").value = "";
@@ -327,7 +352,7 @@
       const response = await fetch(`./data/cases/${encodeURIComponent(caseId)}.json`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
-      if (requestId !== state.caseRequest) return;
+      if (requestId !== state.caseRequest || state.session || state.pendingDraft || state.actionBusy) return;
       const beats = data.intent_map?.beats || [];
       $("#coach-topic").value = data.intent_map?.title || meta.topic || meta.title || "";
       $("#coach-speaker").value = meta.speaker_id || "";
@@ -340,13 +365,13 @@
   }
 
   function updateStartAvailability() {
-    $("#coach-start").disabled = !$("#coach-consent").checked || !state.points.length || Boolean(state.session);
+    $("#coach-start").disabled = !$("#coach-consent").checked || !state.points.length || Boolean(state.session || state.pendingDraft || state.actionBusy);
     const active = Boolean(state.session);
-    ["#coach-case", "#coach-topic", "#coach-speaker", "#coach-language", "#coach-outline", "#coach-consent"].forEach(id => { $(id).disabled = active; });
+    ["#coach-case", "#coach-topic", "#coach-speaker", "#coach-language", "#coach-outline", "#coach-consent"].forEach(id => { $(id).disabled = active || Boolean(state.pendingDraft) || state.actionBusy; });
     ["#coach-manual-text", "#coach-add-text", "#share-screen"].forEach(id => { $(id).disabled = !active || state.stopping; });
     setText("#coach-outline-count", `${state.points.length} 个重点`);
     const ready = Boolean(state.points.length && $("#coach-consent").checked);
-    setText("#coach-ready-note", active ? "本场提纲已锁定，专心表达" : ready ? "准备完成，可以开始演讲" : state.points.length ? "确认采集说明，即可开始" : "先写下本场核心观点");
+    setText("#coach-ready-note", active ? "本场提纲已锁定，专心表达" : state.pendingDraft ? "请先保存或丢弃本场录制" : state.actionBusy ? "正在处理本场记录…" : ready ? "准备完成，可以开始演讲" : state.points.length ? "确认采集说明，即可开始" : "先写下本场核心观点");
     $(".setup-ready").classList.toggle("ready", ready);
     $("#live-view").classList.toggle("session-active", active);
     const step = active ? 1 : state.reportSession ? 2 : 0;
@@ -466,7 +491,7 @@
     const sessions = allSavedSessions().filter((session) => session.speakerId === id);
     setText("#coach-memory-count", `${sessions.length} 次历史练习`);
     if (!sessions.length) {
-      $("#coach-memory").innerHTML = state.cloudState === "error" ? '<p>云端历史暂未读出，暂时无法生成完整的个性化提醒。连接恢复后会重新汇总。</p>' : `<p>尚无此记忆 ID 的历史记录。结束本场后将保存观点线索、声音趋势和人工标记的反应。</p>`;
+      $("#coach-memory").innerHTML = state.cloudState === "error" ? '<p>云端历史暂未读出，暂时无法生成完整的个性化提醒。连接恢复后会重新汇总。</p>' : `<p>尚无此记忆 ID 的历史记录。录制结束并选择保存后，可以回看观点线索、声音趋势和人工标记的反应。</p>`;
       return;
     }
     const pace = sessions.map((item) => item.metrics?.pace).filter(Number.isFinite);
@@ -789,7 +814,7 @@
   }
 
   async function startSession() {
-    if (!$("#coach-consent").checked || !state.points.length || state.session) return;
+    if (!$("#coach-consent").checked || !state.points.length || state.session || state.pendingDraft || state.actionBusy) return;
     state.points = state.points.map((point) => ({ ...point, evidence: [], maxScore: 0, applause: [] }));
     state.audioSamples = []; state.voiceBaseline = []; state.visualSummary = []; state.previousWrists = null;
     state.lastUtteranceAt = 0; state.currentVolume = null; state.currentPitch = null;
@@ -808,7 +833,7 @@
       $("#coach-video").srcObject = state.cameraStream;
       startVideoRecording(state.cameraStream, sessionId);
       $("#coach-camera-placeholder").hidden = true;
-      setText("#coach-camera-mode", "现场录像 · 已授权公开同步");
+      setText("#coach-camera-mode", "正在录制 · 结束后选择是否保存");
       setText("#coach-wave-state", "实时麦克风采样");
       startAudioAnalysis(state.cameraStream);
       setText("#coach-status", "演讲进行中"); $("#coach-led").classList.add("active");
@@ -861,72 +886,162 @@
       "",
       `建议：${missing ? `下次把未发现足够线索的第 ${scores.findIndex((point) => point.score < .15) + 1} 个观点改写成一句易复述的结论，并在演讲提纲中安排明确强调。` : "主要观点均出现较多词汇线索；可以复听关键观点段，确认意思、例子与总结一致。"}${slides.length ? " PPT 节奏与观点对应仍需结合录像逐段确认。" : " 若要检查 PPT 配合，可在演讲期间共享幻灯片窗口。"}`,
       "",
-      "数据范围：本次已授权公开上传录像（含人脸和声音）、转写内容及分析报告；所有访客均可查看。当前云端同步状态会显示在复盘列表中。浏览器语音识别可能使用在线服务。",
+      "数据范围：录制结束后由演讲者选择保存或丢弃；仅选择保存时才向公开云端上传录像（含人脸和声音）、转写及报告。同步是否成功以历史列表状态为准。浏览器语音识别可能使用在线服务。",
     ];
     return { text: lines.join("\n"), scores, pace, pitchRange, volumeRange, observed, demo };
   }
 
+  function setChoiceBusy(busy) {
+    state.actionBusy = busy;
+    document.querySelectorAll("[data-draft-action], #coach-delete-confirm, #coach-delete-cancel").forEach(button => { button.disabled = busy; });
+    updateStartAvailability();
+  }
+  function showDraftChoice() {
+    if (!state.pendingDraft || state.actionBusy) return;
+    const draft = state.pendingDraft;
+    setText("#coach-save-summary", `《${draft.topic}》 · ${stamp((draft.endedAt - draft.startedAt) / 1000)} · ${(draft.segments || []).length} 条转写`);
+    setText("#coach-save-progress", draft.videoSaved ? "录像和报告暂存在本设备，尚未上传，也未加入历史。" : `本场录像未完整保存：${draft.videoError || "无可用录像"}。可以保存文字报告，或丢弃本场。`);
+    if (!$("#coach-save-dialog").open) $("#coach-save-dialog").showModal();
+  }
+  function clearReport(id) {
+    if (state.reportSession?.id !== id) return;
+    $("#coach-replay-video")?.pause();
+    if (state.replayUrl) URL.revokeObjectURL(state.replayUrl);
+    state.replayUrl = null; state.reportSession = null;
+    $("#coach-replay-detail").innerHTML = ""; $("#coach-report-text").value = "";
+    $("#coach-report").hidden = true;
+  }
   async function stopSession() {
     if (!state.session || state.stopping) return;
     state.stopping = true; $("#coach-stop").disabled = true; updateStartAvailability();
     state.session.endedAt = Date.now();
-    setText("#coach-status", "正在保存录像和复盘…"); state.speechOn = false;
+    setText("#coach-status", "正在结束录制…"); state.speechOn = false;
     try { state.speech?.stop(); } catch { /* Already stopped. */ }
     state.speech = null;
     if (state.timer) clearInterval(state.timer); state.timer = null;
     if (state.visualRaf) cancelAnimationFrame(state.visualRaf); state.visualRaf = null;
     stopScreen();
-    let videoSaved = false;
-    let videoError = "";
     let recordingResult = null;
-    try { recordingResult = await finishVideoRecording(); videoSaved = recordingResult.localReady; if (!videoSaved) videoError = state.recordingLocalError; }
-    catch (error) { videoError = error.message || "录像保存失败"; state.session.videoId = null; }
-    state.cameraStream?.getTracks().forEach((track) => track.stop()); state.cameraStream = null;
+    let videoError = "";
+    try { recordingResult = await finishVideoRecording(); }
+    catch (error) { videoError = error.message || "录像保存失败"; }
+    state.cameraStream?.getTracks().forEach(track => track.stop()); state.cameraStream = null;
     $("#coach-video").srcObject = null; $("#coach-camera-placeholder").hidden = false;
     if (state.audioContext) { await state.audioContext.close().catch(() => {}); state.audioContext = null; }
-    state.session.points = state.points.map((point) => ({ id: point.id, text: point.text, score: scorePoint(point, transcriptText()), evidence: point.evidence, applause: point.applause }));
+    state.session.points = state.points.map(point => ({ id: point.id, text: point.text, score: scorePoint(point, transcriptText()), evidence: point.evidence, applause: point.applause }));
     state.session.audio = state.audioSamples; state.session.visual = state.visualSummary;
-    state.session.videoSaved = videoSaved;
-    state.session.videoChunks = recordingResult?.chunks || 0;
-    state.session.cloudVideoReady = Boolean(recordingResult?.cloudReady);
-    if (state.recordingCloudError) state.session.cloudUploadError = state.recordingCloudError;
-    const summary = makeReport(state.session); state.session.report = summary.text;
-    const saved = { ...state.session, audio: [], metrics: { pace: summary.pace, pitchRange: summary.pitchRange, volumeRange: summary.volumeRange } };
-    const allSessions = [saved, ...readSessions()];
-    const sessions = allSessions;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions)); }
-    catch (error) {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions.map((item) => ({ ...item, audio: [], visual: (item.visual || []).slice(-80), timeline: (item.timeline || []).slice(-250) })))); }
-      catch { setText("#coach-status", `报告生成成功，但浏览器存储空间不足：${error.message}`); }
-    }
-    let cloudSaved = false;
-    try {
-      const result = await saveCloudSession(saved);
-      cloudSaved = true;
-      saved.cloudStored = true;
-      saved.cloudVideoReady = Boolean(result.session?.cloudVideoReady);
-      saved.cloudUploadError = saved.cloudVideoReady ? "" : (state.recordingCloudError || saved.cloudUploadError || "");
-      state.remoteSessions = [result.session || saved, ...state.remoteSessions.filter((item) => item.id !== saved.id)].slice(0, 100);
-    } catch (error) {
-      saved.cloudStored = false;
-      saved.cloudUploadError = state.recordingCloudError || error.message || "云端同步失败";
-    }
-    const refreshed = [saved, ...readSessions().filter((item) => item.id !== saved.id)];
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(refreshed)); }
-    catch (error) { setText("#coach-status", `复盘状态已更新；本机存储不足：${error.message}`); }
+    const summary = makeReport(state.session);
+    const draft = { ...state.session, audio: [], report: summary.text,
+      videoSaved: Boolean(recordingResult?.localReady), videoChunks: recordingResult?.chunks || state.recordingChunkCount,
+      videoError: videoError || state.recordingLocalError, cloudVideoReady: false, cloudStored: false, cloudUploadAttempted: false,
+      metrics: { pace: summary.pace, pitchRange: summary.pitchRange, volumeRange: summary.volumeRange } };
+    state.pendingDraft = draft;
     state.session = null; state.audioSamples = []; state.voiceBaseline = []; state.visualSummary = []; state.previousWrists = null;
     state.stopping = false; state.analyser = null;
     drawAudioWave(); setText("#coach-camera-mode", "摄像头已关闭"); setText("#coach-wave-state", "本场采集已结束");
-    state.points = state.points.map((point, index) => ({ ...point, index }));
-    setText("#coach-status", cloudSaved ? (saved.cloudVideoReady ? "已保存并公开同步" : "报告已公开；录像待上传") : (videoSaved ? "录像已保存在本设备" : `复盘已保存；录像未保存：${videoError}`)); $("#coach-led").classList.remove("active");
-    $("#coach-start").disabled = !$("#coach-consent").checked; $("#coach-stop").disabled = true;
+    setText("#coach-status", "录制结束 · 待选择保存"); $("#coach-led").classList.remove("active");
     $("#coach-report").hidden = false; $("#coach-report-text").value = summary.text;
-    renderReplay(saved); renderSessions(); renderMemory();
-    renderPoints(); updateStartAvailability();
-    setText("#coach-cue-title", "本场复盘已保存");
-    setText("#coach-cue-copy", cloudSaved ? (saved.cloudVideoReady ? "本场录像、报告和分析时间线已上传到公开云端，其他电脑也会看到这条记录。" : `报告已上传到公开云端；录像上传未完成${saved.cloudUploadError ? `：${saved.cloudUploadError}` : ""}。`) : `本场记录暂存在本设备，未能同步到公开云端${saved.cloudUploadError ? `：${saved.cloudUploadError}` : ""}。请稍后重试或下载录像。`);
-    $("#coach-report").scrollIntoView({ behavior: "smooth", block: "start" });
-    refreshCloudSessions();
+    $("#coach-draft-banner").hidden = false;
+    renderReplay(draft); renderPoints(); updateStartAvailability();
+    setText("#coach-cue-title", "本场录制已结束"); setText("#coach-cue-copy", "先回看本场表现，再选择保存或丢弃。选择保存后才会上传至公开云端。");
+    showDraftChoice();
+  }
+  async function saveDraft() {
+    if (!state.pendingDraft || state.actionBusy) return;
+    const draft = state.pendingDraft;
+    setChoiceBusy(true);
+    try {
+      // A failed local write leaves the draft available. No upload has happened yet.
+      const saved = { ...draft, saveDecision: "saved", savedAt: Date.now() };
+      persistSession(saved);
+      state.pendingDraft = null; $("#coach-draft-banner").hidden = true;
+      setText("#coach-save-progress", "已保存在本机，正在同步到公开云端…");
+      $("#coach-report").hidden = false; $("#coach-report-text").value = saved.report;
+      renderReplay(saved); renderSessions(); renderMemory();
+      try {
+        const synced = await syncSavedSession(saved);
+        setText("#coach-status", synced.cloudVideoReady ? "录像与报告已同步云端" : "报告已同步云端");
+        setText("#coach-cue-title", synced.cloudVideoReady ? "本场演讲已保存" : "本场报告已保存");
+        setText("#coach-cue-copy", synced.cloudVideoReady ? "录像、报告与时间线已保存到公开云端，其他设备可查看。" : (synced.cloudUploadError || "文字报告已同步；本场没有完整的可用录像。"));
+      } catch (error) {
+        setText("#coach-status", "已保存本机 · 云端同步未完成");
+        setText("#coach-cue-title", "本机记录已保留");
+        setText("#coach-cue-copy", `云端同步未完成：${error.message}。可在复盘中重试同步或下载备份。`);
+      }
+      $("#coach-save-dialog").close();
+      $("#coach-report").scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (error) {
+      setText("#coach-save-progress", `尚未保存：${error.message}。本场仍待选择，可下载备份后重试或丢弃。`);
+      if (!$("#coach-save-dialog").open) $("#coach-save-dialog").showModal();
+    } finally { setChoiceBusy(false); }
+  }
+  async function discardDraft() {
+    if (!state.pendingDraft || state.actionBusy) return;
+    const draft = state.pendingDraft;
+    setChoiceBusy(true);
+    try {
+      await deleteRecording(draft.videoId || draft.id);
+      clearReport(draft.id);
+      state.pendingDraft = null; $("#coach-draft-banner").hidden = true;
+      $("#coach-save-dialog").close();
+      state.points = state.points.map(point => ({ ...point, evidence: [], maxScore: 0, applause: [] }));
+      updateTranscript();
+      $("#screen-history").innerHTML = "";
+      $("#coach-manual-text").value = "";
+      setVisualStatus("等待下一场演讲", "本场观察已丢弃。");
+      renderPoints(); renderSessions(); renderMemory();
+      setText("#coach-status", "本场已丢弃"); setText("#coach-cue-title", "准备下一次表达");
+      setText("#coach-cue-copy", "本场临时录像和报告已丢弃，没有加入历史，也没有上传到云端。");
+    } catch (error) {
+      setText("#coach-save-progress", `暂未清理成功：${error.message}。请重试丢弃。`);
+      if (!$("#coach-save-dialog").open) $("#coach-save-dialog").showModal();
+    } finally { setChoiceBusy(false); }
+  }
+  function needsCloudDelete(session) {
+    // Older records may already have uploaded chunks even without saved metadata.
+    return !session.cloudDeletionConfirmed && (session.cloudStored || session.cloudVideoReady || session.cloudUploadAttempted !== false);
+  }
+  function requestDelete(session) {
+    if (state.actionBusy || state.syncingIds.has(session.id)) return;
+    state.deleteTarget = session;
+    setText("#coach-delete-title", `删除《${session.topic}》？`);
+    setText("#coach-delete-description", needsCloudDelete(session)
+      ? "这会删除云端及本机的录像、报告和分析记录，其他设备也将无法查看。删除后无法恢复。后台未确认成功时会保留列表记录。"
+      : "这会删除本设备的录像、报告和分析记录。此记录尚未上传到云端，删除后无法恢复。");
+    setText("#coach-delete-status", "");
+    $("#coach-delete-dialog").showModal();
+  }
+  async function confirmDelete() {
+    const session = state.deleteTarget;
+    if (!session || state.actionBusy || state.syncingIds.has(session.id)) return;
+    setChoiceBusy(true); state.historyEpoch += 1;
+    try {
+      if (needsCloudDelete(session)) {
+        setText("#coach-delete-status", "正在请求删除云端录像与报告…");
+        const response = await cloudFetch(`/api/sessions/${encodeURIComponent(session.id)}`, { method: "DELETE" });
+        if (response.status !== 204) {
+          const result = await response.json();
+          if (result.deleted !== true || result.id !== session.id) throw new Error("后台尚未确认完整删除，请联系项目管理员检查删除接口。");
+        }
+        // Acknowledgement must cover both database metadata and all video chunks.
+        session.cloudDeletionConfirmed = true; session.cloudStored = false; session.cloudVideoReady = false;
+        persistSession(session);
+        state.remoteSessions = state.remoteSessions.filter(item => item.id !== session.id);
+      }
+      setText("#coach-delete-status", "正在清理本机副本…");
+      await deleteRecording(session.videoId || session.id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(readSessions().filter(item => item.id !== session.id)));
+      state.remoteSessions = state.remoteSessions.filter(item => item.id !== session.id);
+      clearReport(session.id); state.deleteTarget = null;
+      $("#coach-delete-dialog").close();
+      setText("#coach-history-feedback", "已删除所选演讲的录像和复盘。");
+    } catch (error) {
+      setText("#coach-delete-status", session.cloudDeletionConfirmed
+        ? `云端已删除，本机清理未完成：${error.message}。请重试清理。`
+        : `未完成删除：${error.message}。记录已保留。`);
+    } finally {
+      state.historyEpoch += 1; setChoiceBusy(false); renderSessions(); renderMemory();
+    }
   }
 
   function renderReplay(session) {
@@ -937,7 +1052,7 @@
     $("#coach-report-overview").innerHTML = `<div><span>本场时长</span><strong>${stamp(seconds)}</strong></div><div><span>较多词汇线索</span><strong>${points.filter(point => point.score >= .34).length}<small> / ${points.length} 个观点</small></strong></div><div><span>记录表达</span><strong>${(session.segments || []).length}<small> 句</small></strong></div><div><span>PPT 文字抽样</span><strong>${(session.slides || []).length}<small> 次</small></strong></div>`;
     const content = points.map((point, index) => `<article class="replay-point"><b>${index + 1}. ${esc(point.text)}</b><span>${point.score >= .34 ? "候选覆盖" : point.score >= .15 ? "部分线索" : "需复核"} · ${Math.round(point.score * 100)}%</span><p>${(point.evidence || []).slice(-3).map((entry) => `${stamp(entry.at)}「${esc(entry.text)}」`).join("；") || "无转写证据"}</p></article>`).join("");
     const events = timeline.slice(-60).map((item) => `<div class="replay-event"><time>${stamp(item.at)}</time><span>${item.type === "speech" ? `语音：${esc(item.text)}` : item.type === "slide" ? `PPT OCR：${esc(item.text || "无文字")}` : item.type === "reaction" ? `${item.source === "demo" ? "模拟" : "现场观察"}反应：${esc(item.pointText || "观点")}` : `视觉：${esc(item.visual?.face || "")}；${esc(item.visual?.gesture || "")}`}</span></div>`).join("");
-    $("#coach-replay-detail").innerHTML = `<section class="recording-replay"><div class="coach-panel-head"><div><p class="eyebrow">SESSION VIDEO</p><h3>演讲录像</h3></div><div class="report-actions"><button id="coach-sync-session" class="secondary-button" ${session.videoId && !session.cloudVideoReady ? "" : "hidden"}>重试公开同步</button><button id="coach-download-video" class="secondary-button">下载录像</button></div></div><video id="coach-replay-video" controls playsinline preload="metadata" hidden></video><p id="coach-replay-video-note" class="quiet-copy" hidden></p></section><div class="replay-grid"><div><h3>观点证据</h3>${content || "无观点"}</div><div><h3>时间线</h3><div class="replay-events">${events || "无事件"}</div></div></div>`;
+    $("#coach-replay-detail").innerHTML = `<section class="recording-replay"><div class="coach-panel-head"><div><p class="eyebrow">SESSION VIDEO</p><h3>演讲录像</h3></div><div class="report-actions"><button id="coach-sync-session" class="secondary-button" ${state.pendingDraft?.id !== session.id && !session.cloudDeletionConfirmed && (!session.cloudStored || (session.videoSaved && !session.cloudVideoReady)) ? "" : "hidden"}>重试公开同步</button><button id="coach-download-video" class="secondary-button">下载录像</button></div></div><video id="coach-replay-video" controls playsinline preload="metadata" hidden></video><p id="coach-replay-video-note" class="quiet-copy" hidden></p></section><div class="replay-grid"><div><h3>观点证据</h3>${content || "无观点"}</div><div><h3>时间线</h3><div class="replay-events">${events || "无事件"}</div></div></div>`;
     const video = $("#coach-replay-video");
     const note = $("#coach-replay-video-note");
     const downloadButton = $("#coach-download-video");
@@ -957,8 +1072,8 @@
       if (state.reportSession?.id !== session.id) return;
       if (!blob) { note.textContent = "此设备上找不到录像文件；录像不会随文字报告自动同步。"; return; }
       state.replayUrl = URL.createObjectURL(blob); video.src = state.replayUrl;
-      note.textContent = `录像已保存在本机浏览器 · ${Math.round(blob.size / 1024 / 1024)} MB${session.cloudUploadError ? ` · 云端同步失败：${session.cloudUploadError}` : ""}`;
-    }).catch((error) => { note.textContent = `读取录像失败：${error.message}`; });
+      note.textContent = `${state.pendingDraft?.id === session.id ? "本场暂存，尚未选择保存" : "录像已保存在本机浏览器"} · ${Math.round(blob.size / 1024 / 1024)} MB${session.videoError ? ` · 录像可能不完整：${session.videoError}` : ""}${session.cloudUploadError ? ` · 云端同步失败：${session.cloudUploadError}` : ""}`;
+    }).catch((error) => { if (state.reportSession?.id === session.id) note.textContent = `读取录像失败：${error.message}`; });
   }
   function renderSessions() {
     const sessions = allSavedSessions().sort((a, b) => (b.startedAt || 0) - (a.startedAt || 0)).slice(0, 100);
@@ -966,7 +1081,11 @@
     const host = $("#saved-session-list");
     const notice = state.cloudState === "error" ? `<div class="history-connection-note" role="status"><b>暂时无法读取云端历史</b><p>${esc(state.cloudError)}当前仅显示此设备可读取的缓存，不能据此判断云端没有记录。</p></div>` : "";
     if (!sessions.length) { host.innerHTML = notice || `<p class="quiet-copy">${state.cloudState === "loading" ? "正在读取公开云端历史记录…" : "暂无公开演讲复盘。完成演讲并同步成功后，各设备均可查看。"}</p>`; return; }
-    host.innerHTML = notice + sessions.map((session) => `<button class="saved-session" type="button" data-session="${esc(session.id)}"><span><b>${esc(session.topic)}</b><small>${new Date(session.startedAt).toLocaleString("zh-CN")} · ${esc(session.speakerId)}${session.cloudVideoReady && session.cloudStored ? " · 录像与报告已存云端" : session.cloudStored ? " · 报告已存云端，录像待同步" : " · 本机缓存，尚未云端确认"}</small></span><span>查看复盘 ↗</span></button>`).join("");
+    host.innerHTML = notice + sessions.map((session) => `<div class="saved-session-row"><button class="saved-session" type="button" data-session="${esc(session.id)}"><span><b>${esc(session.topic)}</b><small>${new Date(session.startedAt).toLocaleString("zh-CN")} · ${esc(session.speakerId)}${session.cloudDeletionConfirmed ? " · 云端已删除，本机待清理" : session.cloudVideoReady && session.cloudStored ? " · 录像与报告已存云端" : session.cloudStored ? " · 报告已存云端，录像待同步" : " · 本机缓存，尚未云端确认"}</small></span><span>查看复盘 ↗</span></button><button class="session-delete" type="button" data-delete-session="${esc(session.id)}" aria-label="删除演讲：${esc(session.topic)}" ${state.syncingIds.has(session.id) || state.actionBusy ? "disabled" : ""}>删除</button></div>`).join("");
+    host.querySelectorAll("[data-delete-session]").forEach(button => button.addEventListener("click", () => {
+      const session = sessions.find(item => item.id === button.dataset.deleteSession);
+      if (session) requestDelete(session);
+    }));
     host.querySelectorAll("[data-session]").forEach((button) => button.addEventListener("click", () => {
       const session = sessions.find((item) => item.id === button.dataset.session); if (!session) return;
       $("#coach-report").hidden = false; $("#coach-report-text").value = session.report || "此旧记录没有报告正文。"; renderReplay(session);
@@ -1003,7 +1122,7 @@
   $("#live-tab").addEventListener("click", () => switchView("live"));
   $("#coach-case").addEventListener("change", (event) => chooseCase(event.target.value));
   $("#coach-outline").addEventListener("input", (event) => {
-    if (state.session) return;
+    if (state.session || state.pendingDraft || state.actionBusy) return;
     state.caseRequest += 1;
     $("#coach-case").value = "custom";
     setPoints(event.target.value.split(/\n+/).map((text) => ({ text })));
@@ -1027,7 +1146,7 @@
       const button = event.target.closest("#coach-sync-session");
       const session = currentReportSession();
       button.disabled = true; button.textContent = "正在上传…";
-      syncSavedSession(session).then(() => setText("#coach-cue-copy", "录像和报告已同步到公开云端，其他设备现在可以查看。"))
+      syncSavedSession(session).then(updated => setText("#coach-cue-copy", updated.cloudVideoReady ? "录像和报告已同步到公开云端，其他设备现在可以查看。" : "报告已同步到公开云端；录像状态请查看复盘说明。"))
         .catch((error) => { button.disabled = false; button.textContent = "重试公开同步"; setText("#coach-replay-video-note", `同步失败：${error.message}`); });
     }
   });
@@ -1054,6 +1173,20 @@
     button.tabIndex = index ? -1 : 0;
   });
 
+  document.querySelectorAll("[data-draft-action]").forEach(button => button.addEventListener("click", () => {
+    const action = button.dataset.draftAction;
+    if (action === "save") saveDraft();
+    else if (action === "discard") discardDraft();
+    else if (action === "choose") showDraftChoice();
+    else if (!state.actionBusy) { $("#coach-save-dialog").close(); $("#coach-report").scrollIntoView({ behavior: "smooth", block: "start" }); }
+  }));
+  $("#coach-save-dialog").addEventListener("cancel", event => { if (state.actionBusy) event.preventDefault(); });
+  $("#coach-delete-dialog").addEventListener("cancel", event => { if (state.actionBusy) event.preventDefault(); else state.deleteTarget = null; });
+  $("#coach-delete-cancel").addEventListener("click", () => { if (!state.actionBusy) { state.deleteTarget = null; $("#coach-delete-dialog").close(); } });
+  $("#coach-delete-confirm").addEventListener("click", confirmDelete);
+  window.addEventListener("beforeunload", event => {
+    if (state.session || state.pendingDraft || state.actionBusy || state.syncingIds.size) { event.preventDefault(); event.returnValue = ""; }
+  });
   loadCases().then(renderSessions);
   refreshCloudSessions();
   updateStartAvailability();
