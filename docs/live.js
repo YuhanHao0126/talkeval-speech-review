@@ -3,6 +3,7 @@
 
   const $ = (selector) => document.querySelector(selector);
   const STORAGE_KEY = "talkeval-live-sessions-v1";
+  const DELETION_KEY = "talkeval-session-deletions-v1";
   const MEDIA_DB = "talkeval-live-recordings-v1";
   const CLOUD_API = "https://talkeval-speech-review.expelliarmus-yh05.chatgpt.site";
   const state = {
@@ -19,7 +20,7 @@
     ocrWorker: null, ocrLoading: null, ocrBusy: false, ocrTimer: null, lastOcrAt: 0,
     caseRequest: 0, lastWaveAt: 0, reportSession: null, stopping: false,
     cloudState: "loading", cloudError: "", cloudRefresh: null, historyEpoch: 0,
-    pendingDraft: null, actionBusy: false, deleteTarget: null, syncingIds: new Set(),
+    pendingDraft: null, actionBusy: false, deleteTarget: null, syncingIds: new Set(), deletionFlush: null,
   };
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
   const elapsed = () => state.session ? Math.max(0, (Date.now() - state.session.startedAt) / 1000) : 0;
@@ -28,11 +29,31 @@
     try { const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); return Array.isArray(value) ? value : []; }
     catch { return []; }
   };
+  function readDeletionJobs() {
+    try {
+      const value = JSON.parse(localStorage.getItem(DELETION_KEY) || "[]");
+      return Array.isArray(value) ? value.filter(item => item && typeof item.id === "string") : [];
+    } catch { return []; }
+  }
+  function saveDeletionJob(job) {
+    const jobs = readDeletionJobs(), previous = jobs.find(item => item.id === job.id);
+    Object.assign(job, { localDeleted: Boolean(previous?.localDeleted || job.localDeleted), cloudDeleted: Boolean(previous?.cloudDeleted || job.cloudDeleted) });
+    localStorage.setItem(DELETION_KEY, JSON.stringify([job, ...jobs.filter(item => item.id !== job.id)]));
+  }
+  const deletionJob = id => readDeletionJobs().find(item => item.id === id);
+  const pendingDeletionJobs = () => readDeletionJobs().filter(item => !item.localDeleted || !item.cloudDeleted);
+  function deletionScope(session) {
+    if (session.cloudDeletionConfirmed) return "local";
+    if (session.cloudStored || session.cloudVideoReady || state.remoteSessions.some(item => item.id === session.id)) return "cloud";
+    if (session.cloudUploadAttempted === false) return "local";
+    return "unknown";
+  }
   function allSavedSessions() {
     const local = new Map(readSessions().map((session) => [session.id, session]));
     const remote = new Map(state.remoteSessions.map((session) => [session.id, session]));
     const ids = new Set([...local.keys(), ...remote.keys()]);
-    return [...ids].map((id) => {
+    const removed = new Set(readDeletionJobs().filter(job => job.localDeleted).map(job => job.id));
+    return [...ids].filter(id => !removed.has(id)).map((id) => {
       const device = local.get(id); const cloud = remote.get(id);
       if (device?.cloudDeletionConfirmed) return device;
       if (!cloud) return device;
@@ -164,7 +185,12 @@
       }
       return response;
     } catch (error) {
-      if (error.name === "AbortError") throw new Error("连接云端超时");
+      if (error.name === "AbortError") throw new Error("连接云端超时，本机资料仍可单独清理。");
+      if (error instanceof TypeError || /Failed to fetch|NetworkError|Load failed/i.test(error.message || "")) {
+        const unavailable = new Error("无法连接云端，可能被访问权限或跨域设置拦截；云端删除尚未确认。");
+        unavailable.code = "cloud_unreachable";
+        throw unavailable;
+      }
       throw error;
     } finally { clearTimeout(timeout); }
   }
@@ -186,7 +212,7 @@
   }
   async function syncSavedSession(session) {
     if (!session || state.pendingDraft?.id === session.id) throw new Error("请先选择保存本场演讲。");
-    if (session.cloudDeletionConfirmed) throw new Error("此记录正在删除，不能再次同步。");
+    if (session.cloudDeletionConfirmed || deletionJob(session.id)) throw new Error("此记录已申请删除，不能再次同步。");
     if (state.syncingIds.has(session.id) || state.deleteTarget?.id === session.id) throw new Error("本条记录正在处理，请稍候。");
     state.syncingIds.add(session.id);
     state.historyEpoch += 1;
@@ -252,6 +278,7 @@
       }
       state.remoteSessions = result.sessions;
       state.cloudState = "ready"; state.cloudError = "";
+      await retryPendingDeletions();
       setText("#cloud-session-status", `公开云端 · ${state.remoteSessions.length} 场`);
     } catch (error) {
       state.cloudState = "error"; state.cloudError = error.message;
@@ -992,7 +1019,7 @@
 
   function setChoiceBusy(busy) {
     state.actionBusy = busy;
-    document.querySelectorAll("[data-draft-action], #coach-delete-confirm, #coach-delete-cancel").forEach(button => { button.disabled = busy; });
+    document.querySelectorAll("[data-draft-action], #coach-delete-confirm, #coach-delete-cancel, #coach-delete-local").forEach(button => { button.disabled = busy; });
     updateStartAvailability();
   }
   function showDraftChoice() {
@@ -1100,51 +1127,108 @@
       if (!$("#coach-save-dialog").open) $("#coach-save-dialog").showModal();
     } finally { setChoiceBusy(false); }
   }
-  function needsCloudDelete(session) {
-    // Older records may already have uploaded chunks even without saved metadata.
-    return !session.cloudDeletionConfirmed && (session.cloudStored || session.cloudVideoReady || session.cloudUploadAttempted !== false);
+  function needsCloudDelete(session) { return deletionScope(session) !== "local"; }
+  async function deleteFromCloud(id) {
+    const response = await cloudFetch(`/api/sessions/${encodeURIComponent(id)}`, { method: "DELETE" });
+    if (response.status !== 204) {
+      let result;
+      try { result = await response.json(); } catch { throw new Error("后台没有返回可确认的删除结果，云端记录仍待核实。"); }
+      if (result.deleted !== true || result.id !== id) throw new Error("后台尚未确认这条记录及录像已完整删除。");
+    }
+  }
+  async function removeLocalSession(job) {
+    await deleteRecording(job.videoId || job.id);
+    if (job.videoId && job.videoId !== job.id) await deleteRecording(job.id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(readSessions().filter(item => item.id !== job.id)));
+    job.localDeleted = true; job.localError = "";
+    saveDeletionJob(job);
+    state.remoteSessions = state.remoteSessions.filter(item => item.id !== job.id);
+    clearReport(job.id);
   }
   function requestDelete(session) {
-    if (state.actionBusy || state.syncingIds.has(session.id)) return;
+    if (state.actionBusy || state.deletionFlush || state.syncingIds.has(session.id)) return;
     state.deleteTarget = session;
+    const scope = deletionScope(session);
+    const offline = scope !== "local" && state.cloudState === "error";
     setText("#coach-delete-title", `删除《${session.topic}》？`);
-    setText("#coach-delete-description", needsCloudDelete(session)
-      ? "这会删除云端及本机的录像、报告和分析记录，其他设备也将无法查看。删除后无法恢复。后台未确认成功时会保留列表记录。"
-      : "这会删除本设备的录像、报告和分析记录。此记录尚未上传到云端，删除后无法恢复。");
+    setText("#coach-delete-description", scope === "local"
+      ? "这条记录只需清理本机。将删除本设备的录像、报告和分析数据，不需要连接云端。删除后无法恢复。"
+      : offline
+        ? "目前连接不到云端。确认后将删除本机录像与报告，并保留云端待删请求；本机删除无法恢复，其他设备上的云端副本可能仍可见。"
+      : scope === "cloud"
+        ? "这条记录已在云端确认。完整删除需要后台确认；如果暂时无法连接，可先删除本机副本，并保留云端待删请求。"
+        : "这条旧记录的云端保存状态未确认。可以尝试完整删除；也可以先删除本机副本，并保留云端待删请求。");
+    setText("#coach-delete-confirm", scope === "local" ? "删除本机录像与报告" : offline ? "先删除本机，云端待删" : "删除云端与本机");
+    $("#coach-delete-confirm").dataset.deferCloud = String(offline);
+    setText("#coach-delete-local", offline ? "仍尝试完整删除" : "先删除本机，云端待删");
+    $("#coach-delete-local").dataset.deferCloud = String(!offline);
+    $("#coach-delete-local").hidden = scope === "local";
+    $("#coach-delete-local-note").hidden = scope === "local";
     setText("#coach-delete-status", "");
     $("#coach-delete-dialog").showModal();
   }
-  async function confirmDelete() {
+  async function confirmDelete(deferCloud = false) {
     const session = state.deleteTarget;
-    if (!session || state.actionBusy || state.syncingIds.has(session.id)) return;
+    if (!session || state.actionBusy || state.deletionFlush || state.syncingIds.has(session.id)) return;
     setChoiceBusy(true); state.historyEpoch += 1;
+    let job = deletionJob(session.id);
     try {
-      if (needsCloudDelete(session)) {
+      const cloudRequired = needsCloudDelete(session);
+      if (cloudRequired && !deferCloud && !job?.cloudDeleted) {
         setText("#coach-delete-status", "正在请求删除云端录像与报告…");
-        const response = await cloudFetch(`/api/sessions/${encodeURIComponent(session.id)}`, { method: "DELETE" });
-        if (response.status !== 204) {
-          const result = await response.json();
-          if (result.deleted !== true || result.id !== session.id) throw new Error("后台尚未确认完整删除，请联系项目管理员检查删除接口。");
-        }
-        // Acknowledgement must cover both database metadata and all video chunks.
+        await deleteFromCloud(session.id);
         session.cloudDeletionConfirmed = true; session.cloudStored = false; session.cloudVideoReady = false;
         persistSession(session);
-        state.remoteSessions = state.remoteSessions.filter(item => item.id !== session.id);
       }
-      setText("#coach-delete-status", "正在清理本机副本…");
-      await deleteRecording(session.videoId || session.id);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(readSessions().filter(item => item.id !== session.id)));
-      state.remoteSessions = state.remoteSessions.filter(item => item.id !== session.id);
-      clearReport(session.id); state.deleteTarget = null;
-      $("#coach-delete-dialog").close();
-      setText("#coach-history-feedback", "已删除所选演讲的录像和复盘。");
+      // Persist explicit deletion intent before removing data; refresh cannot resurrect the record.
+      job = { id: session.id, videoId: session.videoId || session.id, topic: session.topic || "未命名演讲",
+        requestedAt: job?.requestedAt || Date.now(), localDeleted: job?.localDeleted || false,
+        cloudDeleted: !cloudRequired || session.cloudDeletionConfirmed || job?.cloudDeleted || false,
+        cloudRequired, lastError: "", localError: "" };
+      saveDeletionJob(job);
+      setText("#coach-delete-status", "正在清理本机录像与报告…");
+      await removeLocalSession(job);
+      state.deleteTarget = null; $("#coach-delete-dialog").close();
+      setText("#coach-history-feedback", job.cloudDeleted
+        ? cloudRequired ? "云端及本机的录像与复盘已删除。" : "本机录像与复盘已删除。"
+        : "本机录像与复盘已删除，云端删除待完成。其他设备上的云端副本可能仍可见；连接恢复后会重试。");
     } catch (error) {
+      if (job && !job.localDeleted) { job.localError = error.message; try { saveDeletionJob(job); } catch { /* Preserve the original error. */ } }
       setText("#coach-delete-status", session.cloudDeletionConfirmed
-        ? `云端已删除，本机清理未完成：${error.message}。请重试清理。`
-        : `未完成删除：${error.message}。记录已保留。`);
+        ? `云端已删除，本机清理未完成：${error.message}`
+        : `未完成全部删除：${error.message}${needsCloudDelete(session) ? " 可选择下方“先删除本机，云端待删”。" : ""}`);
     } finally {
       state.historyEpoch += 1; setChoiceBusy(false); renderSessions(); renderMemory();
     }
+  }
+  async function retryPendingDeletions() {
+    if (state.deletionFlush) return state.deletionFlush;
+    if (state.actionBusy || state.deleteTarget || !pendingDeletionJobs().length) return;
+    state.deletionFlush = (async () => {
+      for (const saved of pendingDeletionJobs()) {
+        if (state.syncingIds.has(saved.id)) continue;
+        const job = { ...saved }; state.historyEpoch += 1;
+        if (!job.localDeleted) {
+          try { await removeLocalSession(job); }
+          catch (error) { job.localError = error.message; saveDeletionJob(job); continue; }
+        }
+        if (!job.cloudDeleted) {
+          try { await deleteFromCloud(job.id); job.cloudDeleted = true; job.completedAt = Date.now(); job.lastError = ""; }
+          catch (error) { job.lastError = error.message; }
+          saveDeletionJob(job);
+        }
+        state.historyEpoch += 1;
+      }
+    })().finally(() => { state.deletionFlush = null; renderSessions(); renderMemory(); });
+    renderSessions();
+    return state.deletionFlush;
+  }
+  function renderPendingDeletions() {
+    const host = $("#pending-deletions");
+    const jobs = pendingDeletionJobs();
+    if (!host) return;
+    host.hidden = !jobs.length;
+    host.innerHTML = jobs.length ? `<div class="pending-delete-heading"><b>待完成的删除 · ${jobs.length} 条</b><button type="button" data-retry-deletions class="secondary-button" ${state.deletionFlush || state.actionBusy ? "disabled" : ""}>${state.deletionFlush ? "正在重试…" : "重试待删请求"}</button></div><p>本机与云端分别显示状态。云端未确认前，其他设备可能仍可见；请保留此浏览器的数据，以便恢复连接后继续处理。</p>${jobs.map(job => `<div class="pending-delete-item"><b>${esc(job.topic)}</b><span>${job.localDeleted ? "本机已删除" : "本机清理待完成"} · ${job.cloudDeleted ? "云端已完成" : "云端待删除"}</span>${job.localError || job.lastError ? `<small>${esc(job.localError || job.lastError)}</small>` : ""}</div>`).join("")}` : "";
   }
 
   function renderReplay(session) {
@@ -1182,12 +1266,13 @@
     }).catch((error) => { if (state.reportSession?.id === session.id) note.textContent = `读取录像失败：${error.message}`; });
   }
   function renderSessions() {
+    renderPendingDeletions();
     const sessions = allSavedSessions().sort((a, b) => (b.startedAt || 0) - (a.startedAt || 0)).slice(0, 100);
     setText("#saved-session-count", state.cloudState === "error" ? `${sessions.length} 场缓存` : `${sessions.length} 场`);
     const host = $("#saved-session-list");
     const notice = state.cloudState === "error" ? `<div class="history-connection-note" role="status"><b>暂时无法读取云端历史</b><p>${esc(state.cloudError)}当前仅显示此设备可读取的缓存，不能据此判断云端没有记录。</p></div>` : "";
     if (!sessions.length) { host.innerHTML = notice || `<p class="quiet-copy">${state.cloudState === "loading" ? "正在读取公开云端历史记录…" : "暂无公开演讲复盘。完成演讲并同步成功后，各设备均可查看。"}</p>`; return; }
-    host.innerHTML = notice + sessions.map((session) => `<div class="saved-session-row"><button class="saved-session" type="button" data-session="${esc(session.id)}"><span><b>${esc(session.topic)}</b><small>${new Date(session.startedAt).toLocaleString("zh-CN")} · ${esc(session.speakerId)}${session.cloudDeletionConfirmed ? " · 云端已删除，本机待清理" : session.cloudVideoReady && session.cloudStored ? " · 录像与报告已存云端" : session.cloudStored ? " · 报告已存云端，录像待同步" : " · 本机缓存，尚未云端确认"}</small></span><span>查看复盘 ↗</span></button><button class="session-delete" type="button" data-delete-session="${esc(session.id)}" aria-label="删除演讲：${esc(session.topic)}" ${state.syncingIds.has(session.id) || state.actionBusy ? "disabled" : ""}>删除</button></div>`).join("");
+    host.innerHTML = notice + sessions.map((session) => `<div class="saved-session-row"><button class="saved-session" type="button" data-session="${esc(session.id)}"><span><b>${esc(session.topic)}</b><small>${new Date(session.startedAt).toLocaleString("zh-CN")} · ${esc(session.speakerId)}${session.cloudDeletionConfirmed ? " · 云端已删除，本机待清理" : session.cloudVideoReady && session.cloudStored ? " · 录像与报告已存云端" : session.cloudStored ? " · 报告已存云端，录像待同步" : " · 本机缓存，尚未云端确认"}</small></span><span>查看复盘 ↗</span></button><button class="session-delete" type="button" data-delete-session="${esc(session.id)}" aria-label="删除演讲：${esc(session.topic)}" ${state.syncingIds.has(session.id) || state.actionBusy || state.deletionFlush ? "disabled" : ""}>删除</button></div>`).join("");
     host.querySelectorAll("[data-delete-session]").forEach(button => button.addEventListener("click", () => {
       const session = sessions.find(item => item.id === button.dataset.deleteSession);
       if (session) requestDelete(session);
@@ -1295,7 +1380,20 @@
   $("#coach-save-dialog").addEventListener("cancel", event => { if (state.actionBusy) event.preventDefault(); });
   $("#coach-delete-dialog").addEventListener("cancel", event => { if (state.actionBusy) event.preventDefault(); else state.deleteTarget = null; });
   $("#coach-delete-cancel").addEventListener("click", () => { if (!state.actionBusy) { state.deleteTarget = null; $("#coach-delete-dialog").close(); } });
-  $("#coach-delete-confirm").addEventListener("click", confirmDelete);
+  $("#coach-delete-confirm").addEventListener("click", event => confirmDelete(event.currentTarget.dataset.deferCloud === "true"));
+  $("#coach-delete-local").addEventListener("click", event => confirmDelete(event.currentTarget.dataset.deferCloud === "true"));
+  $("#pending-deletions").addEventListener("click", event => {
+    if (event.target.closest("[data-retry-deletions]")) retryPendingDeletions().catch(error => setText("#coach-history-feedback", `待删请求未完成：${error.message}`));
+  });
+  window.addEventListener("online", () => { if (pendingDeletionJobs().length) refreshCloudSessions(); });
+  window.addEventListener("storage", event => {
+    if ([STORAGE_KEY, DELETION_KEY].includes(event.key)) {
+      state.historyEpoch += 1;
+      const job = state.reportSession && deletionJob(state.reportSession.id);
+      if (job?.localDeleted) clearReport(job.id);
+      renderSessions(); renderMemory();
+    }
+  });
   window.addEventListener("beforeunload", event => {
     if (state.session || state.pendingDraft || state.actionBusy || state.syncingIds.size) { event.preventDefault(); event.returnValue = ""; }
   });

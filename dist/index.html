@@ -7,11 +7,11 @@
   <title>TalkEval++ · 演讲表达复盘</title>
   <meta name="description" content="沿着演讲时间轴，核对观点、声音与画面证据。TalkEval++ 多模态演讲复盘工作台。" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%236b5ce7'/%3E%3Cpath d='M17 19h30v7H36v22h-8V26H17z' fill='white'/%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="./styles.css?v=20261015-context-2" />
+  <link rel="stylesheet" href="./styles.css?v=20261015-delete-1" />
   <link rel="stylesheet" href="./replay.css" />
-  <link rel="stylesheet" href="./light-theme.css?v=20261015-context-2" />
-  <link rel="stylesheet" href="./live-studio.css?v=20261015-context-2" />
-  <link rel="stylesheet" href="./context-fit.css?v=20261015-context-2" />
+  <link rel="stylesheet" href="./light-theme.css?v=20261015-delete-1" />
+  <link rel="stylesheet" href="./live-studio.css?v=20261015-delete-1" />
+  <link rel="stylesheet" href="./context-fit.css?v=20261015-delete-1" />
 </head>
 <body class="public-site">
   <a class="skip-link" href="#detail-column">跳到分析工作区</a>
@@ -84,7 +84,7 @@
           <details class="audience-panel panel"><summary>观众反应记录<span>⌄</span></summary><label>记录方式<select id="coach-reaction-mode"><option value="observed">现场观察</option><option value="demo">模拟信号</option></select></label><p>演讲期间可在观点卡片手动记录掌声。模拟信号会单独注明来源。</p></details>
         </aside>
       </div>
-      <div class="studio-aftercare"><section class="memory-panel panel"><div class="coach-panel-head"><div><p class="eyebrow">GROW WITH EVERY SPEECH</p><h2>把经验留给下一次</h2></div><span class="memory-symbol">↗</span></div><div id="coach-memory" class="memory-content"></div><div class="memory-foot"><span id="coach-memory-count">0 次历史练习</span><span>同一记忆 ID 关联历史练习</span></div></section><section class="saved-sessions panel"><div class="coach-panel-head"><div><p class="eyebrow">YOUR SPEECH JOURNAL</p><h2>历史演讲复盘</h2></div><div class="saved-session-status"><button id="coach-refresh-history" class="history-refresh" type="button" aria-label="刷新云端历史">↻ 刷新</button><span id="cloud-session-status" class="mini-badge">正在连接云端…</span><span id="saved-session-count" class="mini-badge">0 场</span></div></div><p id="coach-history-feedback" class="history-feedback" role="status" aria-live="polite"></p><div id="saved-session-list" class="saved-session-list"></div></section></div>
+      <div class="studio-aftercare"><section class="memory-panel panel"><div class="coach-panel-head"><div><p class="eyebrow">GROW WITH EVERY SPEECH</p><h2>把经验留给下一次</h2></div><span class="memory-symbol">↗</span></div><div id="coach-memory" class="memory-content"></div><div class="memory-foot"><span id="coach-memory-count">0 次历史练习</span><span>同一记忆 ID 关联历史练习</span></div></section><section class="saved-sessions panel"><div class="coach-panel-head"><div><p class="eyebrow">YOUR SPEECH JOURNAL</p><h2>历史演讲复盘</h2></div><div class="saved-session-status"><button id="coach-refresh-history" class="history-refresh" type="button" aria-label="刷新云端历史">↻ 刷新</button><span id="cloud-session-status" class="mini-badge">正在连接云端…</span><span id="saved-session-count" class="mini-badge">0 场</span></div></div><p id="coach-history-feedback" class="history-feedback" role="status" aria-live="polite"></p><div id="pending-deletions" class="pending-deletions" aria-live="polite" hidden></div><div id="saved-session-list" class="saved-session-list"></div></section></div>
       <aside id="coach-draft-banner" class="draft-banner" hidden><div><b>本场录制尚未保存</b><p>可以先看报告，再决定是否保留。保存后才会公开同步。</p></div><div class="draft-actions"><button class="secondary-button" data-draft-action="discard">不保存</button><button class="primary-button" data-draft-action="choose">选择保存方式</button></div></aside>
       <section id="coach-report" class="coach-report panel" hidden><div class="coach-panel-head"><div><p class="eyebrow">SESSION SUMMARY</p><h2>本场演讲报告</h2></div><div class="report-actions"><button id="coach-copy-report" class="secondary-button">复制报告</button><button id="coach-download-report" class="secondary-button">下载文字</button><button id="coach-download-json" class="secondary-button">导出复盘 JSON</button></div></div><div id="coach-report-overview" class="session-overview"></div><div id="coach-replay-detail" class="coach-replay-detail"></div><details class="full-report"><summary>展开完整文字报告 <span>内容、声音、动作、PPT 与练习建议</span></summary><textarea id="coach-report-text" rows="12" readonly aria-label="完整演讲复盘报告"></textarea></details></section>
       <footer class="workspace-footer"><span><i></i>TalkEval++ · 每一次表达，都值得被看见</span><span>自动观察提供线索，表达效果由你复核。</span></footer>
@@ -92,8 +92,8 @@
   </div>
   <dialog id="evidence-lightbox" class="evidence-lightbox" aria-labelledby="lightbox-caption"><div class="lightbox-bar"><p id="lightbox-caption">演讲证据画面</p><button type="button" id="lightbox-close" aria-label="关闭放大画面">关闭 ×</button></div><img id="lightbox-image" alt="演讲证据画面" /></dialog>
   <script src="./hls.min.js"></script>
-  <script src="./context-fit.js?v=20261015-context-2"></script>
-  <script src="./replay.js?v=20261015-context-2"></script>
+  <script src="./context-fit.js?v=20261015-delete-1"></script>
+  <script src="./replay.js?v=20261015-delete-1"></script>
   <dialog id="coach-save-dialog" class="session-dialog" aria-labelledby="coach-save-title" aria-describedby="coach-save-summary coach-save-progress">
     <div class="dialog-symbol" aria-hidden="true">✓</div><p class="eyebrow">YOUR SESSION, YOUR CHOICE</p><h2 id="coach-save-title">本场演讲，留下来吗？</h2><p id="coach-save-summary" class="dialog-summary"></p>
     <div class="dialog-info"><b>保存录像与分析报告</b><p>选择保存后，将同步到公开云端。其他设备和访客也可以查看这场演讲。</p></div>
@@ -105,7 +105,8 @@
     <div class="dialog-symbol danger" aria-hidden="true">−</div><p class="eyebrow">MANAGE YOUR SPEECH JOURNAL</p><h2 id="coach-delete-title">删除这场演讲？</h2><p id="coach-delete-description" class="dialog-summary"></p>
     <p id="coach-delete-status" class="dialog-status" role="status" aria-live="polite"></p>
     <div class="dialog-actions"><button id="coach-delete-cancel" class="secondary-button" autofocus>保留记录</button><button id="coach-delete-confirm" class="danger-button">删除录像与报告</button></div>
+    <div class="delete-local-option"><button id="coach-delete-local" class="secondary-button" type="button" hidden>先删除本机，云端待删</button><p id="coach-delete-local-note" hidden>本机录像与报告将立即清理，无法恢复。云端未确认删除前，其他设备可能仍可见；网页将保留待删请求，在恢复连接后重试。</p></div>
   </dialog>
-  <script src="./live.js?v=20261015-context-2"></script>
+  <script src="./live.js?v=20261015-delete-1"></script>
 </body>
 </html>
