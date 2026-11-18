@@ -7,5 +7,9 @@
   "step_seconds": 0.2,
   "future_ground_truth_used": false,
   "future_audio_used": false,
-  "video_sha256": "aa369d96936638d3653760ae4385522f5dce372612f231e8a009aaeee1200118"
+  "video_sha256": "aa369d96936638d3653760ae4385522f5dce372612f231e8a009aaeee1200118",
+  "case_library": [
+    "demo_poisson_20261118"
+  ],
+  "legacy_cases_removed": true
 }
