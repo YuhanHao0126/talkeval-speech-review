@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
 "use strict";
 const state = {
   cases: [], builtinCases: [], recordingUrl:null, selectedCase: null, selectedBeat: null,
@@ -825,7 +825,7 @@ async function loadCases() {
     if (!state.selectedCase && state.cases.length) {
       const requested=new URLSearchParams(location.search), id=requested.get('case');
       const selected=state.cases.some(c=>c.case_id===id)?id:state.cases[0].case_id;
-      const at=Number(requested.get('at'));
+      const at=Number(requested.get('at') ?? (selected==='demo_poisson_20261118'?'31.12':'0')); 
       selectCase(selected,Number.isFinite(at)&&at>0?{at,playing:false}:null);
     }
   } catch (error) {
@@ -860,3 +860,4 @@ document.querySelector("#refresh-button").addEventListener("click", async () => 
 loadCases();
 
 })();
+
