@@ -1,0 +1,55 @@
+﻿TalkEval++ 2026AIC算法创新赛 · 2026年11月18日更新
+参赛编号：AIC-2026-26428933；队伍：溢于言表队；赛题：AI+软件创新。
+
+这是完整项目快照，可以单独解压运行，不用叠加11月6日版本或v13—v23补丁。
+本机主开发目录不变；请在这个副本中复现，勿覆盖正在运行的工作目录。
+
+启动（Windows）
+1. 安装Python 3.11或3.12，在当前目录运行：
+   powershell -ExecutionPolicy Bypass -File setup.ps1
+2. 运行：.venv\Scripts\python.exe 恢复录像缓存时间戳.py
+   此步骤先验证团队演示视频SHA-256，再更新姿态缓存关联。
+3. 双击“启动演示.bat”，或运行：.venv\Scripts\python.exe app.py
+4. 打开 http://127.0.0.1:8765/site/?case=recording_import-poisson-20261106-demo
+   选择“录屏模式”可把视频、PPT、人物及快慢提示放在同一屏。
+   普通页面和录屏布局共用分析；录屏模式本身不录制视频。
+5. 首次在新路径使用声音模型，会重新生成该视频的声学缓存。准备中使用姿态回退，准备完自动使用声音模型。
+
+检查本次功能
+录像：前2秒、后2秒、声音＋动作·训练版；可切原始预测与明确标注的增强演示。
+长时：最长观察前10秒、预测后10秒；超过3秒是探索，声音训练分支仅覆盖短时有声录像。
+慢通道：原自录片5项重点至60.1秒均有文字依据，删除最后表达后不会自动100%。
+现场：用本场PPT与提纲演讲，先确认转写有文字，再检查“跟随演讲内容”。支持手动接管和恢复。
+PPTX文字在浏览器读取；页面渲染需要PowerPoint，也可导入图片并补文字。
+摄像头/麦克风仍由用户主动开始；现场语音使用浏览器服务，并非整个系统完全离线。
+暂时丢失人物应保持上一姿态并暂停预测，恢复有效观测后接回。
+
+代码与权重
+app.py、integration.py：服务与模型路由；original-site：整合网站。
+temporal_model.py、train_long.py、train_ten_seconds.py：姿态模型与训练。
+audio_features.py、audio_motion.py、train_audio.py：历史声学特征与声音残差。
+runs/long-fine-v4/forecast.pt：短时姿态权重。
+runs/ten-seconds-v5/forecast.pt：10秒探索权重。
+runs/audio-fusion-v15/forecast.pt、pose_control.pt：声音权重及同条件无声音对照。
+各runs目录的evaluation.json保存配置、人员分组及逐时间范围结果；display-evaluation.json独立记录增强误差。
+static/content-slides.js、deck-text.js、stage-slides.js：内容翻页与PPT。
+original-site/stage-engine.js：观点与证据；static/stable-cue.js：提示保持。
+static/motion-continuity.js、live.py：丢失保持、质量与历史缓冲。
+
+数据与复现
+data/archive-20261030、expanded-20261105：原片、恢复片及来源。
+data/fine-20261105：20人215段Full姿态；人员划分见speaker_manifest.json。
+data/extended-10s-v1：长时19段提取记录、12段有效。
+data/audio-paired-v15：15人112段配对声学特征；训练/验证/开发评测9/3/3人。
+data/stage-sessions/import-poisson-20261106-demo：团队67.87秒演示录像、字幕、报告、姿态缓存；不参与训练。
+data/stage-decks：5页演讲PPT及其他案例页面，不是待提交的答辩PPT。
+artifacts：历史实测与验证；tests：自动检查；docs：各版操作说明。
+
+本轮在主目录完成48项Python检查和12个前端脚本。训练权重未在本轮重新训练。
+再训练请另复制目录：train_long.py、train_ten_seconds.py、train_audio.py会写入runs输出，保留现有实验。
+声音版确实训练过，但与同条件无声音对照几乎相同，独立精度收益尚未证明。
+基础模型、人物资产、外部视频的许可和来源随项目保留，不将其声明为团队原创。
+
+包内不含虚拟环境、管理密钥、临时访问码、运行日志、额外个人现场录像和历史改前备份。
+原README按时间记录迭代，较早版本的“当前”只对应当时状态；本文件及更新方案是本次提交口径。
+依赖首次安装需要网络；本包未建立永久公网网站，也没有在本轮自动开启临时分享。

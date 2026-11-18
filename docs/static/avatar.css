@@ -1,0 +1,30 @@
+.stage-toolbar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:-4px 0 7px; }
+.avatar-preference-note { margin:0 0 10px; font-size:10px; color:#93899f; line-height:1.6; }
+.view-switch { display:flex; padding:3px; border-radius:8px; background:#f0edf5; gap:2px; }
+.view-switch button { border:0; background:transparent; color:#91899d; padding:6px 13px; font-size:11px; border-radius:6px; font-weight:500; }
+.view-switch button[aria-pressed=true] { background:#fff; color:#6d55aa; box-shadow:0 1px 5px #3e285014; }
+.stage-options { margin-left:auto; display:flex; align-items:center; gap:7px; }
+.stage-toolbar select { font-size:11px; padding:6px 9px; border:0; background:#f6f4f9; color:#8b8197; }
+.stage-options>.text-button { padding:4px 6px; font-size:18px; }
+#stage { height:420px; background:radial-gradient(ellipse at 50% 45%,#f4f1f8 0%,#e8e5ef 85%); }
+.stage-overlay { top:18px; left:18px; }
+.pose-quality { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); padding:6px 10px; color:#857493; background:#ffffffd9; border:1px solid #e7dfee; border-radius:6px; white-space:nowrap; font-size:10px; pointer-events:none; }
+#comparison-labels { position:absolute; bottom:49px; left:0; right:0; display:grid; grid-template-columns:1fr 1fr; text-align:center; font-size:11px; pointer-events:none; }
+#comparison-labels span:first-child { color:#7a60b4; }
+#comparison-labels span:last-child { color:#a97d40; }
+.asset-credit { margin-left:auto; white-space:nowrap; color:#93849e; text-decoration:none; }
+.stage-panel:fullscreen { display:flex; flex-direction:column; border-radius:0; padding:24px max(30px,8vw); background:#f7f5fa; }
+.stage-panel:fullscreen #stage { flex:1; min-height:0; }
+.stage-panel:fullscreen .panel-heading { margin-bottom:15px; }
+.stage-panel:fullscreen .coordinate-note { margin-bottom:0; }
+.stage-panel:fullscreen .legend { margin-top:12px; }
+@media(max-width:420px) {
+  #stage { height:395px; }
+  .stage-toolbar { gap:8px; flex-wrap:wrap; }
+  .stage-options { gap:5px; flex-wrap:wrap; }
+  .view-switch button { padding:6px 10px; }
+  .stage-toolbar select { padding:6px 2px; max-width:85px; }
+  .pose-quality { font-size:9px; padding:6px 8px; }
+  .asset-credit { display:none; }
+  .stage-panel:fullscreen { padding:15px; }
+}

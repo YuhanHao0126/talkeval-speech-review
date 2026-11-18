@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TalkEval++ · 动作预测实验室</title>
+  <link rel="stylesheet" href="/talkeval-speech-review/static/style.css?v=2">
+  <link rel="stylesheet" href="/talkeval-speech-review/static/avatar.css?v=8">
+  <link rel="stylesheet" href="/talkeval-speech-review/static/guidance.css?v=8">
+  <link rel="icon" href="data:,">
+  <script type="importmap">{"imports":{"three":"/talkeval-speech-review/static/vendor/three.module.js"}}</script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/"><span class="brand-icon">T<span>+</span></span><strong>TalkEval<span>++</span></strong></a><span class="divider"></span><span>动作预测实验室</span><span class="local-badge"><i></i> 本机运行 · 实验原型</span></header>
+  <main>
+    <section class="intro"><div><p id="range-eyebrow" class="eyebrow">MOTION FORECAST / 可调时间窗</p><h1>看清下一步，也知道怎么练。</h1><p class="subtitle">预测可以看到未来3秒；切换练习指引，用人物示范手该往哪里走。</p></div><div class="experiment-tag">3D 人物动作预演<span id="window-summary">正在载入已训练时间范围</span></div></section>
+    <section class="toolbar" aria-label="数据与模型">
+      <button id="sample-button" class="primary" type="button">载入演讲示例 <span>↗</span></button>
+      <button id="upload-button" type="button">＋ 上传自己的视频</button><input id="upload" type="file" accept="video/*" hidden>
+      <button id="live-button" type="button">开启摄像头监测</button>
+      <span class="toolbar-spacer"></span><label for="method">预测方法</label><select id="method"><option value="adaptive">时序预测 · 观测与动作门控</option><option value="gru">时序预测 · 原始输出</option><option value="persistence">基线 · 保持姿态</option><option value="velocity">基线 · 匀速外推</option></select>
+    </section>
+    <section class="window-settings" aria-label="观察与预测设置">
+      <label>观察过去 <select id="history-seconds" disabled><option value="2">2 秒</option><option value="3" selected>3 秒</option><option value="4">4 秒</option></select></label>
+      <label>预测未来 <select id="horizon-seconds" disabled><option value="0.5">0.5 秒</option><option value="1">1 秒</option><option value="1.5">1.5 秒</option><option value="2" selected>2 秒 · 练习</option><option value="3">3 秒 · 探索</option></select></label>
+      <label>预演速度 <select id="preview-speed"><option value="1">正常速度</option><option value="0.5" selected>半速 · 看得更清楚</option><option value="0.25">四分之一速度</option></select></label>
+      <p id="window-note">预测范围与播放速度分别设置；更长预测需要更谨慎地参考。</p>
+    </section>
+    <div id="status" class="status" role="status">正在检查模型与示例…</div><progress id="progress" max="1" value="0" hidden></progress>
+    <section class="workspace">
+      <article class="video-panel"><div class="panel-heading"><div><p class="eyebrow">OBSERVED</p><h2 id="video-heading">已观察的演讲</h2></div><span id="observe-badge" class="pill">观察历史</span></div><div class="video-wrap"><video id="video" preload="metadata" playsinline muted></video><div id="empty-video" class="empty-state"><span>◷</span><strong>从一段演讲开始</strong><p>载入示例，或上传不超过120秒的单人视频；建议至少8秒</p></div></div><div class="source-row"><strong id="source-title">尚未选择视频</strong><span id="split-label">—</span></div><div class="history-track"><span id="history-label">观察窗口 —</span><span>仅使用预测时刻及之前的数据</span></div><div class="explanation"><span class="step-number">01</span><div><strong>先观察，再预测</strong><p id="forecast-explanation">从已观察的肩、肘、腕位置与可见性预测后续。</p></div></div><div class="explanation"><span class="step-number">02</span><div><strong>用人物把动作演出来</strong><p>点击下方预演。速度只影响播放，不改变预测时间；可并排查看实际后续，或切回关节点。</p></div></div><p class="privacy">视频在本机处理，不会上传到公开案例库。建议录到腰部以上，并让双肘和双手保持入镜。</p></article>
+      <article id="stage-panel" class="stage-panel">
+        <div class="panel-heading"><div><p class="eyebrow">FORECAST</p><h2 id="forecast-heading">未来动作</h2></div><button id="fullscreen" class="text-button" type="button">全屏展示 ⛶</button></div>
+        <div class="stage-toolbar"><div class="view-switch" aria-label="显示方式"><button id="view-avatar" type="button" aria-pressed="true">写实人物</button><button id="view-skeleton" type="button" aria-pressed="false">关节点</button></div><div class="stage-options"><select id="avatar-character" aria-label="展示人物"><option value="auto">按偏好自动</option><option value="male">男性形象</option><option value="female">女性形象</option></select><select id="avatar-quality" aria-label="人物画质"><option value="standard" selected>流畅 · 1K</option><option value="hd">精细 · 2K</option></select><select id="camera-view" aria-label="人物视角"><option value="portrait">上半身</option><option value="detail">面部近景</option><option value="angle">侧前方</option><option value="full">全身外观</option></select><button id="reset-camera" class="text-button" type="button" aria-label="重置视角">↺</button></div></div>
+        <p id="avatar-preference-note" class="avatar-preference-note">按角色偏好选择展示人物，可手动切换</p>
+        <div class="purpose-toolbar"><label>演示内容 <select id="stage-purpose"><option value="prediction" selected>预测动作</option><option value="review">对照复盘</option><option value="practice">练习一个动作</option></select></label><strong id="purpose-note">模型预计接下来怎样动</strong></div>
+        <div id="practice-controls" class="practice-controls" hidden>
+          <div class="practice-choices"><label>想练什么 <select id="practice-goal"><option value="steady">自然稳定</option><option value="open" selected>展开说明</option><option value="emphasis">强调重点</option></select></label><label>使用哪只手 <select id="practice-hand"><option value="right">右手</option><option value="left">左手</option><option value="both">双手</option></select></label></div>
+          <p id="practice-instructions">等待姿态</p><small id="practice-origin">起点固定后，按自己的节奏跟着练</small>
+          <div class="practice-actions"><button id="practice-capture" type="button">以当前姿态开始</button><button id="practice-start" type="button">看起点</button><button id="practice-play" type="button" class="primary">播放示范</button><button id="practice-end" type="button">看终点</button></div>
+        </div>
+        <div id="stage" data-mode="avatar"><div class="stage-overlay"><span id="forecast-time">+0.50s</span><small>拖动旋转 · 滚轮缩放</small></div><div id="stage-empty" class="stage-placeholder">正在载入3D人物…</div><div id="comparison-labels" hidden><span>左 · 录像实测</span><span>右 · 模型预测</span></div><div id="pose-quality" class="pose-quality">正在读取姿态…</div></div>
+        <div class="legend"><span id="observed-legend"><i class="observed"></i>当前姿态</span><span id="predicted-legend"><i class="predicted"></i>预测残影</span><label id="ghost-toggle"><input id="ghosts" type="checkbox">叠加三帧残影</label><span id="render-rate">画面准备中</span></div>
+        <div id="ghost-key" class="ghost-key"><span>● 现在</span><span>● +0.15秒</span><span>● +0.30秒</span><span>● +0.50秒</span></div>
+        <p id="display-clock" class="display-clock"></p><div class="future-scrubber"><label for="future-scrub">查看动作进度</label><input type="range" id="future-scrub" min="0" max="100" step="1" value="100" aria-label="预演进度"><output id="future-progress">100%</output></div>
+        <p id="detail-measurements" class="panel-note">正在读取手腕位移与肘部角度…</p>
+        <p id="coordinate-note" class="coordinate-note">通用展示人物，未还原本人外貌。未观测手臂用自然姿态占位；手指、表情和下半身不参与预测。</p>
+      </article>
+    </section>
+    <section class="timeline-panel"><div class="playback"><button id="play" type="button" disabled aria-label="播放或暂停">▶</button><div><strong id="anchor-time">00:00.00</strong><span>预测时刻</span></div><input id="timeline" type="range" min="0" max="1" value="0" step="1" disabled aria-label="选择预测时刻"><button id="preview" class="primary" type="button" disabled>预演动作</button><button id="export" type="button" disabled>导出预测 ↓</button></div><div class="time-details"><span id="input-time-label">← 历史输入</span><span id="inference">模型计算 —</span><span id="output-time-label">未来输出 →</span></div><p id="playback-note" class="panel-note">慢放仅用于录播预演，摄像头继续按实际时间监测。</p></section>
+    <details id="motion-details" class="guidance-panel"><summary>查看动作判断依据</summary>
+      <div class="panel-heading"><div><p class="eyebrow">FAST CHANNEL · 看见动作的去向</p><h2 id="fast-title">动作观察与指引</h2></div></div>
+      <div class="guidance-flow"><article><span>01 · 当前观测</span><strong id="guide-quality">等待姿态</strong><p>肩、肘、腕的可见情况</p></article><article><span>02 · 未来预测</span><strong id="guide-left">—</strong><p id="guide-right">—</p></article><article><span>03 · 几何判断</span><strong id="guide-evaluation">—</strong><p id="guide-distance">肩宽作为相对尺度</p></article><article><span>04 · 调整建议</span><strong id="guide-advice">载入视频后显示</strong><p>按练习目标给出提示</p></article></div>
+      <p id="guide-note" class="panel-note">残影显示可能发生的动作；调整建议单独给出。不会把预测姿态当成标准答案。</p>
+      
+    </details>
+    <section class="guidance-panel slow-panel" aria-labelledby="slow-title">
+      <div class="panel-heading"><div><p class="eyebrow">SLOW CHANNEL · 回到表达证据</p><h2 id="slow-title">观点完成情况</h2></div><span class="pill">可编辑提纲与文本</span></div>
+      <div class="slow-inputs"><label>目标观点与必要表达 <small>每行：观点 | 权重 | 必要组；必要组（同义词用 /）</small><textarea id="outline-input" rows="4">说明输入与分析过程 | 3 | 采集/输入；分析/处理
+说明结果反馈形成循环 | 2 | 反馈/建议；改进/下一轮/循环/闭环
+给出具体使用案例 | 1 | 例如/比如/案例；课堂/答辩/路演</textarea></label><label>实际表达文本 <small>粘贴转写或讲稿；下方初始内容是演示样例</small><textarea id="transcript-input" rows="4">我们先采集演讲视频，再分析手势和表达。例如在课堂展示中，学生可以回看自己的动作。</textarea></label></div>
+      <div class="slow-actions"><button id="align-button" type="button" class="primary">重新计算观点覆盖</button><button id="append-example" type="button">填入演示补充句</button><span id="alignment-status" role="status">根据输入文本计算</span></div>
+      <div class="coverage-heading"><span>重要度加权覆盖率</span><strong id="coverage-value">—</strong></div><progress id="coverage-bar" max="1" value="0"></progress>
+      <div id="alignment-results"></div><p id="alignment-note" class="panel-note"></p>
+    </section>
+    <section class="evaluation"><div><p class="eyebrow">HOLDOUT CHECK</p><h2>让预测接受检验</h2><p>留出测试片段的平均关节误差，越小越好。<br>单位为肩宽，包含姿态提取误差。</p></div><div class="metric"><span>时序网络预测</span><strong id="metric-gru">—</strong><small>平均位移误差 ADE</small></div><div class="metric"><span>保持姿态基线</span><strong id="metric-persistence">—</strong><small>平均位移误差 ADE</small></div><div class="metric"><span>匀速外推基线</span><strong id="metric-velocity">—</strong><small>平均位移误差 ADE</small></div></section>
+    <p id="adaptive-metric" class="evaluation-note"></p><p id="evaluation-note" class="evaluation-note">加载训练与评测信息…</p>
+    <footer><strong>TalkEval++</strong><span>短时姿态预测与规则指引原型；预测误差、动作建议效果和观点理解应分别验证。</span><a class="asset-credit" href="/talkeval-speech-review/static/avatar/README.md" target="_blank" rel="noopener">人物资源 / 许可</a></footer>
+  </main>
+  <script type="module" src="/talkeval-speech-review/static/app.js?v=8"></script>
+</body>
+</html>

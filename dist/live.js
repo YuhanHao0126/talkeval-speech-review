@@ -1,18 +1,18 @@
-(() => {
+﻿(() => {
   "use strict";
 
   const $ = (selector) => document.querySelector(selector);
   const STORAGE_KEY = "talkeval-live-sessions-v1";
   const DELETION_KEY = "talkeval-session-deletions-v1";
   const MEDIA_DB = "talkeval-live-recordings-v1";
-  const CLOUD_API = "https://talkeval-speech-review.expelliarmus-yh05.chatgpt.site";
+  const shared = window.TalkEvalShared;
   const state = {
     cases: [], selectedCase: null, points: [], session: null, timer: null,
     cameraStream: null, screenStream: null, audioContext: null, analyser: null,
     mediaRecorder: null, recordingChunks: [], recordingChunkCount: 0,
     recordingLocalWrites: Promise.resolve(),
     recordingLocalError: "", remoteSessions: [], replayUrl: null,
-    speech: null, speechOn: false, lastSpeechAt: 0, lastUtteranceAt: 0,
+    speech: null, speechOn: false, speechStatus:'等待开始演讲', speechRestartTimer:null, lastSpeechAt: 0, lastUtteranceAt: 0,
     audioSamples: [], voiceBaseline: [], currentVolume: null, currentPitch: null,
     faceTask: null, poseTask: null, visionLoading: false, visualRaf: null,
     lastVisionAt: 0, previousWrists: null, visualSummary: [], visualWindow: [], analysisAudio: [], lastVisualArchiveAt: -1,
@@ -26,7 +26,7 @@
   const elapsed = () => state.session ? Math.max(0, (Date.now() - state.session.startedAt) / 1000) : 0;
   const stamp = (seconds) => `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
   const readSessions = () => {
-    try { const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); return Array.isArray(value) ? value : []; }
+    try { const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); return Array.isArray(value) ? value.map(s=>s.cloudStoreVersion==='F11'?s:{...s,cloudStored:false,cloudVideoReady:false,cloudUploadAttempted:false}) : []; }
     catch { return []; }
   };
   function readDeletionJobs() {
@@ -167,39 +167,13 @@
     const localReady = !state.recordingLocalError;
     return { chunks: state.recordingChunkCount, localReady, cloudReady: false };
   }
-  async function cloudFetch(path, options = {}) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 12000);
-    try {
-      const response = await fetch(`${CLOUD_API}${path}`, { ...options, signal: controller.signal, mode: "cors", credentials: "omit" });
-      if (!response.ok) {
-        if (response.status === 401 || response.status === 403) {
-          const denied = new Error("云端访问受限，请由后台所有者恢复公开历史接口权限。");
-          denied.status = response.status;
-          throw denied;
-        }
-        if (options.method === "DELETE" && (response.status === 404 || response.status === 405)) throw new Error("后台尚未提供可确认的删除接口，需要项目管理员接通后再删除。");
-        let message = `云端服务返回 ${response.status}`;
-        try { message = (await response.json()).error || message; } catch { /* Non-JSON error response. */ }
-        throw new Error(message);
-      }
-      return response;
-    } catch (error) {
-      if (error.name === "AbortError") throw new Error("连接云端超时，本机资料仍可单独清理。");
-      if (error instanceof TypeError || /Failed to fetch|NetworkError|Load failed/i.test(error.message || "")) {
-        const unavailable = new Error("无法连接云端，可能被访问权限或跨域设置拦截；云端删除尚未确认。");
-        unavailable.code = "cloud_unreachable";
-        throw unavailable;
-      }
-      throw error;
-    } finally { clearTimeout(timeout); }
-  }
+  async function cloudFetch(path, options = {}) { return shared.request(path, options); }
   async function uploadCloudChunk(sessionId, index, blob) {
     const response = await cloudFetch(`/api/sessions/${encodeURIComponent(sessionId)}/chunks/${index}`, { method: "PUT", headers: { "Content-Type": blob.type || "video/webm" }, body: blob });
     return response.json();
   }
   async function saveCloudSession(session) {
-    const publicRecord = { ...session, audio: [], videoChunks: session.videoChunks || 0 };
+    const publicRecord = { ...session, audio: session.audio || [], caseBundleVersion: 'F12', videoChunks: session.videoChunks || 0 };
     if (!session.videoSaved && !session.cloudVideoReady) {
       publicRecord.videoId = null;
       publicRecord.videoChunks = 0;
@@ -223,7 +197,7 @@
     try {
       // Check access without uploading, so an unavailable service leaves a purely local record.
       const availability = await (await cloudFetch("/api/sessions")).json();
-      if (!Array.isArray(availability.sessions)) throw new Error("云端历史接口尚不可用，未上传本场记录。");
+      if (!Array.isArray(availability.sessions)) throw new Error("本机服务历史接口尚不可用，未上传本场记录。");
       let parts = [];
       if (session.videoId && session.videoSaved) {
         parts = await loadRecordingParts(session.videoId, session.videoChunks);
@@ -240,18 +214,25 @@
       if (parts.length) updated.videoChunks = parts.length;
       const result = await saveCloudSession(updated);
       if (result.session?.id !== session.id) throw new Error("后台未确认这条记录已保存。");
+      const confirmed = await (await cloudFetch(`/api/sessions/${encodeURIComponent(session.id)}`)).json();
+      if (confirmed.session?.id !== session.id || !confirmed.session.cloudStored || (session.videoSaved && !confirmed.session.cloudVideoReady)) throw new Error("共享后台尚未确认完整保存，请重试同步。");
       updated.cloudStored = true;
+      updated.caseBundleVersion = 'F12';
+      updated.cloudStoreVersion = 'F11';
       updated.cloudVideoReady = Boolean(result.session.cloudVideoReady);
       updated.cloudUploadError = session.videoSaved && !updated.cloudVideoReady ? "报告已保存，后台尚未确认录像完整。" : "";
       state.remoteSessions = [updated, ...state.remoteSessions.filter(item => item.id !== updated.id)];
       state.cloudState = "ready"; state.cloudError = "";
-      setText("#cloud-session-status", `公开云端 · ${state.remoteSessions.length} 场`);
+      setText("#cloud-session-status", `共享已确认 · ${state.remoteSessions.length} 场`);
       persistSession(updated);
-      if (state.reportSession?.id === updated.id) renderReplay(updated);
+      if (state.reportSession?.id === updated.id) {
+        renderReplay(updated);
+        setText('#shared-save-outcome',updated.cloudVideoReady?'已共享：其他账号可在历史复盘和案例投放中查看录像与转写。':'文字报告已共享并加入案例库；本场没有可播放的录像。');
+      }
       return updated;
     } catch (error) {
       if (!previouslyAttempted && !confirmedChunk && (error.status === 401 || error.status === 403)) updated.cloudUploadAttempted = false;
-      updated.cloudUploadError = error.message || "云端同步失败";
+      updated.cloudUploadError = error.message || "本机服务同步失败";
       try { persistSession(updated); } catch { /* Keep the already-saved record; surface the original failure. */ }
       if (state.reportSession?.id === updated.id) renderReplay(updated);
       throw error;
@@ -265,25 +246,25 @@
     state.cloudRefresh = (async () => {
     const epoch = state.historyEpoch;
     state.cloudState = "loading";
-    setText("#cloud-session-status", "正在读取云端…");
+    setText("#cloud-session-status", "正在读取本机服务…");
     $("#coach-refresh-history").disabled = true;
     try {
       const response = await cloudFetch("/api/sessions");
       const result = await response.json();
-      if (!Array.isArray(result.sessions)) throw new Error("云端返回的历史记录格式不完整，请检查后台服务。");
+      if (!Array.isArray(result.sessions)) throw new Error("本机服务返回的历史记录格式不完整，请检查后台服务。");
       if (epoch !== state.historyEpoch) {
         state.cloudState = state.cloudError ? "error" : "ready";
-        setText("#cloud-session-status", state.cloudError ? "云端未连接 · 记录未读出" : `公开云端 · ${state.remoteSessions.length} 场`);
+        setText("#cloud-session-status", state.cloudError ? "本机服务未连接 · 记录未读出" : `本机服务 · ${state.remoteSessions.length} 场`);
         return;
       }
       state.remoteSessions = result.sessions;
       state.cloudState = "ready"; state.cloudError = "";
       await retryPendingDeletions();
-      setText("#cloud-session-status", `公开云端 · ${state.remoteSessions.length} 场`);
+      setText("#cloud-session-status", `本机服务 · ${state.remoteSessions.length} 场`);
     } catch (error) {
       state.cloudState = "error"; state.cloudError = error.message;
-      setText("#cloud-session-status", "云端未连接 · 记录未读出");
-      console.warn("云端历史暂不可用：", error.message);
+      setText("#cloud-session-status", "本机服务未连接 · 记录未读出");
+      console.warn("本机服务历史暂不可用：", error.message);
     }
     renderSessions(); renderMemory();
     })().finally(() => { state.cloudRefresh = null; $("#coach-refresh-history").disabled = false; });
@@ -333,10 +314,13 @@
     return shared / (a.size + b.size - shared);
   }
   function setPoints(items, { caseId = null, title = "" } = {}) {
+    state.practiceMonitor=null;
+    state.practiceCaseId=caseId;
     state.selectedCase = caseId;
     state.points = items.map((item, index) => ({
       id: item.beat_id || `point-${index + 1}`,
       text: String(item.target_meaning || item.text || "").trim(),
+      claims: item.required_claims || item.claims || [],
       features: grams(item.target_meaning || item.text || ""),
       index,
       evidence: [],
@@ -521,7 +505,7 @@
     const sessions = allSavedSessions().filter((session) => session.speakerId === id);
     setText("#coach-memory-count", `${sessions.length} 次历史练习`);
     if (!sessions.length) {
-      $("#coach-memory").innerHTML = state.cloudState === "error" ? '<p>云端历史暂未读出，暂时无法生成完整的个性化提醒。连接恢复后会重新汇总。</p>' : `<p>尚无此记忆 ID 的历史记录。录制结束并选择保存后，可以回看观点线索、声音趋势和人工标记的反应。</p>`;
+      $("#coach-memory").innerHTML = state.cloudState === "error" ? '<p>本机服务历史暂未读出，暂时无法生成完整的个性化提醒。连接恢复后会重新汇总。</p>' : `<p>尚无此记忆 ID 的历史记录。录制结束并选择保存后，可以回看观点线索、声音趋势和人工标记的反应。</p>`;
       return;
     }
     const pace = sessions.map((item) => item.metrics?.pace).filter(Number.isFinite);
@@ -637,39 +621,63 @@
   }
 
   function getSpeechRecognition() { return window.SpeechRecognition || window.webkitSpeechRecognition || null; }
+  function setSpeechStatus(text){state.speechStatus=text;setText('#coach-speech-support',text);}
+  function updateInterimSpeech(text){
+    const at=elapsed();
+    state.interimObservations=(state.interimObservations||[]).filter(x=>at-x.at<=2);
+    state.interimObservations.push({text,at});
+    const baseline=state.interimObservations.findLast(x=>at-x.at>=.6);
+    if(!baseline){state.interimSpeech=null;return;}
+    let stable=baseline.text;
+    for(const item of state.interimObservations.filter(x=>x.at>=baseline.at)){
+      let n=0;while(n<stable.length&&n<item.text.length&&stable[n]===item.text[n])n++;stable=stable.slice(0,n);
+    }
+    state.interimSpeech=stable.trim().length>=4?{text:stable.trim(),at,stable:true}:null;
+  }
   function startSpeechRecognition() {
     const Recognition = getSpeechRecognition();
     if (!Recognition) {
-      setText("#coach-speech-support", "此浏览器没有语音识别；请使用下方输入框记录语句。");
+      setSpeechStatus("此浏览器没有语音识别；请使用下方输入框记录语句。");
       return;
     }
     const recognition = new Recognition();
     state.speech = recognition;
+    state.interimObservations=[];state.interimSpeech=null;
+    state.speechOn=true;
     recognition.lang = $("#coach-language").value; recognition.continuous = true; recognition.interimResults = true; recognition.maxAlternatives = 1;
+    recognition.onstart=()=>{if(state.speech===recognition)setSpeechStatus('正在听取语音；稳定词句会用于PPT跟随。');};
     recognition.onspeechstart = () => { if (state.session && !state.stopping) { state.speechWindowStart = elapsed(); state.speechWindowEnd = null; } };
     recognition.onspeechend = () => { if (state.session) state.speechWindowEnd = elapsed(); };
     recognition.onresult = (event) => {
-      let interim = "";
+      if(state.speech!==recognition||!state.session||state.stopping)return;
+      let interim = "", finalized=false;
       for (let i = event.resultIndex; i < event.results.length; i += 1) {
         const item = event.results[i]; const text = item[0]?.transcript?.trim();
         if (!text) continue;
-        if (item.isFinal) addSegment(text, "browser-asr", item[0]?.confidence); else interim += text;
+        if (item.isFinal) {addSegment(text, "browser-asr", item[0]?.confidence);finalized=true;state.interimObservations=[];state.interimSpeech=null;} else interim += text;
       }
-      if (interim) setText("#coach-transcript", `${transcriptText()} ${interim}`.trim());
+      if (interim) {setText("#coach-transcript", `${transcriptText()} ${interim}`.trim());updateInterimSpeech(interim);}
       state.speechOn = true;
+      setSpeechStatus(finalized?'已收到完整语句；PPT按当前内容跟随。':state.interimSpeech?'正在识别；稳定词句已用于PPT跟随。':'正在识别；等待词句稳定后跟随PPT。');
     };
     recognition.onerror = (event) => {
-      if (event.error !== "no-speech" && event.error !== "aborted") setText("#coach-speech-support", `语音识别状态：${event.error}；可手动输入。`);
+      if(state.speech!==recognition)return;
+      if(['not-allowed','service-not-allowed','audio-capture'].includes(event.error))state.speechOn=false;
+      if (event.error !== "no-speech" && event.error !== "aborted") setSpeechStatus(`语音识别状态：${event.error}；可手动输入。`);
     };
     recognition.onend = () => {
+      if(state.speech!==recognition)return;
+      state.interimSpeech=null;state.interimObservations=[];
       state.speechWindowStart = null; state.speechWindowEnd = null;
-      if (state.session && state.speechOn && !state.stopping) { try { recognition.start(); } catch { /* Restart may be rejected while already transitioning. */ } }
+      clearTimeout(state.speechRestartTimer);
+      if (state.speech===recognition&&state.session && state.speechOn && !state.stopping) state.speechRestartTimer=setTimeout(()=>{if(state.speech===recognition&&state.session&&state.speechOn&&!state.stopping)try{recognition.start();}catch{setSpeechStatus('语音识别重连中；尚未收到语句时PPT保持本页。');}},1200);
     };
     try {
       recognition.start();
-      setText("#coach-speech-support", "语音识别已启动；结果可能由浏览器语音服务处理。");
+      setSpeechStatus("语音识别已启动；结果可能由浏览器语音服务处理。");
     } catch {
-      setText("#coach-speech-support", "语音识别未启动；可手动输入语句。");
+      state.speechOn=false;
+      setSpeechStatus("语音识别未启动；可手动输入语句。");
     }
   }
 
@@ -679,7 +687,8 @@
     const at = elapsed(), metrics = snapshotMetrics();
     const start = state.speechWindowStart === null ? null : Math.max(state.lastSegmentEnd, state.speechWindowStart);
     const end = Math.min(at, state.speechWindowEnd ?? at);
-    const timed = source === "browser-asr" && start !== null && end > start && at - end < 3;
+    const timed = source === "browser-asr" && start !== null && end > start && at - end < 3 &&
+      TalkEvalLaunch.validSpeechTiming({source,time_span:[start,end],timingQuality:'browser-estimate',text:clean});
     const segment = { at: Number(at.toFixed(2)), text: clean, source, voice: metrics, visual: currentVisualCue(),
       time_span: timed ? [Number(start.toFixed(2)), Number(end.toFixed(2))] : null,
       timingQuality: timed ? "browser-estimate" : source === "manual" ? "manual" : "unknown",
@@ -719,23 +728,26 @@
   }
 
   async function loadVision() {
-    if (state.faceTask && state.poseTask) { runVisionLoop(); return; }
+    const localPose = !!window.TalkEvalIntegration?.getCamera();
+    if (state.faceTask && (localPose || state.poseTask)) { runVisionLoop(); return; }
     if (state.visionLoading) return;
     state.visionLoading = true;
+    if (localPose) runVisionLoop();
     setText("#coach-model-status", "正在加载本地视觉模型（首次加载会下载模型文件）…");
     try {
       const vision = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/+esm");
       const files = await vision.FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
       const faceModel = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
       const poseModel = "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task";
-      state.faceTask = await vision.FaceLandmarker.createFromOptions(files, { baseOptions: { modelAssetPath: faceModel, delegate: "CPU" }, runningMode: "IMAGE", numFaces: 1, outputFaceBlendshapes: true });
-      state.poseTask = await vision.PoseLandmarker.createFromOptions(files, { baseOptions: { modelAssetPath: poseModel, delegate: "CPU" }, runningMode: "IMAGE", numPoses: 1 });
-      setText("#coach-model-status", "视觉模型已就绪；逐帧定位人物，漏检时重新检测人物和头部区域。");
+      if (!state.faceTask) state.faceTask = await vision.FaceLandmarker.createFromOptions(files, { baseOptions: { modelAssetPath: faceModel, delegate: "CPU" }, runningMode: "IMAGE", numFaces: 1, outputFaceBlendshapes: true });
+      if (!localPose && !state.poseTask) state.poseTask = await vision.PoseLandmarker.createFromOptions(files, { baseOptions: { modelAssetPath: poseModel, delegate: "CPU" }, runningMode: "IMAGE", numPoses: 1 });
+      setText("#coach-model-status", localPose ? "身体姿态与快通道同步，面部独立观察。" : "视觉模型已就绪；逐帧定位人物，漏检时重新检测人物和头部区域。");
       setVisualStatus("视觉观察中", "等待有效人脸与身体关键点。分数表示可见动作强度，不代表情绪或得当程度。");
       runVisionLoop();
     } catch (error) {
-      setText("#coach-model-status", `视觉模型未能加载：${error.message}；本场仍可用语音和手动转写。`);
-      setVisualStatus("模型不可用", "无法取得视觉模型；请确保网络允许加载 MediaPipe CDN 和模型文件。摄像头画面仍只显示在本机浏览器。");
+      setText("#coach-model-status", localPose ? "面部模型暂不可用，身体动作仍由本机快通道识别。" : `视觉模型未能加载：${error.message}；本场仍可用语音和手动转写。`);
+      if (localPose) runVisionLoop();
+      else setVisualStatus("模型不可用", "无法取得视觉模型；请确保网络允许加载 MediaPipe CDN 和模型文件。摄像头画面仍只显示在本机浏览器。");
     } finally { state.visionLoading = false; }
   }
 
@@ -758,8 +770,11 @@
       if (nose.visibility >= .5 && ((left.y + right.y) / 2 - nose.y) * height < shoulder * .08) return false;
       return !(Math.min(lh.visibility, rh.visibility) >= .5 && ((lh.y + rh.y - left.y - right.y) / 2) * height < shoulder * .5);
     };
-    let pose = state.poseTask.detect(video), faceView = "full_frame";
-    if (!plausible(pose.landmarks?.[0])) {
+    const localStage = window.TalkEvalIntegration?.getCamera();
+    const observed = localStage?.liveObservation;
+    const fresh = observed && elapsed() >= observed.at && elapsed() - observed.at <= .8;
+    let pose = localStage ? { landmarks: fresh ? [observed.image_points.map(([x,y],i)=>({x,y,visibility:observed.detail.visibility[i]}))] : [], observedAt: observed?.at } : state.poseTask.detect(video), faceView = "full_frame";
+    if (!localStage && !plausible(pose.landmarks?.[0])) {
       pose = { landmarks: [] };
       for (const box of [[.2, 0, .8, 1], [0, 0, .55, 1], [.45, 0, 1, 1]]) {
         const patch = crop(box), result = state.poseTask.detect(patch.image);
@@ -768,14 +783,18 @@
         if (plausible(points)) { pose = { landmarks: [points] }; break; }
       }
     }
-    let face = state.faceTask.detect(video);
+    // Keep face work small; full body inference runs once, off the browser's animation thread.
+    const faceCanvas = state.visionFaceCanvas || (state.visionFaceCanvas = document.createElement('canvas'));
+    faceCanvas.width = Math.min(480,width);faceCanvas.height = Math.round(faceCanvas.width*height/width);
+    faceCanvas.getContext('2d').drawImage(video,0,0,faceCanvas.width,faceCanvas.height);
+    let face = state.faceTask?.detect(localStage ? faceCanvas : video) || {faceLandmarks:[],faceBlendshapes:[]};
     const points = pose.landmarks?.[0];
     if (points && points[0].visibility >= .5) {
       const nose = points[0], shoulder = Math.hypot((points[11].x - points[12].x) * width, (points[11].y - points[12].y) * height);
       const mesh = face.faceLandmarks?.[0];
       if (mesh && Math.hypot((mesh[1].x - nose.x) * width, (mesh[1].y - nose.y) * height) > shoulder) face = { faceLandmarks: [], faceBlendshapes: [] };
-      if (!face.faceLandmarks?.length) {
-        for (const scale of [.8, 1.3]) {
+      if (state.faceTask && !face.faceLandmarks?.length) {
+        for (const scale of (localStage ? [1.3] : [.8, 1.3])) {
           const cw = Math.max(40, shoulder * scale), ch = Math.max(48, shoulder * scale * 1.3);
           const patch = crop([nose.x - cw / width / 2, nose.y - ch / height * .45, nose.x + cw / width / 2, nose.y + ch / height * .55]);
           const candidate = state.faceTask.detect(patch.image);
@@ -791,8 +810,9 @@
     const video = $("#coach-video"), canvas = $("#coach-overlay"), context = canvas.getContext("2d");
     const visible = point => point && point.visibility >= .5 && Number.isFinite(point.x) && Number.isFinite(point.y) && point.x >= 0 && point.x <= 1 && point.y >= 0 && point.y <= 1;
     const loop = () => {
-      if (!state.session || state.stopping || !state.faceTask || !state.poseTask) return;
-      if (video.readyState >= 2 && performance.now() - state.lastVisionAt >= 200) {
+      const localPose = !!window.TalkEvalIntegration?.getCamera();
+      if (!state.session || state.stopping || (!localPose && (!state.faceTask || !state.poseTask))) return;
+      if (video.readyState >= 2 && performance.now() - state.lastVisionAt >= (localPose ? 500 : 200)) {
         state.lastVisionAt = performance.now();
         try {
           const at = elapsed();
@@ -809,7 +829,8 @@
           const aspect = (video.videoWidth || 640) / (video.videoHeight || 360);
           const shoulderWidth = visible(ls) && visible(rs) ? Math.hypot((ls.x - rs.x) * aspect, ls.y - rs.y) : 0;
           const center = shoulderWidth >= .02 ? { x: (ls.x + rs.x) / 2, y: (ls.y + rs.y) / 2 } : null;
-          const previous = state.previousWrists, dt = previous ? at - previous.at : 0;
+          const poseAt = pose.observedAt ?? at;
+          const previous = state.previousWrists, dt = previous ? poseAt - previous.at : 0;
           const comparable = center && previous && dt > 0 && dt <= .8 && shoulderWidth / previous.width > .7 && shoulderWidth / previous.width < 1.4 && previous.center && Math.hypot((center.x - previous.center.x) * aspect, center.y - previous.center.y) <= Math.max(shoulderWidth, previous.width);
           const hands = {}, positions = {};
           for (const [side, index] of [["left", 15], ["right", 16]]) {
@@ -821,12 +842,12 @@
             const dx = comparable && position && previous[side] ? position.x - previous[side].x : null;
             const dy = comparable && position && previous[side] ? position.y - previous[side].y : null;
             const direction = dx === null ? null : Math.abs(dx) > Math.abs(dy) ? Math.abs(position.x) > Math.abs(previous[side].x) ? "outward" : "inward" : dy < 0 ? "upward" : "downward";
-            hands[side] = { motion_direction: direction, visible: true, visibility: Number(wrist.visibility.toFixed(3)), movement: speed === null ? "not_comparable" : speed >= TalkEvalFit.CONFIG.motionSpeed ? "clear_motion" : "small_motion", body_xy: position ? [Number(position.x.toFixed(4)), Number(position.y.toFixed(4))] : null, position: position ? position.y < 0 ? "above_shoulder" : position.y < 1.8 ? "torso_level" : "below_waist" : null, speed_body_per_second: speed === null ? null : Number(speed.toFixed(4)) };
+            hands[side] = { comparison_interval_seconds: comparable ? dt : null, motion_direction: direction, visible: true, visibility: Number(wrist.visibility.toFixed(3)), movement: speed === null ? "not_comparable" : speed >= TalkEvalFit.CONFIG.motionSpeed ? "clear_motion" : "small_motion", body_xy: position ? [Number(position.x.toFixed(4)), Number(position.y.toFixed(4))] : null, position: position ? position.y < 0 ? "above_shoulder" : position.y < 1.8 ? "torso_level" : "below_waist" : null, speed_body_per_second: speed === null ? null : Number(speed.toFixed(4)) };
           }
-          state.previousWrists = center ? { at, center, width: shoulderWidth, ...positions } : null;
+          state.previousWrists = center ? { at:poseAt, center, width: shoulderWidth, ...positions } : null;
           const validHands = Object.values(hands).filter(hand => hand.movement !== "not_comparable");
           const gestureCue = validHands.some(hand => hand.movement === "clear_motion") ? "观察到相对身体的手部变化" : validHands.length ? "可见手部变化较小" : "手部或肩部关键点尚未连续检出，原因未确认";
-          const sample = { timestamp: Number(at.toFixed(3)), face: { visible: faceVisible, view: faceView, detector_status: faceVisible ? "detected" : "not_detected_unknown_cause", blendshape_scores: coefficients }, pose: { hands }, faceText: faceCue, gestureText: gestureCue };
+          const sample = { timestamp: Number(at.toFixed(3)), face: { visible: faceVisible, view: faceView, detector_status: faceVisible ? "detected" : "not_detected_unknown_cause", blendshape_scores: coefficients }, pose: { hands, observed_at:poseAt }, faceText: faceCue, gestureText: gestureCue };
           state.visualWindow.push(sample); state.visualWindow = state.visualWindow.filter(item => item.timestamp >= at - 120);
           if (at - state.lastVisualArchiveAt >= 1) {
             // Retain all returned coefficients as a compact vector; names are stored once per session.
@@ -943,8 +964,9 @@
     $("#coach-context-fit").innerHTML = '<p class="fit-empty">等待本场第一段语句与画面证据。</p>';
     setText("#visual-point-note", "结合当前语句、表达目标与可见画面复核。");
     const topic = $("#coach-topic").value.trim() || "未命名演讲";
-    const sessionId = `live-${Date.now()}`;
-    state.session = { id: sessionId, topic, caseId: state.selectedCase, speakerId: getSpeakerId(), startedAt: Date.now(), endedAt: null, segments: [], timeline: [], slides: [], points: [], metrics: {}, report: "", expressionGoal: $("#coach-expression-goal").value, contextFits: [], contextFitVersion: TalkEvalFit.VERSION, visualSampling: { analysis_target_interval_seconds: .2, archive_target_interval_seconds: 1, retention: "whole_session_compact_samples_and_all_segment_verdicts", timing: "browser_estimate" } };
+    const sessionId = `live-${crypto.randomUUID()}`;
+    shared.ownerKey(sessionId,true);
+    state.session = { id: sessionId, language: $("#coach-language").value.slice(0,2), topic, caseId: state.selectedCase, speakerId: getSpeakerId(), startedAt: Date.now(), endedAt: null, segments: [], timeline: [], slides: [], points: [], metrics: {}, report: "", expressionGoal: $("#coach-expression-goal").value, contextFits: [], contextFitVersion: TalkEvalFit.VERSION, visualSampling: { analysis_target_interval_seconds: window.TalkEvalIntegration?.getCamera() ? .5 : .2, archive_target_interval_seconds: 1, retention: "whole_session_compact_samples_and_all_segment_verdicts", timing: "browser_estimate" } };
     state.reportSession = null;
     updateStartAvailability();
     $("#coach-manual-text").disabled = true; $("#coach-add-text").disabled = true; $("#share-screen").disabled = true;
@@ -1012,7 +1034,7 @@
       "",
       `建议：${missing ? `下次把未发现足够线索的第 ${scores.findIndex((point) => point.score < .15) + 1} 个观点改写成一句易复述的结论，并在演讲提纲中安排明确强调。` : "主要观点均出现较多词汇线索；可以复听关键观点段，确认意思、例子与总结一致。"}${slides.length ? " PPT 节奏与观点对应仍需结合录像逐段确认。" : " 若要检查 PPT 配合，可在演讲期间共享幻灯片窗口。"}`,
       "",
-      "数据范围：录制结束后由演讲者选择保存或丢弃；仅选择保存时才向公开云端上传录像（含人脸和声音）、转写及报告。同步是否成功以历史列表状态为准。浏览器语音识别可能使用在线服务。",
+      "数据范围：录制结束后由演讲者选择保存或丢弃；仅选择保存时才向本机服务上传录像（含人脸和声音）、转写及报告。同步是否成功以历史列表状态为准。浏览器语音识别可能使用在线服务。",
     ];
     return { text: lines.join("\n"), scores, pace, pitchRange, volumeRange, observed, demo };
   }
@@ -1045,7 +1067,7 @@
     if (!state.session || state.stopping) return;
     state.stopping = true; $("#coach-stop").disabled = true; updateStartAvailability();
     state.session.endedAt = Date.now();
-    setText("#coach-status", "正在结束录制…"); state.speechOn = false;
+    setText("#coach-status", "正在结束录制…"); state.speechOn = false;clearTimeout(state.speechRestartTimer);
     try { state.speech?.stop(); } catch { /* Already stopped. */ }
     state.speech = null;
     if (state.timer) clearInterval(state.timer); state.timer = null;
@@ -1058,7 +1080,7 @@
     state.cameraStream?.getTracks().forEach(track => track.stop()); state.cameraStream = null;
     $("#coach-video").srcObject = null; $("#coach-camera-placeholder").hidden = false;
     if (state.audioContext) { await state.audioContext.close().catch(() => {}); state.audioContext = null; }
-    state.session.points = state.points.map(point => ({ id: point.id, text: point.text, score: scorePoint(point, transcriptText()), evidence: point.evidence, applause: point.applause }));
+    state.session.points = state.points.map(point => ({ id: point.id, text: point.text, claims: point.claims || [], score: scorePoint(point, transcriptText()), evidence: point.evidence, applause: point.applause }));
     state.session.audio = state.audioSamples; state.session.visual = state.visualSummary;
     const summary = makeReport(state.session);
     const draft = { ...state.session, report: summary.text,
@@ -1073,30 +1095,34 @@
     $("#coach-report").hidden = false; $("#coach-report-text").value = summary.text;
     $("#coach-draft-banner").hidden = false;
     renderReplay(draft); renderPoints(); updateStartAvailability();
-    setText("#coach-cue-title", "本场录制已结束"); setText("#coach-cue-copy", "先回看本场表现，再选择保存或丢弃。选择保存后才会上传至公开云端。");
+    setText("#coach-cue-title", "本场录制已结束"); setText("#coach-cue-copy", "先回看本场表现，再选择保存或丢弃。选择保存后才会上传至本机服务。");
     showDraftChoice();
   }
   async function saveDraft() {
     if (!state.pendingDraft || state.actionBusy) return;
     const draft = state.pendingDraft;
     setChoiceBusy(true);
+    const notice=text=>{let box=$("#shared-save-outcome");if(!box){box=document.createElement('p');box.id='shared-save-outcome';box.className='history-feedback shared-save-outcome';box.setAttribute('role','status');$("#coach-report").prepend(box);}box.textContent=text;setText('#coach-history-feedback',text);};
     try {
       // A failed local write leaves the draft available. No upload has happened yet.
-      const saved = { ...draft, saveDecision: "saved", savedAt: Date.now() };
+    const saved = { ...draft, caseBundleVersion: 'F12', saveDecision: "saved", savedAt: Date.now() };
       persistSession(saved);
       state.pendingDraft = null; $("#coach-draft-banner").hidden = true;
-      setText("#coach-save-progress", "已保存在本机，正在同步到公开云端…");
+      setText("#coach-save-progress", "已保存在本机，正在同步到本机服务…");
       $("#coach-report").hidden = false; $("#coach-report-text").value = saved.report;
       renderReplay(saved); renderSessions(); renderMemory();
+      notice("已保存本机并加入本机案例，正在上传到共享案例库…");
       try {
         const synced = await syncSavedSession(saved);
-        setText("#coach-status", synced.cloudVideoReady ? "录像与报告已同步云端" : "报告已同步云端");
+        notice(synced.cloudVideoReady ? "已共享：其他账号可在历史复盘和案例投放中查看录像与转写。" : "文字报告已共享并加入案例库；本场没有可播放的录像。");
+        setText("#coach-status", synced.cloudVideoReady ? "录像与报告已同步本机服务" : "报告已同步本机服务");
         setText("#coach-cue-title", synced.cloudVideoReady ? "本场演讲已保存" : "本场报告已保存");
-        setText("#coach-cue-copy", synced.cloudVideoReady ? "录像、报告与时间线已保存到公开云端，其他设备可查看。" : (synced.cloudUploadError || "文字报告已同步；本场没有完整的可用录像。"));
+        setText("#coach-cue-copy", synced.cloudVideoReady ? "录像、报告与时间线已保存到本机服务，本机其他窗口可查看。" : (synced.cloudUploadError || "文字报告已同步；本场没有完整的可用录像。"));
       } catch (error) {
-        setText("#coach-status", "已保存本机 · 云端同步未完成");
+        notice(`仅保存在本机，其他账号暂时看不到：${error.message} 可在下方“重试公开同步”。`);
+        setText("#coach-status", "已保存本机 · 本机服务同步未完成");
         setText("#coach-cue-title", "本机记录已保留");
-        setText("#coach-cue-copy", `云端同步未完成：${error.message}。可在复盘中重试同步或下载备份。`);
+        setText("#coach-cue-copy", `本机服务同步未完成：${error.message}。可在复盘中重试同步或下载备份。`);
       }
       $("#coach-save-dialog").close();
       $("#coach-report").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1121,7 +1147,7 @@
       setVisualStatus("等待下一场演讲", "本场观察已丢弃。");
       renderPoints(); renderSessions(); renderMemory();
       setText("#coach-status", "本场已丢弃"); setText("#coach-cue-title", "准备下一次表达");
-      setText("#coach-cue-copy", "本场临时录像和报告已丢弃，没有加入历史，也没有上传到云端。");
+      setText("#coach-cue-copy", "本场临时录像和报告已丢弃，没有加入历史，也没有上传到本机服务。");
     } catch (error) {
       setText("#coach-save-progress", `暂未清理成功：${error.message}。请重试丢弃。`);
       if (!$("#coach-save-dialog").open) $("#coach-save-dialog").showModal();
@@ -1132,7 +1158,7 @@
     const response = await cloudFetch(`/api/sessions/${encodeURIComponent(id)}`, { method: "DELETE" });
     if (response.status !== 204) {
       let result;
-      try { result = await response.json(); } catch { throw new Error("后台没有返回可确认的删除结果，云端记录仍待核实。"); }
+      try { result = await response.json(); } catch { throw new Error("后台没有返回可确认的删除结果，本机服务记录仍待核实。"); }
       if (result.deleted !== true || result.id !== id) throw new Error("后台尚未确认这条记录及录像已完整删除。");
     }
   }
@@ -1152,15 +1178,15 @@
     const offline = scope !== "local" && state.cloudState === "error";
     setText("#coach-delete-title", `删除《${session.topic}》？`);
     setText("#coach-delete-description", scope === "local"
-      ? "这条记录只需清理本机。将删除本设备的录像、报告和分析数据，不需要连接云端。删除后无法恢复。"
+      ? "这条记录只需清理本机。将删除本设备的录像、报告和分析数据，不需要连接本机服务。删除后无法恢复。"
       : offline
-        ? "目前连接不到云端。确认后将删除本机录像与报告，并保留云端待删请求；本机删除无法恢复，其他设备上的云端副本可能仍可见。"
+        ? "目前连接不到本机服务。确认后将删除本机录像与报告，并保留本机服务待删请求；本机删除无法恢复，本机其他窗口上的本机服务副本可能仍可见。"
       : scope === "cloud"
-        ? "这条记录已在云端确认。完整删除需要后台确认；如果暂时无法连接，可先删除本机副本，并保留云端待删请求。"
-        : "这条旧记录的云端保存状态未确认。可以尝试完整删除；也可以先删除本机副本，并保留云端待删请求。");
-    setText("#coach-delete-confirm", scope === "local" ? "删除本机录像与报告" : offline ? "先删除本机，云端待删" : "删除云端与本机");
+        ? "这条记录已在本机服务确认。完整删除需要后台确认；如果暂时无法连接，可先删除本机副本，并保留本机服务待删请求。"
+        : "这条旧记录的本机服务保存状态未确认。可以尝试完整删除；也可以先删除本机副本，并保留本机服务待删请求。");
+    setText("#coach-delete-confirm", scope === "local" ? "删除本机录像与报告" : offline ? "先删除本机，本机服务待删" : "删除本机服务与本机");
     $("#coach-delete-confirm").dataset.deferCloud = String(offline);
-    setText("#coach-delete-local", offline ? "仍尝试完整删除" : "先删除本机，云端待删");
+    setText("#coach-delete-local", offline ? "仍尝试完整删除" : "先删除本机，本机服务待删");
     $("#coach-delete-local").dataset.deferCloud = String(!offline);
     $("#coach-delete-local").hidden = scope === "local";
     $("#coach-delete-local-note").hidden = scope === "local";
@@ -1175,7 +1201,7 @@
     try {
       const cloudRequired = needsCloudDelete(session);
       if (cloudRequired && !deferCloud && !job?.cloudDeleted) {
-        setText("#coach-delete-status", "正在请求删除云端录像与报告…");
+        setText("#coach-delete-status", "正在请求删除本机服务录像与报告…");
         await deleteFromCloud(session.id);
         session.cloudDeletionConfirmed = true; session.cloudStored = false; session.cloudVideoReady = false;
         persistSession(session);
@@ -1190,13 +1216,13 @@
       await removeLocalSession(job);
       state.deleteTarget = null; $("#coach-delete-dialog").close();
       setText("#coach-history-feedback", job.cloudDeleted
-        ? cloudRequired ? "云端及本机的录像与复盘已删除。" : "本机录像与复盘已删除。"
-        : "本机录像与复盘已删除，云端删除待完成。其他设备上的云端副本可能仍可见；连接恢复后会重试。");
+        ? cloudRequired ? "本机服务及本机的录像与复盘已删除。" : "本机录像与复盘已删除。"
+        : "本机录像与复盘已删除，本机服务删除待完成。本机其他窗口上的本机服务副本可能仍可见；连接恢复后会重试。");
     } catch (error) {
       if (job && !job.localDeleted) { job.localError = error.message; try { saveDeletionJob(job); } catch { /* Preserve the original error. */ } }
       setText("#coach-delete-status", session.cloudDeletionConfirmed
-        ? `云端已删除，本机清理未完成：${error.message}`
-        : `未完成全部删除：${error.message}${needsCloudDelete(session) ? " 可选择下方“先删除本机，云端待删”。" : ""}`);
+        ? `本机服务已删除，本机清理未完成：${error.message}`
+        : `未完成全部删除：${error.message}${needsCloudDelete(session) ? " 可选择下方“先删除本机，本机服务待删”。" : ""}`);
     } finally {
       state.historyEpoch += 1; setChoiceBusy(false); renderSessions(); renderMemory();
     }
@@ -1229,7 +1255,7 @@
     const jobs = pendingDeletionJobs();
     if (!host) return;
     host.hidden = !jobs.length;
-    host.innerHTML = jobs.length ? `<div class="pending-delete-heading"><b>待完成的删除 · ${jobs.length} 条</b><button type="button" data-retry-deletions class="secondary-button" ${state.deletionFlush || state.actionBusy ? "disabled" : ""}>${state.deletionFlush ? "正在重试…" : "重试待删请求"}</button></div><p>本机与云端分别显示状态。云端未确认前，其他设备可能仍可见；请保留此浏览器的数据，以便恢复连接后继续处理。</p>${jobs.map(job => `<div class="pending-delete-item"><b>${esc(job.topic)}</b><span>${job.localDeleted ? "本机已删除" : "本机清理待完成"} · ${job.cloudDeleted ? "云端已完成" : "云端待删除"}</span>${job.localError || job.lastError ? `<small>${esc(job.localError || job.lastError)}</small>` : ""}</div>`).join("")}` : "";
+    host.innerHTML = jobs.length ? `<div class="pending-delete-heading"><b>待完成的删除 · ${jobs.length} 条</b><button type="button" data-retry-deletions class="secondary-button" ${state.deletionFlush || state.actionBusy ? "disabled" : ""}>${state.deletionFlush ? "正在重试…" : "重试待删请求"}</button></div><p>本机与本机服务分别显示状态。本机服务未确认前，本机其他窗口可能仍可见；请保留此浏览器的数据，以便恢复连接后继续处理。</p>${jobs.map(job => `<div class="pending-delete-item"><b>${esc(job.topic)}</b><span>${job.localDeleted ? "本机已删除" : "本机清理待完成"} · ${job.cloudDeleted ? "本机服务已完成" : "本机服务待删除"}</span>${job.localError || job.lastError ? `<small>${esc(job.localError || job.lastError)}</small>` : ""}</div>`).join("")}` : "";
   }
 
   function renderReplay(session) {
@@ -1245,6 +1271,10 @@
     const events = timeline.slice(-60).map((item) => `<div class="replay-event"><time>${stamp(item.at)}</time><span>${item.type === "speech" ? `语音：${esc(item.text)}` : item.type === "slide" ? `PPT OCR：${esc(item.text || "无文字")}` : item.type === "reaction" ? `${item.source === "demo" ? "模拟" : "现场观察"}反应：${esc(item.pointText || "观点")}` : `视觉：${esc(item.visual?.face || "")}；${esc(item.visual?.gesture || "")}`}</span></div>`).join("");
     $("#coach-replay-detail").innerHTML = `<section class="recording-replay"><div class="coach-panel-head"><div><p class="eyebrow">SESSION VIDEO</p><h3>演讲录像</h3></div><div class="report-actions"><button id="coach-sync-session" class="secondary-button" ${state.pendingDraft?.id !== session.id && !session.cloudDeletionConfirmed && (!session.cloudStored || (session.videoSaved && !session.cloudVideoReady)) ? "" : "hidden"}>重试公开同步</button><button id="coach-download-video" class="secondary-button">下载录像</button></div></div><video id="coach-replay-video" controls playsinline preload="metadata" hidden></video><p id="coach-replay-video-note" class="quiet-copy" hidden></p></section><div class="replay-grid"><div><h3>观点证据</h3>${content || "无观点"}</div><div><h3>时间线</h3><div class="replay-events">${events || "无事件"}</div></div></div>${fitReview}`;
     const video = $("#coach-replay-video");
+    if(state.pendingDraft?.id!==session.id && session.cloudStored && !session.cloudDeletionConfirmed && session.caseBundleVersion!=='F12' && shared.canManage(session.id) && readSessions().some(s=>s.id===session.id)){
+      $('#coach-sync-session').hidden=false;$('#coach-sync-session').textContent='补同步配套资料';
+    }
+    if(state.pendingDraft?.id!==session.id){const launch=document.createElement('button');launch.id='coach-launch-saved';launch.className='primary-button';launch.textContent='投放本场与配套资料 ↗';launch.addEventListener('click',()=>shared.open(session.id));$('#coach-replay-detail .report-actions').prepend(launch);}
     const note = $("#coach-replay-video-note");
     const downloadButton = $("#coach-download-video");
     if (state.replayUrl) URL.revokeObjectURL(state.replayUrl);
@@ -1254,8 +1284,8 @@
     if (!session.videoId) { note.hidden = false; note.textContent = "此历史记录没有录像，文字报告仍可查看。"; return; }
     if (session.cloudVideoReady) {
       video.hidden = false; note.hidden = false;
-      video.src = `${CLOUD_API}/api/sessions/${encodeURIComponent(session.id)}/video`;
-      note.textContent = "录像已存入公开云端，其他设备可直接播放。";
+      video.src = shared.url(`/api/sessions/${encodeURIComponent(session.id)}/video`);
+      note.textContent = "录像已存入本机服务，本机其他窗口可直接播放。";
       return;
     }
     note.textContent = "正在读取本机录像…";
@@ -1263,17 +1293,20 @@
       if (state.reportSession?.id !== session.id) return;
       if (!blob) { note.textContent = "此设备上找不到录像文件；录像不会随文字报告自动同步。"; return; }
       state.replayUrl = URL.createObjectURL(blob); video.src = state.replayUrl;
-      note.textContent = `${state.pendingDraft?.id === session.id ? "本场暂存，尚未选择保存" : "录像已保存在本机浏览器"} · ${Math.round(blob.size / 1024 / 1024)} MB${session.videoError ? ` · 录像可能不完整：${session.videoError}` : ""}${session.cloudUploadError ? ` · 云端同步失败：${session.cloudUploadError}` : ""}`;
+      note.textContent = `${state.pendingDraft?.id === session.id ? "本场暂存，尚未选择保存" : "录像已保存在本机浏览器"} · ${Math.round(blob.size / 1024 / 1024)} MB${session.videoError ? ` · 录像可能不完整：${session.videoError}` : ""}${session.cloudUploadError ? ` · 本机服务同步失败：${session.cloudUploadError}` : ""}`;
     }).catch((error) => { if (state.reportSession?.id === session.id) note.textContent = `读取录像失败：${error.message}`; });
   }
   function renderSessions() {
     renderPendingDeletions();
+    const pendingButton=$('#coach-sync-pending');if(pendingButton)pendingButton.disabled=Boolean(state.bulkSync || state.actionBusy || state.session) || !readSessions().some(s=>(!s.cloudStored || s.caseBundleVersion!=='F12')&&!deletionJob(s.id));
+    shared.publish(allSavedSessions(),{state:state.cloudState,error:state.cloudError});
     const sessions = allSavedSessions().sort((a, b) => (b.startedAt || 0) - (a.startedAt || 0)).slice(0, 100);
     setText("#saved-session-count", state.cloudState === "error" ? `${sessions.length} 场缓存` : `${sessions.length} 场`);
     const host = $("#saved-session-list");
-    const notice = state.cloudState === "error" ? `<div class="history-connection-note" role="status"><b>暂时无法读取云端历史</b><p>${esc(state.cloudError)}当前仅显示此设备可读取的缓存，不能据此判断云端没有记录。</p></div>` : "";
-    if (!sessions.length) { host.innerHTML = notice || `<p class="quiet-copy">${state.cloudState === "loading" ? "正在读取公开云端历史记录…" : "暂无公开演讲复盘。完成演讲并同步成功后，各设备均可查看。"}</p>`; return; }
-    host.innerHTML = notice + sessions.map((session) => `<div class="saved-session-row"><button class="saved-session" type="button" data-session="${esc(session.id)}"><span><b>${esc(session.topic)}</b><small>${new Date(session.startedAt).toLocaleString("zh-CN")} · ${esc(session.speakerId)}${session.cloudDeletionConfirmed ? " · 云端已删除，本机待清理" : session.cloudVideoReady && session.cloudStored ? " · 录像与报告已存云端" : session.cloudStored ? " · 报告已存云端，录像待同步" : " · 本机缓存，尚未云端确认"}</small></span><span>查看复盘 ↗</span></button><button class="session-delete" type="button" data-delete-session="${esc(session.id)}" aria-label="删除演讲：${esc(session.topic)}" ${state.syncingIds.has(session.id) || state.actionBusy || state.deletionFlush ? "disabled" : ""}>删除</button></div>`).join("");
+    const notice = state.cloudState === "error" ? `<div class="history-connection-note" role="status"><b>暂时无法读取本机服务历史</b><p>${esc(state.cloudError)}当前仅显示此设备可读取的缓存，不能据此判断本机服务没有记录。</p></div>` : "";
+    if (!sessions.length) { host.innerHTML = notice || `<p class="quiet-copy">${state.cloudState === "loading" ? "正在读取本机服务历史记录…" : "暂无公开演讲复盘。完成演讲并同步成功后，各设备均可查看。"}</p>`; return; }
+    host.innerHTML = notice + sessions.map((session) => `<div class="saved-session-row"><button class="saved-session" type="button" data-session="${esc(session.id)}"><span><b>${esc(session.topic)}</b><small>${new Date(session.startedAt).toLocaleString("zh-CN")} · ${esc(session.speakerId)}${session.cloudDeletionConfirmed ? " · 本机服务已删除，本机待清理" : session.cloudVideoReady && session.cloudStored ? " · 录像与报告已存本机服务" : session.cloudStored ? " · 报告已存本机服务，录像待同步" : " · 本机缓存，尚未本机服务确认"}</small></span><span>查看复盘 ↗</span></button><button class="session-launch" type="button" data-launch-session="${esc(session.id)}">加入投放 ↗</button><button class="session-delete" type="button" ${!shared.canManage(session.id) && session.cloudStored ? "hidden" : ""} data-delete-session="${esc(session.id)}" aria-label="删除演讲：${esc(session.topic)}" ${state.syncingIds.has(session.id) || state.actionBusy || state.deletionFlush ? "disabled" : ""}>删除</button></div>`).join("");
+    host.querySelectorAll('[data-launch-session]').forEach(button=>button.addEventListener('click',()=>shared.open(button.dataset.launchSession)));
     host.querySelectorAll("[data-delete-session]").forEach(button => button.addEventListener("click", () => {
       const session = sessions.find(item => item.id === button.dataset.deleteSession);
       if (session) requestDelete(session);
@@ -1315,6 +1348,7 @@
   $("#coach-case").addEventListener("change", (event) => chooseCase(event.target.value));
   $("#coach-outline").addEventListener("input", (event) => {
     if (state.session || state.pendingDraft || state.actionBusy) return;
+    state.practiceMonitor=null;
     state.caseRequest += 1;
     $("#coach-case").value = "custom";
     setPoints(event.target.value.split(/\n+/).map((text) => ({ text })));
@@ -1342,9 +1376,9 @@
     if (event.target.closest("#coach-download-video")) downloadSessionVideo(currentReportSession()).catch((error) => setText("#coach-replay-video-note", `下载失败：${error.message}`));
     if (event.target.closest("#coach-sync-session")) {
       const button = event.target.closest("#coach-sync-session");
-      const session = currentReportSession();
+      const session = readSessions().find(s=>s.id===currentReportSession()?.id) || currentReportSession();
       button.disabled = true; button.textContent = "正在上传…";
-      syncSavedSession(session).then(updated => setText("#coach-cue-copy", updated.cloudVideoReady ? "录像和报告已同步到公开云端，其他设备现在可以查看。" : "报告已同步到公开云端；录像状态请查看复盘说明。"))
+      syncSavedSession(session).then(updated => setText("#coach-cue-copy", updated.cloudVideoReady ? "录像和报告已同步到本机服务，本机其他窗口现在可以查看。" : "报告已同步到本机服务；录像状态请查看复盘说明。"))
         .catch((error) => { button.disabled = false; button.textContent = "重试公开同步"; setText("#coach-replay-video-note", `同步失败：${error.message}`); });
     }
   });
@@ -1398,6 +1432,36 @@
   window.addEventListener("beforeunload", event => {
     if (state.session || state.pendingDraft || state.actionBusy || state.syncingIds.size) { event.preventDefault(); event.returnValue = ""; }
   });
+  const syncPending=document.createElement('button');syncPending.id='coach-sync-pending';syncPending.className='history-refresh';syncPending.textContent='同步本机历史';$('#coach-refresh-history').after(syncPending);
+  syncPending.addEventListener('click',async()=>{
+    if(state.bulkSync || state.actionBusy || state.session)return;
+    state.bulkSync=true;syncPending.disabled=true;
+    const pending=readSessions().filter(s=>(!s.cloudStored || s.caseBundleVersion!=='F12')&&!deletionJob(s.id));let done=0;
+    try{for(const item of pending){setText('#coach-history-feedback',`正在同步本机历史 ${done+1}/${pending.length}…`);await syncSavedSession({...item,saveDecision:'saved'});done++;}setText('#coach-history-feedback',`已将 ${done} 场本机历史同步到共享案例库。`);}
+    catch(error){setText('#coach-history-feedback',`已同步 ${done}/${pending.length} 场，其余仍保留在本机：${error.message}`);}
+    finally{state.bulkSync=false;renderSessions();}
+  });
+  function rehearseSaved(id){
+    if(state.session || state.pendingDraft || state.actionBusy)throw Error('请先结束并处理当前演讲，再载入这场提纲。');
+    const session=allSavedSessions().find(s=>s.id===id);if(!session)throw Error('这场记录尚未同步到此设备。');
+    state.caseRequest++;$('#coach-case').value='custom';state.selectedCase='custom';
+    $('#coach-topic').value=session.topic || '';$('#coach-speaker').value=session.speakerId || '';
+    const language=session.language || session.monitorF8?.language || 'zh';
+    const option=[...$('#coach-language').options].find(o=>o.value.startsWith(language));if(option)$('#coach-language').value=option.value;
+    $('#coach-expression-goal').value=session.expressionGoal || '';
+    $('#coach-outline').value=(session.points||[]).map(p=>p.text).join('\n');
+    setPoints((session.points||[]).map(p=>({beat_id:p.id,text:p.text,claims:p.claims})));
+    state.practiceCaseId=shared.caseId(id);
+    state.practiceMonitor=session.monitorF8 ? structuredClone(session.monitorF8) : null;
+    if(Number.isFinite(session.monitorF8?.limit))$('#camera-time-limit').value=String(session.monitorF8.limit/60);
+    $('#coach-consent').checked=false;updateStartAvailability();switchView('live');
+    setText('#coach-history-feedback','已载入本场提纲和限时。确认采集后开始新的一场；新语音与画面将重新分析。');
+    $('#live-view').scrollIntoView({block:'start'});
+  }
+  shared.bind({sessions:allSavedSessions,recording:s=>loadRecording(s.videoId || s.id,s.videoChunks),refresh:refreshCloudSessions,rehearse:rehearseSaved});
+  window.addEventListener('focus',()=>{if(!state.actionBusy)refreshCloudSessions();});
+  setInterval(()=>{if(!document.hidden && !state.actionBusy)refreshCloudSessions();},30000);
+  window.TalkEvalLaunch?.mountCamera({ getState: () => state, getRecords: allSavedSessions, elapsed, wordUnits });
   loadCases().then(renderSessions);
   refreshCloudSessions();
   updateStartAvailability();

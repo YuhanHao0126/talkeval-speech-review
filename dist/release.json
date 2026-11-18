@@ -1,0 +1,11 @@
+{
+  "version": "2026-11-18",
+  "case_id": "demo_poisson_20261118",
+  "prediction": "precomputed_original_models",
+  "history_seconds": 2,
+  "horizon_seconds": 2,
+  "step_seconds": 0.2,
+  "future_ground_truth_used": false,
+  "future_audio_used": false,
+  "video_sha256": "aa369d96936638d3653760ae4385522f5dce372612f231e8a009aaeee1200118"
+}

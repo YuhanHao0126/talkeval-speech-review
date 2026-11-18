@@ -1,10 +1,15 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="v18-boot">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f6f7fb" />
-  <title>TalkEval++ · 演讲表达复盘</title>
+  <script>window.TalkEvalPages=true;</script>
+  <title>TalkEval++ · 双通道演讲提词器</title>
+  <style>.v18-boot .app-shell{visibility:hidden}#site-startup{position:fixed;inset:0;display:grid;place-content:center;gap:14px;padding:30px;background:#f6f8f6;color:#244e47;font-family:"Microsoft YaHei",sans-serif;z-index:1000}#site-startup strong{font-size:28px}#site-startup p{font-size:15px;color:#687f77}#site-startup button{padding:10px 20px;border:1px solid #b6cbc0;border-radius:8px;background:white;color:#244e47;cursor:pointer}#site-startup [hidden]{display:none}</style>
+  <script src="/talkeval-speech-review/static/site-startup.js?v=20"></script>
+  <link rel="stylesheet" href="/talkeval-speech-review/static/import-recording.css?v=11" />
+  <script type="importmap">{"imports":{"three":"/talkeval-speech-review/static/vendor/three.module.js"}}</script>
   <meta name="description" content="沿着演讲时间轴，核对观点、声音与画面证据。TalkEval++ 多模态演讲复盘工作台。" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%236b5ce7'/%3E%3Cpath d='M17 19h30v7H36v22h-8V26H17z' fill='white'/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="./styles.css?v=20261015-delete-1" />
@@ -12,17 +17,20 @@
   <link rel="stylesheet" href="./light-theme.css?v=20261015-delete-1" />
   <link rel="stylesheet" href="./live-studio.css?v=20261015-delete-1" />
   <link rel="stylesheet" href="./context-fit.css?v=20261015-delete-1" />
-</head>
-<body class="public-site">
+  <link rel="stylesheet" href="./launch-monitor.css?v=20261023-F13" />
+  <link rel="stylesheet" href="/talkeval-speech-review/static/stage-integration.css?v=23.1" />
+<link rel="stylesheet" href="./pages.css?v=20261118"></head>
+<body class="public-site v9-integrated">
+  <div id="site-startup" role="status"><strong>TalkEval++</strong><p data-startup-message>正在载入演讲工作台…</p><button data-startup-retry hidden>重新载入</button><noscript>请开启JavaScript后使用演讲工作台。</noscript></div>
   <a class="skip-link" href="#detail-column">跳到分析工作区</a>
-  <div class="app-shell">
+  <div class="app-shell"><p class="pages-notice" role="note">2026.11.18 网页案例演示 · 动作使用原模型预计算结果（观察2秒 / 预测2秒）。<a href="./about.html">功能与运行说明 ↗</a></p>
     <header class="topbar">
       <div class="brand-lockup" aria-label="TalkEval++ 演讲表达复盘">
         <div class="brand-mark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4m4-7v10m5-14v18m5-14v10m4-7v4"/></svg></div>
         <div class="brand-copy"><div class="brand-name">TalkEval<span>++</span></div><div class="brand-subtitle">让表达，有据可循</div></div>
       </div>
       <nav class="top-nav" aria-label="工作区">
-        <button class="nav-item active" id="review-tab" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 9 5 3-5 3z"/></svg><span>案例回放</span></button>
+        <button class="nav-item active" id="review-tab" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 9 5 3-5 3z"/></svg><span>案例投放</span></button>
         <button class="nav-item" id="live-tab" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg><span>现场演讲</span></button>
       </nav>
       <div class="topbar-actions">
@@ -33,7 +41,7 @@
     </header>
     <main class="workspace" id="review-view">
       <section class="workspace-heading">
-        <div><p class="eyebrow">YOUR SPEECH, IN FOCUS</p><h1>演讲复盘工作台</h1><p>从一个观点出发，看见内容、声音与画面如何配合。</p></div>
+        <div><p class="eyebrow">YOUR SPEECH, IN FOCUS</p><h1>从案例库，走进现场。</h1><p>选一场演讲，投放到现场观察；把重点和证据留在下方回看。</p></div>
         <button class="outline-button focus-button" id="focus-mode" type="button" aria-pressed="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg><span>专注模式</span></button>
       </section>
       <div class="content-grid">
@@ -42,7 +50,7 @@
           <label class="library-search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="case-search" type="search" placeholder="搜索演讲案例" aria-label="搜索演讲案例" autocomplete="off" /></label>
           <div class="library-caption"><span>全部案例</span><span id="library-summary">正在载入</span></div>
           <div id="case-list" class="case-list"><div class="loading-card">正在读取案例…</div></div>
-          <div class="sidebar-foot"><span class="mini-status"></span><span>循着证据，回看每个重点</span></div>
+          <div class="launch-dock"><span class="launch-dock-line" aria-hidden="true"></span><small id="launch-library-state" role="status">选择一个案例，准备投放</small><button id="library-launch" type="button" disabled><span>投放到现场</span><b aria-hidden="true">↗</b></button><p>案例库 → 现场画面 → 同步提醒</p></div><div class="sidebar-foot"><span class="mini-status"></span><span>四个重点，循着证据回看</span></div>
           <a class="source-link library-source" href="https://www.ted.com/watch/tedx-talks" target="_blank" rel="noreferrer">探索 TEDx 演讲 ↗</a>
         </aside>
         <section class="detail-column" id="detail-column" aria-label="演讲分析工作区">
@@ -60,7 +68,7 @@
           <div class="setup-fields"><label>参考案例<select id="coach-case"><option value="custom">自定义演讲提纲</option></select></label><label>表达目标<select id="coach-expression-goal"><option value="auto">随内容观察（推荐）</option><option value="warm">友好欢迎</option><option value="explain">平稳说明</option><option value="emphasize">突出重点</option><option value="solemn">严肃克制</option></select><small>可选，用于复核表情和动作是否服务于表达。</small></label><label>演讲主题<input id="coach-topic" maxlength="100" placeholder="这次，你想分享什么？" /></label><div class="setup-profile"><label>记忆 ID<input id="coach-speaker" maxlength="48" placeholder="我的练习" /></label><label>转写语言<select id="coach-language"><option value="zh-CN">中文</option><option value="en-US">English</option></select></label></div></div>
           <label class="outline-label"><span>核心观点 <small id="coach-outline-count">0 个重点</small></span><textarea id="coach-outline" rows="8" placeholder="每行写下一个核心观点。&#10;&#10;例如：&#10;人工智能会改变工作内容&#10;判断力与协作能力更重要&#10;主动学习，让技术为人所用"></textarea></label>
           <div class="outline-tip"><span>✎</span><p>一句话，一个重点。<br>把最想让听众记住的内容写在这里。</p></div>
-          <label class="privacy-consent"><input id="coach-consent" type="checkbox" /><span>同意使用摄像头、麦克风和语音转写。结束录制后，我会选择保存或丢弃；选择保存会向公开云端同步录像与报告，供所有访客查看。</span></label><details class="capture-note"><summary>采集与保存说明</summary><p>录制时只在本设备临时存放录像。结束后选择“保存并同步”才会上传录像、转写与报告；选择“不保存”会清理本场临时录像与报告。云端保存成功后可跨设备查看，失败时会明确显示仅保存在本机。浏览器语音识别可能联网处理音频。</p></details>
+          <label class="privacy-consent"><input id="coach-consent" type="checkbox" /><span>同意使用摄像头、麦克风和语音转写。结束录制后，我会选择保存或丢弃；选择保存会向本机服务同步录像与报告，供本机服务的使用者查看。</span></label><details class="capture-note"><summary>采集与保存说明</summary><p>录制时只在本设备临时存放录像。结束后选择“保存到本机服务”才会上传录像、转写与报告；选择“不保存”会清理本场临时录像与报告。本机服务保存成功后可同机跨窗口查看，失败时会明确显示仅保存在本机。浏览器语音识别可能联网处理音频。</p></details>
           <div class="setup-ready"><i></i><span id="coach-ready-note" role="status">先写下本场核心观点</span></div>
         </aside>
         <section class="coach-left">
@@ -84,7 +92,7 @@
           <details class="audience-panel panel"><summary>观众反应记录<span>⌄</span></summary><label>记录方式<select id="coach-reaction-mode"><option value="observed">现场观察</option><option value="demo">模拟信号</option></select></label><p>演讲期间可在观点卡片手动记录掌声。模拟信号会单独注明来源。</p></details>
         </aside>
       </div>
-      <div class="studio-aftercare"><section class="memory-panel panel"><div class="coach-panel-head"><div><p class="eyebrow">GROW WITH EVERY SPEECH</p><h2>把经验留给下一次</h2></div><span class="memory-symbol">↗</span></div><div id="coach-memory" class="memory-content"></div><div class="memory-foot"><span id="coach-memory-count">0 次历史练习</span><span>同一记忆 ID 关联历史练习</span></div></section><section class="saved-sessions panel"><div class="coach-panel-head"><div><p class="eyebrow">YOUR SPEECH JOURNAL</p><h2>历史演讲复盘</h2></div><div class="saved-session-status"><button id="coach-refresh-history" class="history-refresh" type="button" aria-label="刷新云端历史">↻ 刷新</button><span id="cloud-session-status" class="mini-badge">正在连接云端…</span><span id="saved-session-count" class="mini-badge">0 场</span></div></div><p id="coach-history-feedback" class="history-feedback" role="status" aria-live="polite"></p><div id="pending-deletions" class="pending-deletions" aria-live="polite" hidden></div><div id="saved-session-list" class="saved-session-list"></div></section></div>
+      <div class="studio-aftercare"><section class="memory-panel panel"><div class="coach-panel-head"><div><p class="eyebrow">GROW WITH EVERY SPEECH</p><h2>把经验留给下一次</h2></div><span class="memory-symbol">↗</span></div><div id="coach-memory" class="memory-content"></div><div class="memory-foot"><span id="coach-memory-count">0 次历史练习</span><span>同一记忆 ID 关联历史练习</span></div></section><section class="saved-sessions panel"><div class="coach-panel-head"><div><p class="eyebrow">YOUR SPEECH JOURNAL</p><h2>历史演讲复盘</h2></div><div class="saved-session-status"><button id="coach-refresh-history" class="history-refresh" type="button" aria-label="刷新本机服务历史">↻ 刷新</button><span id="cloud-session-status" class="mini-badge">正在连接本机服务…</span><span id="saved-session-count" class="mini-badge">0 场</span></div></div><p id="coach-history-feedback" class="history-feedback" role="status" aria-live="polite"></p><div id="pending-deletions" class="pending-deletions" aria-live="polite" hidden></div><div id="saved-session-list" class="saved-session-list"></div></section></div>
       <aside id="coach-draft-banner" class="draft-banner" hidden><div><b>本场录制尚未保存</b><p>可以先看报告，再决定是否保留。保存后才会公开同步。</p></div><div class="draft-actions"><button class="secondary-button" data-draft-action="discard">不保存</button><button class="primary-button" data-draft-action="choose">选择保存方式</button></div></aside>
       <section id="coach-report" class="coach-report panel" hidden><div class="coach-panel-head"><div><p class="eyebrow">SESSION SUMMARY</p><h2>本场演讲报告</h2></div><div class="report-actions"><button id="coach-copy-report" class="secondary-button">复制报告</button><button id="coach-download-report" class="secondary-button">下载文字</button><button id="coach-download-json" class="secondary-button">导出复盘 JSON</button></div></div><div id="coach-report-overview" class="session-overview"></div><div id="coach-replay-detail" class="coach-replay-detail"></div><details class="full-report"><summary>展开完整文字报告 <span>内容、声音、动作、PPT 与练习建议</span></summary><textarea id="coach-report-text" rows="12" readonly aria-label="完整演讲复盘报告"></textarea></details></section>
       <footer class="workspace-footer"><span><i></i>TalkEval++ · 每一次表达，都值得被看见</span><span>自动观察提供线索，表达效果由你复核。</span></footer>
@@ -93,20 +101,25 @@
   <dialog id="evidence-lightbox" class="evidence-lightbox" aria-labelledby="lightbox-caption"><div class="lightbox-bar"><p id="lightbox-caption">演讲证据画面</p><button type="button" id="lightbox-close" aria-label="关闭放大画面">关闭 ×</button></div><img id="lightbox-image" alt="演讲证据画面" /></dialog>
   <script src="./hls.min.js"></script>
   <script src="./context-fit.js?v=20261015-delete-1"></script>
-  <script src="./replay.js?v=20261015-delete-1"></script>
+  <script src="./stage-engine.js?v=21"></script>
+  <script src="./launch-monitor.js?v=23"></script>
+  <script src="./shared-store-config.js?v=20261023-F13"></script>
+  <script src="./shared-sessions.js?v=17"></script>
+  <script src="./replay.js?v=20"></script>
   <dialog id="coach-save-dialog" class="session-dialog" aria-labelledby="coach-save-title" aria-describedby="coach-save-summary coach-save-progress">
     <div class="dialog-symbol" aria-hidden="true">✓</div><p class="eyebrow">YOUR SESSION, YOUR CHOICE</p><h2 id="coach-save-title">本场演讲，留下来吗？</h2><p id="coach-save-summary" class="dialog-summary"></p>
-    <div class="dialog-info"><b>保存录像与分析报告</b><p>选择保存后，将同步到公开云端。其他设备和访客也可以查看这场演讲。</p></div>
+    <div class="dialog-info"><b>保存录像与分析报告</b><p>选择保存后，将同步到本机服务。本机其他窗口和访客也可以查看这场演讲。</p></div>
     <p id="coach-save-progress" class="dialog-status" role="status" aria-live="polite"></p>
-    <div class="dialog-actions"><button class="secondary-button" data-draft-action="discard">不保存，丢弃本次</button><button class="primary-button" data-draft-action="save">保存并同步</button></div>
+    <div class="dialog-actions"><button class="secondary-button" data-draft-action="discard">不保存，丢弃本次</button><button class="primary-button" data-draft-action="save">保存到本机服务</button></div>
     <button class="dialog-preview" data-draft-action="preview" autofocus>先查看复盘，再决定 ↗</button>
   </dialog>
   <dialog id="coach-delete-dialog" class="session-dialog" aria-labelledby="coach-delete-title" aria-describedby="coach-delete-description">
     <div class="dialog-symbol danger" aria-hidden="true">−</div><p class="eyebrow">MANAGE YOUR SPEECH JOURNAL</p><h2 id="coach-delete-title">删除这场演讲？</h2><p id="coach-delete-description" class="dialog-summary"></p>
     <p id="coach-delete-status" class="dialog-status" role="status" aria-live="polite"></p>
     <div class="dialog-actions"><button id="coach-delete-cancel" class="secondary-button" autofocus>保留记录</button><button id="coach-delete-confirm" class="danger-button">删除录像与报告</button></div>
-    <div class="delete-local-option"><button id="coach-delete-local" class="secondary-button" type="button" hidden>先删除本机，云端待删</button><p id="coach-delete-local-note" hidden>本机录像与报告将立即清理，无法恢复。云端未确认删除前，其他设备可能仍可见；网页将保留待删请求，在恢复连接后重试。</p></div>
+    <div class="delete-local-option"><button id="coach-delete-local" class="secondary-button" type="button" hidden>先删除本机，本机服务待删</button><p id="coach-delete-local-note" hidden>本机录像与报告将立即清理，无法恢复。本机服务未确认删除前，本机其他窗口可能仍可见；网页将保留待删请求，在恢复连接后重试。</p></div>
   </dialog>
-  <script src="./live.js?v=20261015-delete-1"></script>
+  <script src="./live.js?v=23"></script>
+  <script type="module" src="./integration.js?v=23.1"></script>
 </body>
 </html>

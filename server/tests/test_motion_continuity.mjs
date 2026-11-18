@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {MotionContinuity} from '../static/motion-continuity.js';
+import {PoseTransition} from '../static/stage-motion.js';
+const pose=x=>Array.from({length:9},()=>[x,0,0]);
+const observation=at=>({ready:true,current:pose(at),future:[pose(at+1)],at,visibility:Array(9).fill(1),forecastReady:true});
+const continuity=new MotionContinuity();
+assert.equal(continuity.hold('waiting').ready,false);
+const first=continuity.accept(observation(1));
+assert.ok(first.ready&&!first.held);
+const lost=continuity.hold('occlusion');
+assert.ok(lost.ready&&lost.held);assert.deepEqual(lost.current,first.current);assert.equal(lost.at,1);
+for(let i=0;i<100;i++)assert.equal(continuity.hold('occlusion').at,1);
+assert.ok(continuity.accept(observation(12)).held);
+assert.ok(continuity.accept(observation(12)).held,'A repeated sample is not a second confirmation');
+const recovered=continuity.accept(observation(12.1));assert.ok(!recovered.held&&recovered.recovered);
+continuity.hold('network timeout');assert.ok(!continuity.accept(observation(13),{recoverySamples:1}).held);
+continuity.reset();assert.equal(continuity.hold('new session').ready,false,'Never carry another session into a new scene');
+
+const frame=(at,extra={})=>({...observation(at),key:String(at),stream:'camera-A',lowLatency:true,...extra});
+const tr=new PoseTransition();tr.setFrame(frame(1),0);tr.setFrame(frame(1.1),100);
+const beforeLoss=tr.sample(125);tr.setFrame(frame(1.1,{key:'held',held:true}),125);
+assert.deepEqual(tr.sample(10000).current,beforeLoss.current,'Freeze the actual on-screen pose without vanishing');
+tr.setFrame(frame(8,{recovered:true}),10000);
+assert.deepEqual(tr.sample(10000).current,beforeLoss.current,'Reacquisition starts where the held model was');
+assert.deepEqual(tr.sample(10300).current,pose(8));
+tr.setFrame(frame(8.1),10400);assert.ok(tr.duration<=120);
+tr.setFrame(null,10600);assert.equal(tr.sample(10600),null,'An explicit session reset still clears the old person');
+console.log('PASS: pose hold, no stale observation promotion, two-sample reacquisition, scene reset, frozen animation, smooth low-latency resume');

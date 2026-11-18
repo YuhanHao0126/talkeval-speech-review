@@ -1,0 +1,8 @@
+numpy>=1.26,<2
+mediapipe==0.10.21
+opencv-contrib-python==4.11.0.86
+flask>=3.1,<4
+torch>=2.6
+pytest>=8,<9
+imageio-ffmpeg>=0.6
+waitress==3.0.2
